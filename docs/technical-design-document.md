@@ -1,5 +1,27 @@
 # IU Case Study - Automatic Admissions
 
+## 0. Summary
+
+- We are building a service that screens each study application for academic access and reports the outcome with the document page and policy version behind every finding.
+- One model call extracts typed facts from the applicant's PDF documents, and a rules engine written in code evaluates those facts against a versioned, human-approved copy of the admissions policy.
+- The most important design decision is that the model only reads documents and code makes the decision, so the same application always receives the same status.
+- In the measured comparison the rules engine was the most accurate of the four options that were tested, and it was the only one that never wrongly admitted an applicant.
+- When this ships, the service issues an ELIGIBLE report without caseworker review once the false eligible rate has been measured and approved, and every other outcome goes to a caseworker with its evidence attached.
+
+For a quick look at the architecture, see the proposed state in [Section 3.2](#32-proposed-state). For a quick look at the measured results, open [measured-comparison.html](https://github.com/patil-pratik-87/auto-admissions-service/blob/main/docs/measured-comparison.html) in a browser. It holds the full comparison report with the per applicant(synthetically generated) tables.
+
+**Decision summary**
+
+| #                                                                                         | Decision                             | Chosen                                                                                                | Why (one line)                                                                                 |
+| ----------------------------------------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [D1](#d1-how-the-admissions-policy-gets-applied)                                          | How the admissions policy is applied | A model extracts typed facts, and a rules engine in code decides. The model never sees the policy     | Code gives the same answer on every run and had the highest measured accuracy                  |
+| [D2.1](#d21-how-the-synthetic-evaluation-data-was-generated), [D2.2](#d22-llm-as-a-judge) | How quality is measured              | Hard synthetic personas, gold scenarios in the test suite, and one LLM judge per way extraction fails | Gold scenarios pin the rules engine, and judges are the only check that reaches real documents |
+| [D3](#d3-which-outcomes-may-be-issued-without-a-caseworker)                               | Which outcomes need no caseworker    | Only ELIGIBLE, and only after the false eligible rate is measured and approved                        | A wrong ELIGIBLE is a regulated decision made without a human, so it is gated                  |
+| [D4](#d4-how-unknown-evidence-is-represented)                                             | How unknown evidence is represented  | Four evidence states (KNOWN, MISSING, UNREADABLE, CONFLICTING) with three-valued logic                | A fact the model cannot read leads to a request for information, never to a rejection          |
+| [D5](#d5-where-the-policy-lives-and-how-rules-are-authored)                               | Where the policy lives               | Versioned YAML rules, drafted by a model and approved by a person, compiled at startup                | Admissions staff can read the rules, and no unreviewed rule can screen an applicant            |
+
+---
+
 ## 1. Introduction
 
 ### 1.1 Problem and motivation
@@ -63,16 +85,21 @@ The following work is also outside the scope of this TDD:-
 
 ### 2.2 Performance and scale (P)
 
-| ID  | Requirement              | Target | How measured                                                                              |
-| --- | ------------------------ | ------ | ----------------------------------------------------------------------------------------- |
-| P1  | Latency at p95           | Open   | Wall clock per application, measured end to end. The prototype runs at about 16 s         |
-| P2  | Throughput / volume      | Open   | Applications per hour. Bounded by the model provider's rate limit, which is not yet known |
-| P3  | Accuracy / quality floor | Open   | Share of applications matching the expected status, and the share wrongly called ELIGIBLE |
+| ID  | Requirement              | Target (proposed, approximate)                                                                     | How measured                                                                                                                                                                                                                   |
+| --- | ------------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| P1  | Latency at p95           | 60 s per application, p50 under 20 s                                                               | Wall clock end to end. The prototype extraction call runs 6 to 18 s, and the target leaves room for a full 100-page bundle and the one permitted retry                                                                         |
+| P2  | Throughput / volume      | 1,250 applications per hour sustained, so a 10,000-application peak day clears in 8 hours          | Applications completed per hour under Option C. At about 15k input tokens per application the provider must allow roughly 21 requests and 320k input tokens per minute, which is the open rate-limit question from Section 3.4 |
+| P3  | Accuracy / quality floor | Status match at or above 90% on the labeled set, and zero false ELIGIBLE during the Option A phase | Share matching the expected status (prototype: 93% on 14 labeled personas), and the false eligible rate from caseworker-confirmed real applications, which gates D3                                                            |
+| P4  | Cost per application     | At or below $0.05                                                                                  | Provider usage per run. The prototype measures $0.033, and the ceiling covers larger bundles and the retry                                                                                                                     |
 
-Targets are open. The measurement method for each one is settled and the prototype numbers are
-in section 4.2, so a target is a business decision rather than a missing capability. P3 in
-particular cannot be set until the false eligible rate is measured on real applications, which
-is the condition D3 puts on autonomy.
+The targets are proposed from prototype measurements and need business sign-off. They assume
+the input limits the extractor already enforces, at most 10 PDFs, 100 pages, and 50 MB per
+bundle, and latency is a batch concern rather than an interactive one, because no applicant
+waits on the response. The 8-hour window behind P2 is an assumption, and a 24-hour window
+would drop the requirement to about 420 applications per hour. The 90% floor in P3 is anchored
+to the deliberately hard synthetic set, so it is a regression floor rather than a prediction
+for real intake, and the false eligible half of P3 cannot be confirmed until it is measured on
+real applications, which is the condition D3 puts on autonomy.
 
 ### 2.3 Security and compliance (S)
 
@@ -694,13 +721,6 @@ service.
 
 All four options in D1 were run over the same personas, three repeats each. Accuracy is scored
 against the expected status recorded in the tuples, over 9 core personas and 14 labeled personas.
-Stability is the share of 15 personas whose status changed across the three identical repeats.
-
-One caveat applies to every number below. Option B was run on `gpt-5.6-terra` and options C and D
-on `gpt-5.4-mini`, so the comparison carries a second variable and the gap between B and C or D
-is not attributable to architecture alone. The gap to option A is, because option A makes its
-decision in code and no model is involved. A rerun on one model is planned, and every model in
-the repository is now set by `ADMISSIONS_OPENAI_MODEL`.
 
 | Measure                                          | A. Rules engine | B. Full policy workflow | C. Agentic RAG, table of contents | D. Agentic RAG, vector retrieval |
 | ------------------------------------------------ | --------------- | ----------------------- | --------------------------------- | -------------------------------- |

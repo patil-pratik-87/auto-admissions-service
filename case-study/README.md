@@ -1,16 +1,18 @@
 # Case study source material
 
-This folder holds the documents IU supplied for the case study. They are IU's property and are
-not redistributed here, so the folder is empty in a fresh clone apart from this file.
+The documents IU supplied for the case study. They are IU's property and are included here so
+the alternate options and the rule extractor run from a clean clone.
 
-To run anything that reads the policy, put the English markdown conversion of the handbook here
-under its original name.
+The handbook is the policy every option works from, in three formats. Only the markdown is read
+by code, and the PDF and HTML are the originals it was converted from.
 
 ```
-case-study/IU-FS-LF-Leitfaden-Hochschulzugangsberechtigung-Stand-Januar2025.md
+IU-FS-LF-Leitfaden-Hochschulzugangsberechtigung-Stand-Januar2025.md    read by code
+IU-FS-LF-Leitfaden-Hochschulzugangsberechtigung-Stand-Januar2025.pdf   original
+IU-FS-LF-Leitfaden-Hochschulzugangsberechtigung-Stand-Januar2025.html  original
 ```
 
-Three things read it, and each fails with a clear message when it is absent.
+Three things read the markdown, and each fails with a message naming the path when it is absent.
 
 | Reader | What it does with the handbook |
 | --- | --- |
@@ -20,3 +22,9 @@ Three things read it, and each fails with a clear message when it is absent.
 
 The shipped service never reads it. `app/` evaluates the approved YAML in [../rules/](../rules/),
 which is this project's own encoding of the policy and is the deliverable.
+
+## What is not here
+
+The briefing recording and its transcript are excluded. The recording walks through a live case
+in IU's CRM and names a prospective student along with their programme and start date, which is
+personal data that does not belong in a public repository. No code reads it.

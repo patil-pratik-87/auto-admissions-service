@@ -21,7 +21,7 @@ uv run --with jupyter jupyter lab full-policy-workflow.ipynb
 Run the cells top to bottom. Secrets come from the repository root `.env`. This spends tokens.
 
 `ADMISSIONS_OPENAI_MODEL` sets the model, and `TWO_AGENTS_MODEL` overrides it for this prototype
-alone. The committed run used `gpt-5.6-terra`.
+alone.`.
 
 ## What is here
 

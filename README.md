@@ -43,7 +43,7 @@ the only one that never admitted an applicant who does not qualify. The comparis
 | [alternate-options/](alternate-options/) | The three other architectures, with their run evidence |
 | [tools/](tools/) | Rule drafting from the handbook, and the sample builder |
 | [docs/](docs/) | The technical design document, the glossary, and the measured evidence |
-| [case-study/](case-study/) | Where IU's handbook goes. Their property, so it is not in this repository |
+| [case-study/](case-study/) | The IU policy handbook, as supplied. Their property |
 
 ## Run it
 
@@ -54,9 +54,8 @@ uv sync --all-groups
 cp .env.example .env        # then add OPENAI_API_KEY
 ```
 
-The service needs nothing else. Anything that reads the policy handbook, meaning the
-alternate options and the rule extractor, needs it placed in [case-study/](case-study/) first,
-because it is IU's document and is not redistributed here.
+That is everything. The policy handbook that the alternate options and the rule extractor read
+is in [case-study/](case-study/).
 
 Screen one applicant. Extraction and evaluation run in one command, and the facts are saved and
 reloaded before evaluation, so the decision always runs on the exact bytes that were written.
