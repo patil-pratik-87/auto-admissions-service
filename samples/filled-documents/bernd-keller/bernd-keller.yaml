@@ -1,0 +1,32 @@
+# Synthetic applicant. Angle: tuple 10 — GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL
+# / SATISFIED / SUPPORTED_FACT_VARIANT. Completed Fortbildung certificate that
+# does NOT print a DQR level (older certificate style), but states 560
+# teaching hours and admission built on a completed recognized training
+# (Fachkraft für Lagerlogistik). direct_advanced_vocational_level must be
+# proven through the 400-teaching-hours alternative, not the DQR >= 6 branch.
+# Expected: ELIGIBLE, ADVANCED_VOCATIONAL_DIRECT_ACCESS.
+slug: bernd-keller
+name: "Bernd Keller"
+birth_date: "11.06.1990"
+birth_place: "Bielefeld"
+
+chamber: "Industrie- und Handelskammer Ostwestfalen zu Bielefeld"
+qualification: "Geprüfter Fachwirt für Logistiksysteme"
+gesamt_note: "gut"
+gesamt_punkte: "82"
+pruefungsteile:
+  - ["Wirtschaftsbezogene Qualifikationen", "gut", "84"]
+  - ["Handlungsspezifische Qualifikationen", "befriedigend", "80"]
+
+# No DQR statement on the certificate; the 400-hours alternative instead.
+dqr_line: false
+zusatz_lines:
+  - "Der vorbereitende Lehrgang umfasste 560 Unterrichtsstunden."
+  - "Zulassungsvoraussetzung war die mit Erfolg abgelegte Abschlussprüfung in dem"
+  - "anerkannten Ausbildungsberuf Fachkraft für Lagerlogistik."
+supplement: false
+out_basename: "fortbildung-zeugnis"
+
+ort_datum: "Bielefeld, den 26. Januar 2024"
+praesident: "W.-D. Sandmann"
+hauptgeschaeftsfuehrerin: "P. Schürmann"

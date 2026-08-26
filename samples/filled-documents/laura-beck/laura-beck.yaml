@@ -1,0 +1,30 @@
+# Synthetic applicant. Angle: tuple 22 — FACHGEBUNDENE_HOCHSCHULREIFE /
+# SATISFIED / CLEAN with a known OUTSIDE_DACH issuing region. Liechtenstein
+# Berufsmaturitätszeugnis: a German-language, subject-restricted entrance
+# qualification whose stated issuing state (Fürstentum Liechtenstein) is NOT
+# in the DACH set (Germany, Austria, Switzerland) — the fact builder must
+# derive issuing_region from the stated country, not from the document
+# language. Expected: CONDITIONALLY_ELIGIBLE,
+# FOREIGN_FACHGEBUNDENE_HZB_TRIAL_STUDY with the TRIAL_STUDY condition.
+slug: laura-beck
+name: "Laura Beck"
+birth_date: "05.08.2001"
+birth_place: "Schaan"
+schule: "Berufsmittelschule Liechtenstein, Vaduz"
+richtung: "Kaufmännische Richtung"
+
+# Swiss grade scale: 6 = best, 4 = pass threshold.
+faecher:
+  - ["Deutsch", "5,0"]
+  - ["Englisch", "4,5"]
+  - ["Französisch", "4,5"]
+  - ["Mathematik", "5,0"]
+  - ["Finanz- und Rechnungswesen", "5,5"]
+  - ["Wirtschaft und Recht", "5,0"]
+  - ["Geschichte und Politik", "4,5"]
+  - ["Naturwissenschaften", "4,5"]
+gesamtnote: "4,8"
+
+ort_datum: "Vaduz, den 28. Juni 2021"
+schulleitung: "Dr. P. Frommelt"
+amt: "M. Ospelt"

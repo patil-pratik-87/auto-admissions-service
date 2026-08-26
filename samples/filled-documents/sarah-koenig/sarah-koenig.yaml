@@ -1,0 +1,55 @@
+# Synthetic applicant. Angle: tuple 4 — GERMAN_ABITUR / REQUIRED_FACT_UNKNOWN /
+# REQUIRED_FIELD_ILLEGIBLE. Complete Abitur whose Bemerkungen line visibly
+# states a territorial validity restriction, but in the SCAN variant an ink
+# blot covers the Land name — the restriction is present, its scope is
+# unreadable. Extraction must record validity_restriction_present = true with
+# an unknown code, never guess a Land (the school being in Dortmund is a
+# deliberate red herring). Expected: MISSING_INFORMATION,
+# GERMAN_ABITUR_EVIDENCE_INCOMPLETE. Only the -scan.pdf belongs in the eval
+# bundle; the vector PDF leaks the covered text.
+slug: sarah-koenig
+name: "Sarah König"
+birth_date: "17.09.2004"
+birth_place: "Dortmund"
+address: "Kreuzstraße 41, 44139 Dortmund"
+school: "Käthe-Kollwitz-Gymnasium, Dortmund"
+
+block_i:
+  deutsch: ["10", "10", "10", "10"] # 40
+  englisch: ["11", "10", "11", "10"] # 42
+  musik: ["12", "12", "11", "12"] # 47
+  geschichte: ["09", "10", "09", "10"] # 38
+  sozialkunde_politik: ["10", "09", "10", "09"] # 38
+  mathematik: ["11", "11", "10", "10"] # 42
+  physik: ["09", "09", "08", "08"] # 34
+  biologie: ["10", "10", "10", "09"] # 39
+  religion_ethik: ["11", "10", "10", "10"] # 41
+  sport: ["10", "10", "10", "09"] # 39
+ea_subjects: [deutsch, englisch, mathematik]
+
+# Block II, 5-fache Wertung: 50+45+50+45 = 190.
+pruefungsfaecher:
+  - ["Deutsch (eA)", "10", "", "50"]
+  - ["Englisch (eA)", "09", "", "45"]
+  - ["Mathematik (eA)", "10", "", "50"]
+  - ["Geschichte", "", "09", "45"]
+
+# P = 400, S = 40 -> E = 400. Gesamt 400 + 190 = 590.
+# Note = 17/3 - 590/180 = 2.39 -> 2,3.
+block_i_punktsumme: "400"
+block_ii_punktsumme: "190"
+gesamtpunktzahl: "590"
+durchschnittsnote: "2,3"
+
+fremdsprachen:
+  - ["Englisch", "5 – 13", "B2"]
+  - ["Spanisch", "8 – 11", "B1"]
+
+# Restriction stated; the Land name after this marker is blotted in the scan.
+bemerkungen: "Gilt für den Hochschulzugang nur im Land Hessen."
+bemerkungen_smudge_after: "im Land "
+
+anrede_name: "Frau Sarah König"
+ort_datum: "Dortmund, den 28.06.2023"
+vorsitz: "StD M. Overbeck"
+schulleiter: "OStD H. Falkenberg"

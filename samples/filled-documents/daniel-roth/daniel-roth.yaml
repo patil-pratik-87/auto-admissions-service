@@ -1,0 +1,51 @@
+# Synthetic applicant. Angle: tuples 13-15 — professional-access experience
+# comfortably above threshold, shared documents for the three subject variants.
+# GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE / SUBJECT_MATCH, SUBJECT_NO_MATCH,
+# or SUBJECT_UNCERTAIN (per application fact fixture) / SUPPORTED_FACT_VARIANT.
+# IHK Zeugnis (DQR 4, bestanden) + BA Arbeitsbescheinigung: field 71 = 39 h,
+# field 30 = 01.08.2019-31.05.2023 = 1,400 full-time-equivalent days
+# (threshold 1,095). Expected per candidate.subject_relationship: MATCH ->
+# CONDITIONALLY_ELIGIBLE, PROFESSIONAL_ACCESS_TRIAL_STUDY; NO_MATCH ->
+# CONDITIONALLY_ELIGIBLE, PROFESSIONAL_ACCESS_ENTRANCE_EXAMINATION;
+# UNCERTAIN -> MANUAL_REVIEW, SUBJECT_MATCH_REVIEW.
+slug: daniel-roth
+name: "Daniel Roth"
+
+ihk:
+  geburtsdatum_lang: "14. März 1999"
+  datum: "21. Juni 2019"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"
+
+ba:
+  fields:
+    txtf_2_Betriebsnummer: "28193647"
+    txtf_3_Arbeitgeber: "Westfalia Bürosysteme GmbH"
+    txtf_4_Strasse: "Weseler Straße"
+    txtf_5_Hausnummer: "210"
+    txtf_6_PLZ: "48151"
+    txtf_7_Ort: "Münster"
+    txtf_8_Ansprechpartner: "Frau H. Brinkmann"
+    txtf_9_Telefonnummer: "0251 487720"
+    txtf_14_Vorname: "Daniel"
+    txtf_15_Nachname: "Roth"
+    txtf_16_Strasse: "Wolbecker Straße"
+    txtf_17_Hausnummer: "63"
+    txtf_18_PLZ: "48155"
+    txtf_19_Wohnort: "Münster"
+    txtf_20_Rentenversicherungsnummer: "15 140399 R 004"
+    txtf_21_Jahr: "2023"
+    txtf_22_Steuerklasse: "1"
+    txtf_30_Beschaeftigung_vom: "01.08.2019"
+    txtf_30_Beschaeftigung_bis: "31.05.2023"
+    txtf_31_letzte_Beschaeftigung: "Kaufmann für Büromanagement"
+    txtf_32_letzter_Beschaeftigungsort: "Münster"
+    txtf_33_Arbeitsverhaeltnis_beendet: "31.05.2023"
+    txtf_71_Arbeitszeit: "39,00"
+    txtf_112_Firmenname: "Westfalia Bürosysteme GmbH"
+    txtf_113_Strasse: "Weseler Straße"
+    txtf_114_Hausnummer: "210"
+    txtf_115_PLZ: "48151"
+    txtf_116_Ort: "Münster"
+    txtf_117_Ort: "Münster"
+    txtf_118_Datum: "02.06.2023"

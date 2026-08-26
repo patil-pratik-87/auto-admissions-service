@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-08-25T20:57:35.427569+00:00",
+  "model": "gpt-5.6-terra",
+  "critic_enabled": false,
+  "n_personas": 16,
+  "prototype_runs": 48,
+  "accuracy_vs_labels": {
+    "n_core": 9,
+    "rules_core": 0.667,
+    "prototype_core": 0.444,
+    "n_all_labeled": 14,
+    "rules_all_labeled": 0.571,
+    "prototype_all_labeled": 0.571
+  },
+  "agreement_prototype_vs_rules": {
+    "n": 16,
+    "rate": 0.688
+  },
+  "stability": {
+    "n_personas_with_repeats": 16,
+    "personas_with_flips": 7,
+    "flip_rate": 0.438,
+    "note": "rules engine flip-rate is 0 by construction (deterministic evaluator)"
+  }
+}

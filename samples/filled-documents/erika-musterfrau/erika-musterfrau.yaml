@@ -1,0 +1,38 @@
+# Synthetic applicant. Angle: tuple 5 — BW full FHR Zeugnis happy path.
+# GERMAN_GENERAL_FACHHOCHSCHULREIFE / SATISFIED / CLEAN. The full Zeugnis
+# proves school and vocational part together (school_part_proven and
+# vocational_part_proven both true), and its printed "mit Ausnahme von
+# Bayern und Sachsen" clause normalizes to validity_restriction_code
+# ALL_STATES_EXCEPT_BAVARIA_AND_SAXONY, which is accepted. Expected:
+# ELIGIBLE, GERMAN_GENERAL_FHR_DIRECT_ACCESS.
+slug: erika-musterfrau
+name: "Erika Musterfrau"
+birth_date: "18.05.2004"
+birth_place: "Stuttgart"
+school: "Wirtschaftsgymnasium der Johann-Friedrich-Cotta-Schule Stuttgart"
+halbjahr_1: "1"
+halbjahr_2: "2"
+
+# Kursleistungen, einfache Wertung, Punkte 0-15 per Schulhalbjahr.
+subjects_i: # 4 Kurse aus Faechern mit erhoehtem Anforderungsniveau
+  - ["Wirtschaft (P)", "12", "13"]
+  - ["Deutsch", "11", "12"]
+subjects_ii: # 11 weitere Kurse (one single-semester course)
+  - ["Mathematik", "10", "11"]
+  - ["Englisch", "12", "11"]
+  - ["Geschichte mit Gemeinschaftskunde", "9", "10"]
+  - ["Biologie", "9", "8"]
+  - ["Informatik", "12", "13"]
+  - ["Sport", "10", ""]
+# P = 48 + 115 = 163; S = 15; E = 163/15 x 19 = 206.5 -> 207? (rounded: 206.47 -> 206)
+punktsumme: "163"
+gesamtergebnis: "206"
+# Rueckseite table: 209-204 -> 2,0
+durchschnittsnote_ziffer: "2,0"
+durchschnittsnote_text: "zwei Komma null"
+
+fremdsprachen:
+  - "Englisch – Niveau B2 (GER)"
+  - "Französisch – Niveau B1 (GER)"
+datum: "14.07.2023"
+schulleiter: "OStD'in M. Kraus"

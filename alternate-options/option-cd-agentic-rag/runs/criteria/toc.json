@@ -1,0 +1,545 @@
+{
+  "arm": "toc",
+  "model": "gpt-5.4-mini",
+  "policy_sha256": "5375cbdf54a2dfc00425cab14ae2a8bfdd77af32dc32d6d8d3499fc849d66751",
+  "instructions_sha256": "c7e397ed18a5fba7044b1fa533532382a730b4733078b459668ce934f0ff3c04",
+  "compiled_at": "2026-08-26T14:33:30.406919+00:00",
+  "coverage_complete": true,
+  "unverified_excerpts": [],
+  "opened_section_ids": [
+    "s004",
+    "s005",
+    "s007",
+    "s008",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s017",
+    "s018"
+  ],
+  "opened_section_titles": [
+    "Studying with the (Fach-) Abitur (general or subject-restricted school-leaving qualification)",
+    "Studying without the (Fach-)Abitur (general or subject-restricted school-leaving qualification)",
+    "Anabin",
+    "Certificate of equivalence (Äquivalenzbescheinigung)",
+    "General higher education entrance qualification / Matura",
+    "Austrian school-leaving qualifications with direct access",
+    "Austrian school-leaving qualifications with subject-restricted access",
+    "Austrian school-leaving qualifications WITHOUT entitlement to study",
+    "ADMISSION OF APPLICANTS FROM UKRAINE",
+    "BACHELOR ENTRANCE EXAMINATION (BACHELOR ZUGANGSPRÜFUNG)"
+  ],
+  "nav_trace": [
+    {
+      "turn": 1,
+      "rationale": "To identify every route to academic entrance qualification for study programs, I need the sections that define standard German routes, foreign qualification routes, Austria-specific rules, Ukraine-specific admission, entrance examinations, and any special vocational/exceptional access rules. The core bachelor access sections plus the foreign-qualification special features and country-specific/entrance-exam sections should cover all qualifying routes; the document’s special program requirements and paperwork/authentication sections can be ignored for this task.",
+      "requested": [
+        "s004",
+        "s005",
+        "s007",
+        "s008",
+        "s012",
+        "s013",
+        "s014",
+        "s015",
+        "s017",
+        "s018"
+      ],
+      "unresolved": [],
+      "retrieved_section_ids": [
+        "s004",
+        "s005",
+        "s007",
+        "s008",
+        "s012",
+        "s013",
+        "s014",
+        "s015",
+        "s017",
+        "s018"
+      ],
+      "retrieved_titles": [
+        "Studying with the (Fach-) Abitur (general or subject-restricted school-leaving qualification)",
+        "Studying without the (Fach-)Abitur (general or subject-restricted school-leaving qualification)",
+        "Anabin",
+        "Certificate of equivalence (Äquivalenzbescheinigung)",
+        "General higher education entrance qualification / Matura",
+        "Austrian school-leaving qualifications with direct access",
+        "Austrian school-leaving qualifications with subject-restricted access",
+        "Austrian school-leaving qualifications WITHOUT entitlement to study",
+        "ADMISSION OF APPLICANTS FROM UKRAINE",
+        "BACHELOR ENTRANCE EXAMINATION (BACHELOR ZUGANGSPRÜFUNG)"
+      ],
+      "coverage_complete": false
+    },
+    {
+      "turn": 2,
+      "rationale": "To cover every route to academic entrance qualification for bachelor programs, the already-opened sections cover the domestic Abitur route, professionally qualified routes without Abitur, foreign qualifications, Austria-specific qualifications, Ukraine-specific facilitation, and the Bachelor entrance examination. What is still needed are the general foreign-qualification rules beyond Anabin (equivalence certificates), and any other country-specific or special-case admissions that function as entrance-qualification pathways rather than document formalities. The title list suggests section s007 and s008 are essential for the foreign-qualification route, and s012-s015 were already opened for Austria. I do not need document-submission or authentication sections.",
+      "requested": [
+        "s007",
+        "s008"
+      ],
+      "unresolved": [],
+      "retrieved_section_ids": [
+        "s007",
+        "s008"
+      ],
+      "retrieved_titles": [
+        "Anabin",
+        "Certificate of equivalence (Äquivalenzbescheinigung)"
+      ],
+      "coverage_complete": false
+    },
+    {
+      "turn": 3,
+      "rationale": "To cover every distinct route to academic entrance qualification for bachelor study programs, we need the main domestic routes (with/without Abitur), foreign-qualification rules, country-specific routes (Austria, Ukraine), and the special entrance-examination route. The already opened sections cover domestic Abitur and non-Abitur routes plus foreign general rules. The remaining likely needed sections are the Austria-specific subsections, Ukraine, and the bachelor entrance examination, to capture all special constellations and indirect/foreign qualification pathways.",
+      "requested": [
+        "s012",
+        "s013",
+        "s014",
+        "s015",
+        "s017",
+        "s018"
+      ],
+      "unresolved": [],
+      "retrieved_section_ids": [
+        "s012",
+        "s013",
+        "s014",
+        "s015",
+        "s017",
+        "s018"
+      ],
+      "retrieved_titles": [
+        "General higher education entrance qualification / Matura",
+        "Austrian school-leaving qualifications with direct access",
+        "Austrian school-leaving qualifications with subject-restricted access",
+        "Austrian school-leaving qualifications WITHOUT entitlement to study",
+        "ADMISSION OF APPLICANTS FROM UKRAINE",
+        "BACHELOR ENTRANCE EXAMINATION (BACHELOR ZUGANGSPRÜFUNG)"
+      ],
+      "coverage_complete": true
+    }
+  ],
+  "criteria": {
+    "policy_title": "Academic entrance qualification for Bachelor study programs",
+    "scope_notes": "Included only academic entrance qualification routes for Bachelor study. I treated as in-scope: direct school-leaving qualifications, special state-specific school-leaving qualifications that confer direct access, foreign-equivalence routes, Feststellungsprüfung, and the academic access mechanisms for professionally qualified applicants only insofar as they determine study access. I excluded all non-academic enrollment administration, document form/authentication rules except where they are the required evidence for the qualification itself, and all non-Bachelor matters. I also excluded general change-of-institution/withdrawal rules and service/identity/insurance matters.",
+    "criteria": [
+      {
+        "criterion_id": "abitur-general",
+        "name": "General higher education entrance qualification",
+        "summary": "Applicants qualify directly with the general higher education entrance qualification, provided the certificate is in officially certified form in German or English. For certificates with validity annotations, only 'valid for all federal states' and 'valid for Thuringia' are accepted; the addendum 'Fulfils the requirements for recognition in all federal states with the exception of Bavaria and Saxony' is also accepted because it is valid for Thuringia.",
+        "source_excerpts": [
+          "Admission requirement: Proof of the general higher education entrance qualification, the subject-restricted higher education entrance qualification, or the (subject-restricted) entrance qualification for universities of applied sciences",
+          "Here we only accept:",
+          "- \"valid for all federal states\"",
+          "- \"valid for Thuringia\"",
+          "Note: With the addendum \"Fulfils the requirements for recognition in all federal states with the exception of Bavaria and Saxony\", it is valid for all federal states except for Bavaria and Saxony. Therefore it is also valid for Thuringia and the prospective student can be admitted.",
+          "The general higher education entrance qualification is uncritical. Here, the certificate in officially certified form in German or English is sufficient (see the section \"The Official Certification\")."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "fachabitur-deutschsprachiger-raum",
+        "name": "Subject-restricted higher education entrance qualification from the German-speaking legal area",
+        "summary": "Applicants qualify directly with a subject-restricted higher education entrance qualification from Germany, Austria, or Switzerland; the certificate in officially certified form in German or English is sufficient. If the certificate carries a validity restriction, the accepted scopes are only the handbook's accepted formulations.",
+        "source_excerpts": [
+          "Admission requirement: Proof of the general higher education entrance qualification, the subject-restricted higher education entrance qualification, or the (subject-restricted) entrance qualification for universities of applied sciences",
+          "Here we only accept:",
+          "- \"valid for all federal states\"",
+          "- \"valid for Thuringia\"",
+          "The subject-restricted higher education entrance qualification from the German-speaking legal area (Germany, Austria, Switzerland) is uncritical. Here, the certificate in officially certified form in German or English is sufficient (see the section \"The Official Certification\")."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "fachabitur-abroad-probestudium",
+        "name": "Subject-restricted higher education entrance qualification from abroad",
+        "summary": "A foreign subject-restricted higher education entrance qualification does not itself give direct access; admission is only via a trial study period (Probestudium). The required documents must be submitted in translated form as specified by the handbook.",
+        "source_excerpts": [
+          "If, however, a subject-restricted higher education entrance qualification from abroad is presented, a trial study period (Probestudium) is required.",
+          "The required documents must be submitted in translated form, as described under the section \"The Official Certification\"."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "fachhochschulreife-allgemein",
+        "name": "General entrance qualification for universities of applied sciences",
+        "summary": "Applicants qualify directly with the general Fachhochschulreife. If it is not an overall certificate, both the school-based part and the vocational part must be submitted; the school-based part alone must be an officially certified copy.",
+        "source_excerpts": [
+          "In the case of an HZB obtained through the (subject-restricted) entrance qualification for universities of applied sciences, the school-based part (in officially certified form) and the vocational part must both equally be proven.",
+          "The general entrance qualification for universities of applied sciences is uncritical. If it is not an overall certificate, the school-based and the vocational part must be submitted. Only the school-based part of the FHR must be submitted as an officially certified copy."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "fachhochschulreife-fachgebunden",
+        "name": "Subject-restricted Fachhochschulreife with subject match",
+        "summary": "A subject-restricted Fachhochschulreife qualifies directly only when its subject focus matches the intended Bachelor program. If the school-based focus and the intended degree program do not match in subject terms, admission is only possible via the trial study period (Probestudium).",
+        "source_excerpts": [
+          "In the case of the subject-restricted entrance qualification for universities of applied sciences, the focus of the subject-restricted entrance qualification for universities of applied sciences must correspond in subject terms to the intended Bachelor program.",
+          "If the school-based focus and the intended degree program do not match in subject terms, admission is only possible via the trial study period (Probestudium)."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "baden-wuerttemberg-abitur",
+        "name": "Baden-Württemberg Abitur from general/vocational Gymnasium or Freie Waldorfschule",
+        "summary": "An Abitur obtained at a general Gymnasium, vocational Gymnasium, or Freie Waldorfschule in Baden-Württemberg qualifies directly and is treated as uncritical; the certificate must bear the named KMK annotation.",
+        "source_excerpts": [
+          "Certificates of the general higher education entrance qualification that were obtained at general and vocational Gymnasien as well as at the Freie Waldorfschule in Baden-Württemberg are uncritical.",
+          "The following annotation appears on the Abitur certificate:",
+          "\"Vereinbarung zur Gestaltung der gymnasialen Oberstufe und der Abiturprüfung\" (Agreement on the design of the upper secondary level of the Gymnasium and the Abitur examination) (Resolution of the Kultusministerkonferenz [Standing Conference of the Ministers of Education and Cultural Affairs] of 07.07.1972 in the version of 18.02.2021)"
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "baden-wuerttemberg-fhr-gymnasium",
+        "name": "Baden-Württemberg Fachhochschulreife from Gymnasium programs",
+        "summary": "A Baden-Württemberg Fachhochschulreife from the upper secondary level of the Gymnasium or issued by general/vocational Gymnasien qualifies directly for all Bachelor programs if the certificate confirms both the school-based and job-related parts and includes one of the two named KMK/Kultusministerium resolutions. If the corresponding annotation is missing, the applicant is referred to the competent state authority.",
+        "source_excerpts": [
+          "The general entrance qualification for universities of applied sciences of the upper secondary level of the Gymnasium, or issued by general and vocational Gymnasien in Baden-Württemberg, is uncritical. It can be accepted for direct higher education access to all Bachelor degree programs at the IU under the following conditions:",
+          "1. the school-based and job-related part is confirmed in the annotation on the certificate",
+          "2. the annotations of the Kultusministerium (Ministry of Education and Cultural Affairs) and the resolutions on the upper secondary level of the Gymnasium are included on the certificate:",
+          "\"Vereinbarung zur Gestaltung der gymnasialen Oberstufe und der Abiturprüfung\" (Agreement on the design of the upper secondary level of the Gymnasium and the Abitur examination) (Resolution of the Kultusministerkonferenz of 07.07.1972 in the version of 18.02.2021)",
+          "or",
+          "\"Vereinbarung über den Erwerb der Fachhochschulreife in beruflichen Bildungsgängen\" (Agreement on the acquisition of the entrance qualification for universities of applied sciences in vocational education programs) (Resolution of the KMK of 05.06.1998 in the version of 09.03.2001)",
+          "Those certificates which certify both the school-based and the job-related part with reference to one of the respective above-mentioned resolutions entitle the holder to study at universities of applied sciences in all federal states in the Federal Republic of Germany, i.e. also in Thuringia.",
+          "If a corresponding annotation is missing, study applicants are to be referred to the competent authority of the federal state in which she/he obtained the school-leaving qualification."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "baden-wuerttemberg-fhr-berufskolleg2",
+        "name": "Baden-Württemberg Fachhochschulreife from Berufskolleg II",
+        "summary": "A Fachhochschulreife from a Berufskolleg II in Baden-Württemberg qualifies only if the school-based qualification and parallel assistant qualification are proven together with one of: a relevant six-month work placement, at least two years of relevant professional activity, or completed vocational training of at least two years outside the Fachhochschulreife program. Without the confirmation of the Kultusministerium Baden-Württemberg, admission is not possible.",
+        "source_excerpts": [
+          "Admission is possible if, in addition to the school-based qualification and the assistant qualification obtained in parallel to it, in conjunction with either",
+          "a) a relevant six-month work placement, i.e. one oriented according to the respective specialization of the school-based training, or",
+          "b) at least two years of relevant professional activity, or",
+          "c) a completed vocational training of at least two years (outside the educational program leading to the entrance qualification for universities of applied sciences)",
+          "is proven.",
+          "**Without the confirmation of the Kultusministerium Baden-Württemberg, admission to studies at the IU is not possible.**"
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "baden-wuerttemberg-fhr-waldorf",
+        "name": "Baden-Württemberg Fachhochschulreife from Freie Waldorfschule",
+        "summary": "A Fachhochschulreife from a Freie Waldorfschule in Baden-Württemberg qualifies only if the school certificate with the named Kultusministerium annotation is combined with at least one qualifying practical route: an additional vocational-practical activity in the extracurricular area of at least 9 months, or one of the listed equivalent 1-year services, or completed vocational training/equivalent professional experience under the cited rule. Completed services of less than one year and continuous participation in a vocational training program are credited toward the 9-month practical activity if the practical-activity rules are fulfilled. Without the Kultusministerium confirmation, admission is not possible.",
+        "source_excerpts": [
+          "Admission is possible if the following proofs are provided:",
+          "1) Certificate of the entrance qualification for universities of applied sciences (school-based part and job-related part, issued by the school) from the Freie Waldorfschule Baden-Württemberg with the annotation of the Kultusministerium Baden-Württemberg on the acquisition of the entrance qualification for universities of applied sciences at Freie Waldorfschulen:",
+          "\"Verordnung des Kultusministeriums Baden-Württemberg über den Erwerb der Fachhochschulreife an Freien Waldorfschulen vom 30.07.2013 (Gesetzblatt für Baden-Württemberg 2013, Seite 258)\" (Ordinance of the Kultusministerium Baden-Württemberg on the acquisition of the entrance qualification for universities of applied sciences at Freie Waldorfschulen of 30.07.2013 (Law Gazette for Baden-Württemberg 2013, page 258))",
+          "In conjunction with",
+          "2) Proof of an additional vocational-practical activity in the extracurricular area of at least 9 months, issued by the company / institution, from which the duration of the employment, the area of responsibility and the days of absence must be evident.",
+          "Or alternatively",
+          "2a) Voluntary Social Year (Freiwilliges Soziales Jahr) (duration 1 year)",
+          "2b) Military service or alternative military service (duration 1 year)",
+          "2c) Federal Voluntary Service (Bundesfreiwilligendienst) (duration 1 year)",
+          "2d) Completed vocational training or equivalent professional experience pursuant to § 5 paragraph 1 sentence 1 number 2 1BKFHVO (in the respectively applicable version)",
+          "Completed services (see above no. 2) of less than one year, as well as continuous participation in a vocational training program, are credited toward the duration of the practical activity, provided that the regulations applicable to the practical activity are fulfilled.",
+          "**Without the confirmation of the Kultusministerium Baden-Württemberg, admission to studies at the IU is not possible.**"
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "rheinlandpfalz-fhr",
+        "name": "Rheinland-Pfalz Fachhochschulreife with practical-part recognition",
+        "summary": "For a Fachhochschulreife recognized in Rheinland-Pfalz, no recognition letter is required if the practical part is evidenced by 12 months of work placement in a company, 12 months of FSJ/Bundesfreiwilligendienst, completed vocational training, or 18 months of military service. In all other cases, the Ministry in Rheinland-Pfalz must examine both parts and a recognition letter must be applied for.",
+        "source_excerpts": [
+          "The Ministry in Rheinland-Pfalz is generally responsible for the recognition (Zuerkennung) of the entrance qualification for universities of applied sciences (FHR).",
+          "However, a letter of recognition is – by arrangement with the Ministry – not required if one of the following qualifications is available as proof of the practical part:",
+          "- 12 months of work placement in a company",
+          "- 12 months of FSJ (Voluntary Social Year) and Federal Voluntary Service (Bundesfreiwilligendienst)",
+          "- a completed vocational training",
+          "- 18 months of military service",
+          "In all other cases, in which applicants have deviating qualifications for the vocational-practical part, the proofs of both the school-based and the vocational-practical part must be examined by the Ministry in Rheinland-Pfalz and a letter of recognition must be applied for:"
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "feststellungspruefung",
+        "name": "Passed Feststellungsprüfung",
+        "summary": "A successfully completed Feststellungsprüfung corresponds to the subject-restricted higher education entrance qualification and enables admission to studies. It is accepted only together with the underlying school certificates from the country of origin, submitted together in officially certified form.",
+        "source_excerpts": [
+          "The successfully completed Feststellungsprüfung corresponds to the subject-restricted higher education entrance qualification and enables admission to studies.",
+          "At the IU there is no Feststellungsprüfung, but we accept the passed Feststellungsprüfung from other higher education institutions and universities.",
+          "The certificate of the Feststellungsprüfung serves as proof of language skills at level C1 if German was an examination subject and it was completed with at least the grade 4.",
+          "The certificate of the Feststellungsprüfung is only valid in combination with the underlying school certificates from the country of origin, and they must be submitted together in officially certified form."
+        ],
+        "citations": [
+          "s004"
+        ]
+      },
+      {
+        "criterion_id": "meister-direct",
+        "name": "Meister qualification or equivalent DQR 6 advanced vocational qualification",
+        "summary": "Applicants qualify directly with a Meister examination/certificate from Germany at least at DQR level 6; equivalent Meister titles from Austria and Switzerland are accepted at equal or higher value. No separate proof of professional recognition or equivalence is required.",
+        "source_excerpts": [
+          "Meister examinations (Meisterprüfungen) (at least DQR level 6) from Germany are placed on an equal footing with the German Abitur and therefore entitle the holder to direct admission to the Bachelor's degree program.",
+          "For admission, the officially certified Meister certificate (Meisterurkunde) or the certificate of the Meister examination must be submitted.",
+          "Comparable Meister titles from the DACH countries outside Germany (Austria and Switzerland) can be accepted, on the basis of the \"Bilaterales Abkommen zur gegenseitigen Anerkennung von Berufsqualifikationen\" (Bilateral Agreement on the Mutual Recognition of Professional Qualifications), as equivalent or indeed of higher value in relation to the German Meister title at DQR level 6.",
+          "An additional proof of professional recognition in Germany or the certificate of equivalence of the foreign qualification (EU) to a German qualification is not required."
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "advanced-vocational-dqr6",
+        "name": "Advanced vocational further training at DQR 6 or higher",
+        "summary": "Advanced vocational further training qualifies directly if it is assigned under the DQR to at least level 6 or a higher-value level. German programs with more than or equal to 400 teaching hours that build on a regular training occupation also qualify. No proof of professional experience is needed, and the subject area does not matter.",
+        "source_excerpts": [
+          "Qualifications from advanced vocational further training programs that are assigned, according to the German Qualifications Framework (DQR), at least to level 6 or to a higher-value level are placed on an equal footing with at least the entrance qualification for universities of applied sciences and enable direct admission to the Bachelor's degree program.",
+          "All further training programs from Germany that comprise a scope of greater than/equal to 400 teaching hours and that build upon a regular training occupation can likewise be accepted.",
+          "Proof of professional experience is therefore not needed.",
+          "The subject area plays no role in the choice of the degree program."
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "advanced-vocational-dach-eu",
+        "name": "Comparable advanced vocational further training from DACH/EU/abroad",
+        "summary": "Comparable advanced vocational further training from Austria or Switzerland may be accepted as equivalent or higher than a German DQR-6 advanced vocational qualification. Comparable programs from other EU countries and from elsewhere abroad may be accepted only if their EQR level is equivalent or higher; programs abroad that cannot be assigned to the EQR always require an individual case-by-case examination. No proof of professional experience is needed and no additional recognition/equivalence proof is required.",
+        "source_excerpts": [
+          "Comparable further training programs from DACH countries outside Germany (Austria and Switzerland) can be accepted, on the basis of the \"Bilaterales Abkommen zur gegenseitigen Anerkennung von Berufsqualifikationen\" (Bilateral Agreement on the Mutual Recognition of Professional Qualifications), as equivalent or indeed of higher value in relation to the German further training program at a minimum of DQR level 6.",
+          "Comparable further training programs from other EU countries and from countries elsewhere abroad can likewise be accepted if the level (EQR) assigned to the further training program from the (European) foreign country is equivalent or of higher value in relation to a German further training program at a minimum of DQR level 6.",
+          "Further training programs from countries elsewhere abroad that cannot be assigned to the European Qualifications Framework (EQR) always require an individual case-by-case examination by the Richtlinienmanagement (Guidelines Management).",
+          "An additional proof of professional recognition in Germany or the certificate of equivalence of the foreign qualification (EU) to a German qualification is not required."
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "thuringia-equated-professional-training",
+        "name": "ThürHG-equated professional further training routes",
+        "summary": "The listed state-recognized or equivalent professional further training qualifications count as equivalent to, or on a level with, the Meister examination if, before attendance, at least two years of vocational training were successfully completed and the qualification corresponds to the framework agreement on Fachschulen. For the listed professions, relevant professional activity of at least two years is additionally required where stated. A further group of listed advanced qualifications qualifies only if the training courses comprise at least 400 teaching hours and a prior recognized vocational training of at least two years was completed. VWA qualifications qualify only if a recognized vocational training of at least two years was completed before the VWA training.",
+        "source_excerpts": [
+          "The following professional further training programs in the learned occupation are, pursuant to the ThürHG (Thuringian Higher Education Act), equivalent to the Meister examination or are placed on an equal footing with the Meister examination, if prior to attendance a vocational training of at least two years was successfully completed and the qualification corresponds to the Rahmenvereinbarung über Fachschulen (Framework Agreement on Fachschulen) (resolution of the Kultusministerkonferenz (Standing Conference of the Ministers of Education and Cultural Affairs) of 7 November 2002 in the respectively valid version (note the annotation on the certificate)):",
+          "- staatlich anerkannte Erzieherin or staatlich anerkannter Erzieher (state-recognized educator),",
+          "- staatlich anerkannte Heilpädagogin or staatlich anerkannter Heilpädagoge (state-recognized curative education specialist),",
+          "- staatlich anerkannte Heilerziehungspflegerin or staatlich anerkannter Heilerziehungspfleger (state-recognized curative education nurse),",
+          "- staatlich anerkannte Motopädin or staatlich anerkannter Motopäde (state-recognized motopedic therapist),",
+          "- staatlich anerkannte Medizinpädagogin or staatlich anerkannter Medizinpädagoge (state-recognized medical educator),",
+          "- staatlich anerkannte Fachkraft für soziale Arbeit (state-recognized specialist for social work),",
+          "- staatlich anerkannte Augenoptikerin or staatlich anerkannter Augenoptiker (state-recognized optician),",
+          "- staatlich anerkannte Familienpflegerin or staatlich anerkannter Familienpfleger (state-recognized family carer),",
+          "- staatlich anerkannte Wirtschaftsinformatikerin or staatlich anerkannter Wirtschaftsinformatiker (state-recognized business informatics specialist),",
+          "",
+          "- staatlich geprüfte Logistikerin or staatlich geprüfter Logistiker (state-certified logistics specialist),",
+          "- staatlich geprüfte hauswirtschaftliche Betriebsleiterin or staatlich geprüfter hauswirtschaftlicher Betriebsleiter (state-certified home economics operations manager),",
+          "- staatlich geprüfte Gestalterin or staatlich geprüfter Gestalter (state-certified designer),",
+          "",
+          "As well as the qualification as:",
+          "- Wirtschaftsprüferin or Wirtschaftsprüfer (auditor),",
+          "- Steuerberaterin or Steuerberater (tax advisor),",
+          "",
+          "If after this a relevant professional activity of at least two years was carried out",
+          "",
+          "As well as:",
+          "- the acquisition of the qualification for a career in the higher intermediate service (gehobener Dienst) or of an equivalent level of education for employees in the public service,",
+          "",
+          "if after this acquisition a relevant professional activity of at least two years was carried out",
+          "",
+          "As well as a further training qualification, provided that the courses comprise at least 400 teaching hours and beforehand a vocational training in a recognized training occupation was successfully completed. These qualifications include in particular:",
+          "- Fachkauffrau or Fachkaufmann (certified commercial specialist),",
+          "- Fachwirtin or Fachwirt (certified specialist administrator),",
+          "- Betriebswirtin or Betriebswirt (certified business administrator),",
+          "- Technische Betriebswirtin or Technischer Betriebswirt (certified technical business administrator),",
+          "- Geprüfte Betriebswirtin für Informationstechnik or Geprüfter Betriebswirt für Informationstechnik (certified business administrator for information technology),",
+          "- Informatikerin or Informatiker (informatics specialist),",
+          "- Betriebsinformatikerin or Betriebsinformatiker (business operations informatics specialist),",
+          "- Wirtschaftsinformatikerin or Wirtschaftsinformatiker (business informatics specialist),",
+          "- Handelsassistentin-Einzelhandel or Handelsassistent-Einzelhandel (retail trade assistant),",
+          "- Motopädagogin or Motopädagoge (motopedagogue),",
+          "- Pharmareferentin or Pharmareferent (pharmaceutical sales representative),",
+          "",
+          "- IT-Entwicklerin or IT-Entwickler (IT developer),",
+          "- IT-Projektleiterin or IT-Projektleiter (IT project leader),",
+          "- IT-Beraterin or IT-Berater (IT consultant),",
+          "- IT-Ökonomin or IT-Ökonom (IT economist),",
+          "",
+          "As well as the qualification obtained at a Verwaltungs- und Wirtschaftsakademie (academy of administration and economics) as:",
+          "- Verwaltungs-Betriebswirtin (VWA) or Verwaltungs-Betriebswirt (VWA) (administrative business administrator (VWA)),",
+          "- Verwaltungs-Diplom-Inhaberin (VWA) or Verwaltungs-Diplom-Inhaber (VWA) (holder of an administrative diploma (VWA)),",
+          "- Betriebswirtin (VWA) or Betriebswirt (VWA) (business administrator (VWA)),",
+          "- Betriebswirtin in einem Schwerpunktfach (VWA) or Betriebswirt in einem Schwerpunktfach (VWA) (business administrator in a specialist focus subject (VWA)),",
+          "",
+          "If, before the training at the Verwaltungs- und Wirtschaftsakademie, a recognized vocational training of at least two years was successfully completed."
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "professionally-qualified-direct",
+        "name": "Professionally qualified applicants with direct access routes",
+        "summary": "Applicants with one of the direct-access professional qualifications qualify directly for a Bachelor's program, namely: recognized Meister examination/certificate at least DQR 6; equivalent Meister titles from Austria/Switzerland; advanced vocational further training at DQR 6 or higher; German further training programs of at least 400 teaching hours that build on a regular training occupation; and the ThürHG-equated routes listed in the handbook subject to their stated prior training and, where applicable, post-qualification professional experience requirements. Foreign equivalent advanced qualifications follow the DACH/EU/other-abroad recognition rules in the handbook.",
+        "source_excerpts": [
+          "Meister examinations (Meisterprüfungen) (at least DQR level 6) from Germany are placed on an equal footing with the German Abitur and therefore entitle the holder to direct admission to the Bachelor's degree program.",
+          "Qualifications from advanced vocational further training programs that are assigned, according to the German Qualifications Framework (DQR), at least to level 6 or to a higher-value level are placed on an equal footing with at least the entrance qualification for universities of applied sciences and enable direct admission to the Bachelor's degree program.",
+          "The following professional further training programs in the learned occupation are, pursuant to the ThürHG (Thuringian Higher Education Act), equivalent to the Meister examination or are placed on an equal footing with the Meister examination, if prior to attendance a vocational training of at least two years was successfully completed and the qualification corresponds to the Rahmenvereinbarung über Fachschulen (Framework Agreement on Fachschulen) (resolution of the Kultusministerkonferenz (Standing Conference of the Ministers of Education and Cultural Affairs) of 7 November 2002 in the respectively valid version (note the annotation on the certificate)):"
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "professionally-qualified-probestudium",
+        "name": "Professionally qualified applicants via trial study program",
+        "summary": "Applicants with recognized vocational training of at least two years at minimum DQR level 4 plus three years of subsequent professional experience in full-time can enter a subject-corresponding Bachelor's program via a trial study program if they do not hold an advancement qualification. The trial study program is limited to the first two subject semesters, requires at least 15 ECTS credits to complete successfully, may be ended early by passing the entrance examination, and leads to an HZB for the target degree program on success; failure leads to deregistration and no re-enrollment in the same program.",
+        "source_excerpts": [
+          "Applicants who have a recognized vocational training of at least two years at a minimum of DQR level 4 as well as a subsequent professional activity of three years are professionally qualified for taking up a Bachelor's degree program.",
+          "Depending on the subject focus of the vocational training and subsequent professional experience, applicants can be admitted to a subject-corresponding degree program via the trial study program (Probestudium) and to a degree program that does not correspond to the subject by successfully passing the entrance examination (Eingangsprüfung) (see section: Trial study program (Probestudium) or Entrance examination (Eingangsprüfung)).",
+          "Professionally qualified applicants who do not have an advancement qualification (Aufstiegsqualifizierung) but who are aiming for a subject-corresponding degree program can be admitted to studies through a successful trial study program (Probestudium).",
+          "The trial study program is limited to the first two subject semesters.",
+          "In order to successfully complete the trial study program, a study achievement of at least 15 ECTS credit points must be earned during this time.",
+          "The trial study program can be ended early by successfully passing the entrance examination (Eingangsprüfung).",
+          "After successful completion of the trial study program, the student receives an HZB for the degree program he/she is aiming for at the IU; the ECTS earned are credited.",
+          "In the case of an unsuccessful trial study program, de-registration takes place. Re-enrollment in the same degree program is not possible."
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "professionally-qualified-entrance-exam",
+        "name": "Professionally qualified applicants via entrance examination",
+        "summary": "Applicants with recognized vocational training of at least two years at minimum DQR level 4 plus three years of subsequent professional full-time experience can be admitted to a non-subject-corresponding Bachelor's program by passing the entrance examination. The entrance examination consists of 3 courses totaling 10-15 ECTS, must be completed within 1 year, and only after passing do applicants become students; all achievements except the study aptitude test are recognized.",
+        "source_excerpts": [
+          "Professionally qualified applicants who provide evidence of a vocational training of at least two years in a recognized training occupation at a minimum of DQR level 4 and subsequently at least three years of professional experience in full-time can be admitted to a degree program that does not correspond to the subject by successfully passing the entrance examination (Eingangsprüfung).",
+          "The entrance examination has a scope of 10-15 ECTS and consists of 3 courses:",
+          "- academic work (wissenschaftliches Arbeiten)",
+          "- subject course from the degree program aimed for (these are firmly defined for each degree program)",
+          "- study aptitude test (Studierfähigkeitstest)",
+          "The period within which the three courses must be taken and successfully passed is limited to 1 year.",
+          "The achievements of the entrance examination (with the exception of the study aptitude test) are recognized.",
+          "The applicants here are only participants and only become students after passing the entrance examination."
+        ],
+        "citations": [
+          "s005"
+        ]
+      },
+      {
+        "criterion_id": "foreign-qualification-anabin",
+        "name": "Foreign qualification classified as equivalent in Anabin",
+        "summary": "If the relevant higher education institution and the specific qualification are classified in Anabin with H+, the foreign qualification is treated as equivalent and can support admission. If Anabin shows H-, no admission is possible. If Anabin shows H+/-, the Head of Richtlinienmanagement decides whether a trial study program may be required. If the institution is not listed, the case must be referred to the Head of Richtlinienmanagement.",
+        "source_excerpts": [
+          "If the admission requirements for a degree program at the IU were obtained abroad, the state certification of the educational institution and the equivalence of the qualification can be determined via the database \"Anabin\".",
+          "For us, equivalence is deemed to exist if the higher education institution and above all the specific qualification is classified in Anabin with H+. With H-, no admission is possible. With H+/-, the Head of Richtlinienmanagement (Guidelines Management) for Matriculation and Recognition decides whether a trial study program (Probestudium) may possibly be required.",
+          "If an educational institution is not listed there, consultation must be held with the Head of Richtlinienmanagement for Matriculation and Recognition."
+        ],
+        "citations": [
+          "s007"
+        ]
+      },
+      {
+        "criterion_id": "foreign-equivalence-letter",
+        "name": "Equivalence certificate for foreign qualifications not listed in Anabin",
+        "summary": "If a foreign qualification is not listed in Anabin, the applicant may qualify by obtaining an equivalence letter from the relevant district government certifying equivalence with a German/European qualification; if available in officially certified or original form, the applicant can enroll regularly. The same applies to foreign vocational training, including by way of an IHK equivalence certificate. Vocational training from Austria and Switzerland is excepted because it can be recognized as equivalent as part of the DACH legal sphere.",
+        "source_excerpts": [
+          "If a study applicant has completed the qualification qualifying for studies at an educational institution not listed in Anabin, he can have the equivalence with a German/European educational qualification certified by the relevant district government (Bezirksregierung) by means of an equivalence letter. If this is then available in officially certified or original form, the study applicant can be enrolled in the regular way.",
+          "This also applies to the completion of a vocational training abroad. This can be presented, for example, by means of a certificate of equivalence from the IHK (Chamber of Industry and Commerce).",
+          "Exception: vocational training in Austria and Switzerland.",
+          "Since this is the German legal sphere (DACH), the prognosis decision within the right of access is fundamentally present. This means that vocational training programs from Austria and Switzerland can be recognized as equivalent."
+        ],
+        "citations": [
+          "s008"
+        ]
+      },
+      {
+        "criterion_id": "austria-matura",
+        "name": "Austrian Matura / general higher education entrance qualification",
+        "summary": "Applicants from Austria qualify directly with proof of the Matura at a general education or vocational higher school, or with an equivalent qualification recognized by the competent state authority. The certificate in officially certified form in German or English is sufficient.",
+        "source_excerpts": [
+          "Admission requirement: Proof of the Matura at a general education or vocational education higher school (HAK, HTL, BAKIP, HLWB and HBLA) or of a proof of prior education recognized as equivalent by the competent state authority.",
+          "The general higher education entrance qualification / Matura is uncritical. Here, the certificate in officially certified form in German or English is sufficient (on this, see the section \"The official certification (Die amtliche Beglaubigung)\")"
+        ],
+        "citations": [
+          "s012"
+        ]
+      },
+      {
+        "criterion_id": "austria-subject-restricted-access",
+        "name": "Austrian subject-restricted access qualifications",
+        "summary": "Applicants from Austria qualify through subject-restricted access if they hold a Berufsreifeprüfungszeugnis with at least 2 successful semesters at a higher education institution, or a Studienberechtigungszeugnis.",
+        "source_excerpts": [
+          "- Berufsreifeprüfungszeugnis (vocational matriculation examination certificate) (with at least 2 successful semesters at a higher education institution)",
+          "- Studienberechtigungszeugnis (study entitlement certificate)"
+        ],
+        "citations": [
+          "s014"
+        ]
+      },
+      {
+        "criterion_id": "austria-no-study-entitlement",
+        "name": "Austrian qualification without entitlement to study",
+        "summary": "The Austrian Berufsreifeprüfungszeugnis with no period of study is listed as a qualification without entitlement to study and therefore does not itself grant academic access.",
+        "source_excerpts": [
+          "- Berufsreifeprüfungszeugnis (no period of study)"
+        ],
+        "citations": [
+          "s015"
+        ]
+      },
+      {
+        "criterion_id": "ukraine-anabin-facilitation",
+        "name": "Ukrainian qualifications under the temporary facilitation regime",
+        "summary": "For Ukrainian school and/or higher-education final certificates or study achievements, the normal Anabin rules continue to apply; if only simple copies, scans, or photos are available because of war, or if accreditation evidence for private higher-education institutions is unavailable because of war, the case must be sent to Richtlinienmanagement for a case-by-case decision. This facilitation applies only for summer semester 2024, winter semester 2024/2025, and summer semester 2025.",
+        "source_excerpts": [
+          "Period: valid for summer semester 2024, winter semester 2024/2025 and summer semester 2025",
+          "Target group: applicants with school and / or higher education final certificates or study achievements from Ukraine",
+          "For the establishment of the HZB, the specifications stated on Anabin continue to apply",
+          "If school certificates or higher education qualifications, due to the war, are only available as simple copies, as scans or photos and cannot be presented in the original or submitted as officially certified copies, then send these cases to the Richtlinienmanagement for a case-by-case decision",
+          "If accreditation evidence of private higher education institutions and their degree programs is, due to the war, not available or cannot, due to the war, be applied for at the Ukrainian higher education institutions, then send these cases to the Richtlinienmanagement for a case-by-case decision"
+        ],
+        "citations": [
+          "s017"
+        ]
+      },
+      {
+        "criterion_id": "bachelor-entrance-exam-foreign-indirect",
+        "name": "Bachelor entrance examination for foreign indirect HZB",
+        "summary": "Applicants with foreign educational qualifications and an indirect or indirectly subject-restricted HZB can be admitted to the target degree program via the Bachelor entrance examination if the indirect HZB is evidenced and confirmed on Anabin. The examination consists of 2 modules, must be completed within 1 year, and only after passing do applicants become students; the achievements are recognized.",
+        "source_excerpts": [
+          "Applicants with foreign educational qualifications and an indirect / indirectly subject-restricted HZB can be admitted for the degree program aimed for at the IU within the framework of the Bachelor entrance examination (Bachelor Zugangsprüfung).",
+          "The prerequisite is the evidence and the confirmation of the indirect / indirectly subject-restricted HZB (Feststellungsprüfung (assessment examination)/Studienkolleg (preparatory college)) on Anabin.",
+          "The Bachelor entrance examination consists of 2 modules, which are part of the Bachelor's degree program:",
+          "- Academic work (Wissenschaftliches Arbeiten)",
+          "- Subject course from the degree program aimed for (this is firmly defined for each degree program)",
+          "The period within which the two courses must be taken and successfully passed is limited to 1 year.",
+          "The achievements of the Bachelor entrance examination are recognized.",
+          "The applicants here are only participants and only become students after passing the Bachelor entrance examination."
+        ],
+        "citations": [
+          "s018"
+        ]
+      }
+    ]
+  }
+}

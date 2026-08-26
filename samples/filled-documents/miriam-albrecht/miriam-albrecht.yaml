@@ -1,0 +1,41 @@
+# Synthetic applicant. Angle: tuple 8 — GERMAN_GENERAL_FACHHOCHSCHULREIFE /
+# PROVEN_FALSE / SUPPORTED_FACT_VARIANT. Complete BW FHR Zeugnis (school and
+# vocational part proven together, like erika-musterfrau), but the printed
+# recognition clause is replaced by a restriction to Fachhochschulen in
+# Baden-Württemberg only — validity_restriction_code OTHER, which is not
+# accepted. Expected: NOT_SATISFIED, GERMAN_GENERAL_FHR_REQUIREMENTS_NOT_MET;
+# application INELIGIBLE because no other rule applies.
+slug: miriam-albrecht
+name: "Miriam Albrecht"
+birth_date: "09.01.2004"
+birth_place: "Freiburg im Breisgau"
+school: "Wirtschaftsgymnasium der Max-Weber-Schule Freiburg"
+halbjahr_1: "1"
+halbjahr_2: "2"
+
+subjects_i: # erhoehtes Anforderungsniveau
+  - ["Wirtschaft (P)", "11", "12"]
+  - ["Deutsch", "10", "11"]
+subjects_ii: # weitere Kurse (Sport single-semester)
+  - ["Mathematik", "09", "10"]
+  - ["Englisch", "11", "10"]
+  - ["Geschichte mit Gemeinschaftskunde", "10", "09"]
+  - ["Biologie", "08", "09"]
+  - ["Informatik", "11", "12"]
+  - ["Sport", "10", ""]
+# P = 44 + 109 = 153; S = 15; E = 153/15 x 19 = 193.8 -> 194 (ab n,5 auf)
+punktsumme: "153"
+gesamtergebnis: "194"
+# Rueckseite table: 197-192 -> 2,2
+durchschnittsnote_ziffer: "2,2"
+durchschnittsnote_text: "zwei Komma zwei"
+
+fremdsprachen:
+  - "Englisch – Niveau B2 (GER)"
+  - "Spanisch – Niveau B1 (GER)"
+datum: "18.07.2023"
+schulleiter: "OStD T. Ganter"
+
+# Replaces "... Anerkennung in allen Ländern mit Ausnahme von Bayern und
+# Sachsen." -> unsupported restriction, normalized OTHER.
+anerkennung_clause: "Das Zeugnis gilt nur für die Aufnahme eines Studiums an den Fachhochschulen des Landes Baden-Württemberg."

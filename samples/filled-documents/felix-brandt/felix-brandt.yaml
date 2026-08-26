@@ -1,0 +1,49 @@
+# Synthetic applicant. Angle: tuple 1 — the pure happy path baseline.
+# Clean, complete Abitur (allgemeine Hochschulreife, NRW Gymnasium):
+# GERMAN_ABITUR / SATISFIED / CLEAN.
+# Expected: ELIGIBLE, GERMAN_ABITUR_DIRECT_ACCESS; application ELIGIBLE.
+slug: felix-brandt
+name: "Felix Brandt"
+birth_date: "03.11.2005"
+birth_place: "Düsseldorf"
+address: "Grafenberger Allee 148, 40237 Düsseldorf"
+school: "Lessing-Gymnasium, Düsseldorf"
+
+# Block I (Qualifikationsphase), Punkte 00-15 per Halbjahr, 10 subjects x 4 = 40
+# results. Row keys match the printed template rows.
+block_i:
+  deutsch: ["12", "13", "12", "13"] # 50
+  englisch: ["13", "13", "14", "13"] # 53
+  musik: ["13", "14", "13", "14"] # 54
+  geschichte: ["12", "12", "13", "13"] # 50
+  sozialkunde_politik: ["11", "12", "12", "12"] # 47
+  mathematik: ["11", "12", "12", "13"] # 48
+  physik: ["10", "11", "11", "12"] # 44
+  biologie: ["12", "12", "12", "13"] # 49
+  religion_ethik: ["12", "13", "13", "13"] # 51
+  sport: ["08", "09", "08", "09"] # 34
+ea_subjects: [deutsch, englisch, mathematik]
+
+# Block II (vier Pruefungsfaecher): [Fach, schriftlich, muendlich, Gesamtergebnis
+# in 5-facher Wertung]. 60+65+45+40 = 210.
+pruefungsfaecher:
+  - ["Deutsch (eA)", "12", "", "60"]
+  - ["Englisch (eA)", "13", "", "65"]
+  - ["Mathematik (eA)", "09", "", "45"]
+  - ["Geschichte", "", "08", "40"]
+
+# P = 480, S = 40 -> E = 480. Gesamt 480 + 210 = 690.
+# Note = 17/3 - 690/180 = 1.83 -> 1,8.
+block_i_punktsumme: "480"
+block_ii_punktsumme: "210"
+gesamtpunktzahl: "690"
+durchschnittsnote: "1,8"
+
+fremdsprachen:
+  - ["Englisch", "5 – 13", "C1"]
+  - ["Französisch", "6 – 11", "B1"]
+
+anrede_name: "Herr Felix Brandt"
+ort_datum: "Düsseldorf, den 28.06.2024"
+vorsitz: "OStD Dr. K. Neumann"
+schulleiter: "OStD'in B. Sartorius"

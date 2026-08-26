@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "auto-admissions"
+version = "0.1.0"
+description = "Evidence-aware deterministic academic-access screening case study"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "langgraph>=1.2,<2",
+  "langsmith>=0.4,<1",
+  "openai>=2,<3",
+  "pydantic>=2.12,<3",
+  "pydantic-settings>=2.10,<3",
+  "pymupdf>=1.26,<2",
+  "ruamel-yaml>=0.18,<0.19",
+  "rule-engine==5.0.2",
+  "typer>=0.16,<1",
+]
+
+[project.scripts]
+admissions = "app.cli:app"
+
+[dependency-groups]
+dev = [
+  "mypy>=1.17,<2",
+  "pytest>=8.4,<10",
+  "pytest-cov>=6.2,<8",
+  "ruff>=0.12,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "evals"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-config --strict-markers -m 'not live_openai'"
+pythonpath = ["."]
+testpaths = ["test"]
+markers = [
+  "live_openai: opt-in tests that call OpenAI and spend tokens. Run with -m live_openai",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+packages = ["app", "evals.judges"]
+
+[[tool.mypy.overrides]]
+module = ["rule_engine", "rule_engine.*"]
+ignore_missing_imports = true

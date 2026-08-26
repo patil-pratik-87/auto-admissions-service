@@ -1,0 +1,30 @@
+# Synthetic applicant. Angle: tuple 9 — advanced-vocational DQR-6 happy path.
+# GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL / SATISFIED / CLEAN.
+# Gepruefte Wirtschaftsfachwirtin (IHK) Zeugnis whose personal page carries the
+# printed "DQR, EQR Niveau 6 zugeordnet" line, BIBB Zeugniserlaeuterung
+# appended. Expected: ELIGIBLE, ADVANCED_VOCATIONAL_DIRECT_ACCESS.
+# (Rebuilt after a slug collision: two parallel batch agents both invented
+# "katrin-vogel"; that slug now belongs to the near-threshold bundle.)
+slug: claudia-siebert
+name: "Claudia Siebert"
+birth_date: "14.09.1994"
+birth_place: "Leverkusen"
+
+chamber: "Industrie- und Handelskammer zu Köln"
+qualification: "Geprüfte Wirtschaftsfachwirtin"
+
+# IHK bands: 100-92 sehr gut, unter 92-81 gut, unter 81-67 befriedigend.
+# (86+81+79+88+84+85)/6 = 83.8 -> 84.
+gesamt_note: "gut"
+gesamt_punkte: "84"
+pruefungsteile:
+  - ["Volks- und Betriebswirtschaft", "gut", "86"]
+  - ["Rechnungswesen", "gut", "81"]
+  - ["Recht und Steuern", "befriedigend", "79"]
+  - ["Unternehmensführung", "gut", "88"]
+  - ["Handlungsspezifische Qualifikationen (schriftlich)", "gut", "84"]
+  - ["Handlungsspezifische Qualifikationen (Fachgespräch)", "gut", "85"]
+
+ort_datum: "Köln, den 15. März 2024"
+praesident: "Dr. H. Lindenberg"
+hauptgeschaeftsfuehrerin: "U. Franzen"

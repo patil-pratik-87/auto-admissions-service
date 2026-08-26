@@ -1,0 +1,48 @@
+# Synthetic applicant. Angle: tuple 2 — negative control. Same clean,
+# complete Abitur as tuple 1, but the Durchschnittsnote line is left blank:
+# GERMAN_ABITUR / SATISFIED / IRRELEVANT_FIELD_ABSENT. No rule reads the
+# average grade, so its absence must not block. Expected: ELIGIBLE,
+# GERMAN_ABITUR_DIRECT_ACCESS. Grades don't matter for IU admission.
+slug: sofia-lorenz
+name: "Sofia Lorenz"
+birth_date: "22.02.2006"
+birth_place: "Frankfurt am Main"
+address: "Eschersheimer Landstraße 74, 60322 Frankfurt am Main"
+school: "Heinrich-Hoffmann-Gymnasium, Frankfurt am Main"
+
+# Block I: 10 subjects x 4 = 40 results, sum 400.
+block_i:
+  deutsch: ["10", "11", "10", "11"] # 42
+  englisch: ["11", "10", "11", "11"] # 43
+  bildende_kunst: ["12", "12", "13", "12"] # 49
+  geschichte: ["09", "10", "10", "10"] # 39
+  geographie: ["10", "10", "09", "10"] # 39
+  mathematik: ["08", "09", "09", "09"] # 35
+  chemie: ["09", "09", "10", "10"] # 38
+  biologie: ["10", "10", "11", "11"] # 42
+  religion_ethik: ["10", "10", "11", "10"] # 41
+  sport: ["08", "08", "08", "08"] # 32
+ea_subjects: [deutsch, englisch, biologie]
+
+# Block II: 45+50+35+40 = 170.
+pruefungsfaecher:
+  - ["Deutsch (eA)", "09", "", "45"]
+  - ["Englisch (eA)", "10", "", "50"]
+  - ["Biologie (eA)", "07", "", "35"]
+  - ["Mathematik", "", "08", "40"]
+
+# P = 400, S = 40 -> E = 400. Gesamt 400 + 170 = 570.
+# durchschnittsnote deliberately omitted: the calc line stays blank ->
+# extraction must return ABSENT for it, never a computed guess.
+block_i_punktsumme: "400"
+block_ii_punktsumme: "170"
+gesamtpunktzahl: "570"
+
+fremdsprachen:
+  - ["Englisch", "5 – 13", "B2"]
+  - ["Spanisch", "7 – 11", "B1"]
+
+anrede_name: "Frau Sofia Lorenz"
+ort_datum: "Frankfurt am Main, den 21.06.2024"
+vorsitz: "OStD M. Albrecht"
+schulleiter: "OStD R. Steinbach"

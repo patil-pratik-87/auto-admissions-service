@@ -1,0 +1,17 @@
+# Synthetic applicant. Angle: tuple 12 — DQR level not evidenced. Bundle
+# contains ONLY the decorative Meisterbrief (Schmuckurkunde): name, trade,
+# chamber, date — deliberately no DQR level line, no exam-regulation citation.
+# The graded Prüfungszeugnis that carries the DQR-6 line is missing:
+# GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL / REQUIRED_FACT_UNKNOWN /
+# REQUIRED_FIELD_ABSENT. Expected: title suggests DQR 6 but the level is
+# unknown -> MANUAL_REVIEW, ADVANCED_VOCATIONAL_LEVEL_UNCLEAR (never a
+# silent ELIGIBLE).
+slug: stefan-brenner
+name: "Stefan Brenner"
+birth_date: "27.08.1990"
+birth_place: "Witten"
+chamber: "Handwerkskammer Dortmund"
+title: "Elektrotechnikermeister"
+ort_datum: "Dortmund, den 12. November 2021"
+praesident: "B. Kortmann"
+geschaeftsfuehrer: "C. Sprenger"

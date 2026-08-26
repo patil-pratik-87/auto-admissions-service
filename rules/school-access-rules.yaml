@@ -1,0 +1,156 @@
+dsl_version: "1.3"
+
+module:
+  id: BACHELOR_SCHOOL_ACCESS_RULES
+  version: "2025.01-demo.18"
+  imports:
+    - namespace: rule_statuses
+      file: rule-statuses.yaml
+    - namespace: conditions
+      file: common/conditions.yaml
+  requires_namespaces:
+    - requirements
+
+  exports:
+    WITH_ABITUR_OR_EQUIVALENT_SCHOOL_HZB:
+      id: WITH_ABITUR_OR_EQUIVALENT_SCHOOL_HZB
+      rules:
+        - id: GERMAN_ABITUR
+          select:
+            from: school_qualifications
+            as: qualification
+            where:
+              fact: qualification.type
+              eq: ALLGEMEINE_HOCHSCHULREIFE
+          applicability:
+            require:
+              ref: requirements.german_qualification
+            result:
+              not_applicable:
+                status:
+                  ref: rule_statuses.NOT_APPLICABLE
+                reason_code: ABITUR_NOT_GERMAN
+              unknown:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: ABITUR_COUNTRY_UNKNOWN
+          require:
+            all_of:
+              - ref: requirements.completed_school_qualification
+              - ref: requirements.validity_restriction_accepted
+          result:
+            satisfied:
+              status:
+                ref: rule_statuses.ELIGIBLE
+              reason_code: GERMAN_ABITUR_DIRECT_ACCESS
+            not_satisfied:
+              status:
+                ref: rule_statuses.NOT_SATISFIED
+              reason_code: GERMAN_ABITUR_REQUIREMENTS_NOT_MET
+            unknown:
+              status:
+                ref: rule_statuses.MISSING_INFORMATION
+              reason_code: GERMAN_ABITUR_EVIDENCE_INCOMPLETE
+
+        - id: FACHGEBUNDENE_HOCHSCHULREIFE
+          select:
+            from: school_qualifications
+            as: qualification
+            where:
+              fact: qualification.type
+              eq: FACHGEBUNDENE_HOCHSCHULREIFE
+          branches:
+            first_match:
+              - when:
+                  all_of:
+                    - fact: qualification.completed
+                      eq: true
+                    - ref: requirements.validity_restriction_accepted
+                    - fact: qualification.issuing_region
+                      eq: DACH
+                result:
+                  status:
+                    ref: rule_statuses.ELIGIBLE
+                  reason_code: DACH_FACHGEBUNDENE_HZB_DIRECT_ACCESS
+
+              - when:
+                  all_of:
+                    - fact: qualification.completed
+                      eq: true
+                    - ref: requirements.validity_restriction_accepted
+                    - fact: qualification.issuing_region
+                      eq: OUTSIDE_DACH
+                result:
+                  status:
+                    ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                  reason_code: FOREIGN_FACHGEBUNDENE_HZB_TRIAL_STUDY
+                  condition: conditions.TRIAL_STUDY
+
+              - when:
+                  fact: qualification.completed
+                  eq: false
+                result:
+                  status:
+                    ref: rule_statuses.NOT_SATISFIED
+                  reason_code: FACHGEBUNDENE_HZB_NOT_COMPLETED
+
+              - when:
+                  all_of:
+                    - fact: qualification.validity_restriction_present
+                      eq: true
+                    - fact: qualification.validity_restriction_code
+                      eq: OTHER
+                result:
+                  status:
+                    ref: rule_statuses.NOT_SATISFIED
+                  reason_code: FACHGEBUNDENE_HZB_VALIDITY_RESTRICTION_NOT_ACCEPTED
+            unknown:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: FACHGEBUNDENE_HZB_EVIDENCE_INCOMPLETE
+            otherwise:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: FACHGEBUNDENE_HZB_EVIDENCE_INCOMPLETE
+
+        - id: GERMAN_GENERAL_FACHHOCHSCHULREIFE
+          select:
+            from: school_qualifications
+            as: qualification
+            where:
+              fact: qualification.type
+              eq: FACHHOCHSCHULREIFE
+          applicability:
+            require:
+              all_of:
+                - ref: requirements.german_qualification
+                - fact: qualification.access_scope
+                  eq: GENERAL
+            result:
+              not_applicable:
+                status:
+                  ref: rule_statuses.NOT_APPLICABLE
+                reason_code: NOT_GERMAN_GENERAL_FHR
+              unknown:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: FHR_APPLICABILITY_UNKNOWN
+          require:
+            all_of:
+              - ref: requirements.complete_general_fhr
+              - ref: requirements.validity_restriction_accepted
+          result:
+            satisfied:
+              status:
+                ref: rule_statuses.ELIGIBLE
+              reason_code: GERMAN_GENERAL_FHR_DIRECT_ACCESS
+            not_satisfied:
+              status:
+                ref: rule_statuses.NOT_SATISFIED
+              reason_code: GERMAN_GENERAL_FHR_REQUIREMENTS_NOT_MET
+            unknown:
+              status:
+                ref: rule_statuses.MISSING_INFORMATION
+              reason_code: GERMAN_GENERAL_FHR_EVIDENCE_INCOMPLETE

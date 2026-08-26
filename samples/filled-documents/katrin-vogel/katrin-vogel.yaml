@@ -1,0 +1,54 @@
+# Synthetic applicant. Angle: tuple 16 — close rejection, must go to a human.
+# GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE / NEAR_THRESHOLD / CLEAN.
+# Same doc pair as tuples 13-15 but field 30 = 01.03.2020-24.01.2023 = 1,060
+# full-time-equivalent days: 35 short of the 1,095 threshold, inside the
+# 1,020-1,095 review band.
+# Expected: MISSING_INFORMATION, PROFESSIONAL_EVIDENCE_INCOMPLETE.
+# Ground truth corrected 2026-08-26: the enclosed documents never state the
+# training duration (an IHK exam certificate certifies the exam, not the
+# training period), so the duration gate stops evaluation before the
+# experience threshold. The originally intended outcome (manual review,
+# close to the experience threshold) is unreachable unless the bundle gains
+# a duration-bearing document, e.g. an Ausbildungsvertrag.
+slug: katrin-vogel
+name: "Katrin Vogel"
+
+ihk:
+  kauffrau: true
+  geburtsdatum_lang: "27. Mai 2000"
+  datum: "7. Februar 2020"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"
+
+ba:
+  fields:
+    txtf_2_Betriebsnummer: "51370286"
+    txtf_3_Arbeitgeber: "Rheinland Logistik GmbH & Co. KG"
+    txtf_4_Strasse: "Gladbacher Straße"
+    txtf_5_Hausnummer: "17"
+    txtf_6_PLZ: "40219"
+    txtf_7_Ort: "Düsseldorf"
+    txtf_8_Ansprechpartner: "Herr T. Kessler"
+    txtf_9_Telefonnummer: "0211 936140"
+    txtf_14_Vorname: "Katrin"
+    txtf_15_Nachname: "Vogel"
+    txtf_16_Strasse: "Ackerstraße"
+    txtf_17_Hausnummer: "112"
+    txtf_18_PLZ: "40233"
+    txtf_19_Wohnort: "Düsseldorf"
+    txtf_20_Rentenversicherungsnummer: "14 270500 V 508"
+    txtf_21_Jahr: "2023"
+    txtf_22_Steuerklasse: "1"
+    txtf_30_Beschaeftigung_vom: "01.03.2020"
+    txtf_30_Beschaeftigung_bis: "24.01.2023"
+    txtf_31_letzte_Beschaeftigung: "Kauffrau für Büromanagement"
+    txtf_32_letzter_Beschaeftigungsort: "Düsseldorf"
+    txtf_33_Arbeitsverhaeltnis_beendet: "24.01.2023"
+    txtf_71_Arbeitszeit: "39,00"
+    txtf_112_Firmenname: "Rheinland Logistik GmbH & Co. KG"
+    txtf_113_Strasse: "Gladbacher Straße"
+    txtf_114_Hausnummer: "17"
+    txtf_115_PLZ: "40219"
+    txtf_116_Ort: "Düsseldorf"
+    txtf_117_Ort: "Düsseldorf"
+    txtf_118_Datum: "27.01.2023"

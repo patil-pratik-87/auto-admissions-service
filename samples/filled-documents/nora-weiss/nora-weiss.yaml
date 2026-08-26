@@ -1,0 +1,21 @@
+# Synthetic applicant. Angle: tuple 20 — APPLICATION_RESOLUTION /
+# NO_RECOGNIZED_RULE / CLEAN. The bundle contains ONLY a VHS
+# Teilnahmebescheinigung for a short course without an exam — no school
+# qualification, no vocational training, no Fortbildungsprüfung. None of the
+# five rule selectors may recognize it (contrast: a nursing state-exam
+# certificate would still enter the professional rule, which is why the
+# removed katharina-berger bundle could not serve this tuple). Expected: no
+# rule applies -> application MANUAL_REVIEW.
+slug: nora-weiss
+name: "Nora Weiß"
+anrede: "Frau"
+birth_date: "17.09.1997"
+
+veranstalter: "Volkshochschule Bielefeld"
+veranstalter_adresse: "Ravensberger Park 1, 33607 Bielefeld"
+kurs: "Grundlagen der Finanzbuchführung"
+zeitraum: "04.03.2026 bis 29.04.2026"
+umfang: "24 Unterrichtsstunden"
+ort_datum: "Bielefeld, den 30.04.2026"
+unterzeichner: "Dr. M. Peters"
+unterzeichner_titel: "Fachbereichsleiter Beruf und IT"

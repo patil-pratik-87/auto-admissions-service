@@ -1,0 +1,53 @@
+# Synthetic applicant. Angle: tuple 3 — GERMAN_ABITUR / PROVEN_FALSE /
+# SUPPORTED_FACT_VARIANT. Clean, complete NRW Abitur whose Bemerkungen line
+# states a validity restriction limited to one Land. It normalizes to
+# qualification.validity_restriction_code OTHER — not one of the accepted
+# codes (ALL_GERMAN_STATES, THURINGIA, ALL_STATES_EXCEPT_BAVARIA_AND_SAXONY).
+# Expected: NOT_SATISFIED, GERMAN_ABITUR_REQUIREMENTS_NOT_MET; application
+# INELIGIBLE because no other rule applies.
+slug: lukas-fischer
+name: "Lukas Fischer"
+birth_date: "22.04.2005"
+birth_place: "Essen"
+address: "Rüttenscheider Straße 77, 45130 Essen"
+school: "Helmholtz-Gymnasium, Essen"
+
+# Block I (Qualifikationsphase), Punkte 00-15 per Halbjahr, 10 subjects x 4.
+block_i:
+  deutsch: ["11", "10", "11", "10"] # 42
+  englisch: ["12", "11", "12", "11"] # 46
+  musik: ["10", "11", "10", "11"] # 42
+  geschichte: ["11", "11", "10", "10"] # 42
+  sozialkunde_politik: ["10", "10", "11", "11"] # 42
+  mathematik: ["09", "10", "10", "11"] # 40
+  physik: ["10", "10", "09", "09"] # 38
+  biologie: ["11", "11", "11", "11"] # 44
+  religion_ethik: ["11", "12", "11", "12"] # 46
+  sport: ["09", "10", "09", "10"] # 38
+ea_subjects: [deutsch, englisch, mathematik]
+
+# Block II (vier Pruefungsfaecher), 5-fache Wertung: 50+55+40+35 = 180.
+pruefungsfaecher:
+  - ["Deutsch (eA)", "10", "", "50"]
+  - ["Englisch (eA)", "11", "", "55"]
+  - ["Mathematik (eA)", "08", "", "40"]
+  - ["Geschichte", "", "07", "35"]
+
+# P = 420, S = 40 -> E = 420. Gesamt 420 + 180 = 600.
+# Note = 17/3 - 600/180 = 2.33 -> 2,3.
+block_i_punktsumme: "420"
+block_ii_punktsumme: "180"
+gesamtpunktzahl: "600"
+durchschnittsnote: "2,3"
+
+fremdsprachen:
+  - ["Englisch", "5 – 13", "B2"]
+  - ["Französisch", "6 – 11", "B1"]
+
+# The decision-relevant fact: an unsupported territorial validity restriction.
+bemerkungen: "Gilt für den Hochschulzugang nur im Land Nordrhein-Westfalen."
+
+anrede_name: "Herr Lukas Fischer"
+ort_datum: "Essen, den 27.06.2024"
+vorsitz: "OStD R. Kaminski"
+schulleiter: "OStD'in J. Thelen"

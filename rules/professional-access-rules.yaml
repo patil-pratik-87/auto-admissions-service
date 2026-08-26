@@ -1,0 +1,159 @@
+dsl_version: "1.3"
+
+module:
+  id: BACHELOR_PROFESSIONAL_ACCESS_RULES
+  version: "2025.01-demo.16"
+  imports:
+    - namespace: conditions
+      file: common/conditions.yaml
+    - namespace: rule_statuses
+      file: rule-statuses.yaml
+  requires_namespaces:
+    - requirements
+
+  exports:
+    WITHOUT_ABITUR_OR_FACHHOCHSCHULREIFE:
+      id: WITHOUT_ABITUR_OR_FACHHOCHSCHULREIFE
+      rules:
+        - id: GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL
+          select:
+            from: advanced_vocational_qualifications
+            as: qualification
+            where:
+              fact: qualification.type
+              in:
+                - MEISTER
+                - ADVANCED_VOCATIONAL
+          applicability:
+            require:
+              ref: requirements.german_qualification
+            result:
+              not_applicable:
+                status:
+                  ref: rule_statuses.NOT_APPLICABLE
+                reason_code: ADVANCED_VOCATIONAL_NOT_GERMAN
+              unknown:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: ADVANCED_VOCATIONAL_COUNTRY_UNKNOWN
+          require:
+            all_of:
+              - ref: requirements.completed_advanced_vocational_qualification
+              - ref: requirements.direct_advanced_vocational_level
+          result:
+            satisfied:
+              status:
+                ref: rule_statuses.ELIGIBLE
+              reason_code: ADVANCED_VOCATIONAL_DIRECT_ACCESS
+            not_satisfied:
+              status:
+                ref: rule_statuses.NOT_SATISFIED
+              reason_code: ADVANCED_VOCATIONAL_REQUIREMENTS_NOT_MET
+            unknown:
+              status:
+                ref: rule_statuses.MANUAL_REVIEW
+              reason_code: ADVANCED_VOCATIONAL_LEVEL_UNCLEAR
+
+        - id: GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE
+          select:
+            from: professional_access_candidates
+            as: candidate
+            where:
+              fact: candidate.training.type
+              eq: VOCATIONAL_TRAINING
+          applicability:
+            require:
+              fact: candidate.training.country
+              eq: DE
+            result:
+              not_applicable:
+                status:
+                  ref: rule_statuses.NOT_APPLICABLE
+                reason_code: VOCATIONAL_TRAINING_NOT_GERMAN
+              unknown:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: VOCATIONAL_TRAINING_COUNTRY_UNKNOWN
+          branches:
+            first_match:
+              - when:
+                  ref: requirements.vocational_training_requirements_failed
+                result:
+                  status:
+                    ref: rule_statuses.NOT_SATISFIED
+                  reason_code: VOCATIONAL_TRAINING_REQUIREMENTS_NOT_MET
+
+              - when:
+                  all_of:
+                    - ref: requirements.recognized_vocational_training
+                    - ref: requirements.usable_employment_calculation
+                    - fact: candidate.full_time_equivalent_days_after_training
+                      gte: 1095
+                    - fact: candidate.subject_relationship
+                      eq: MATCH
+                result:
+                  status:
+                    ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                  reason_code: PROFESSIONAL_ACCESS_TRIAL_STUDY
+                  condition: conditions.TRIAL_STUDY
+
+              - when:
+                  all_of:
+                    - ref: requirements.recognized_vocational_training
+                    - ref: requirements.usable_employment_calculation
+                    - fact: candidate.full_time_equivalent_days_after_training
+                      gte: 1095
+                    - fact: candidate.subject_relationship
+                      eq: NO_MATCH
+                result:
+                  status:
+                    ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                  reason_code: PROFESSIONAL_ACCESS_ENTRANCE_EXAMINATION
+                  condition: conditions.PROFESSIONAL_ENTRANCE_EXAMINATION
+
+              - when:
+                  all_of:
+                    - ref: requirements.recognized_vocational_training
+                    - ref: requirements.usable_employment_calculation
+                    - fact: candidate.full_time_equivalent_days_after_training
+                      gte: 1095
+                    - fact: candidate.subject_relationship
+                      eq: UNCERTAIN
+                result:
+                  status:
+                    ref: rule_statuses.MANUAL_REVIEW
+                  reason_code: SUBJECT_MATCH_REVIEW
+
+              - when:
+                  all_of:
+                    - ref: requirements.recognized_vocational_training
+                    - ref: requirements.usable_employment_calculation
+                    - fact: candidate.full_time_equivalent_days_after_training
+                      gte: 1020
+                    - fact: candidate.full_time_equivalent_days_after_training
+                      lt: 1095
+                result:
+                  status:
+                    ref: rule_statuses.MANUAL_REVIEW
+                  reason_code: CLOSE_TO_EXPERIENCE_THRESHOLD
+
+              - when:
+                  all_of:
+                    - ref: requirements.recognized_vocational_training
+                    - ref: requirements.usable_employment_calculation
+                    - fact: candidate.full_time_equivalent_days_after_training
+                      lt: 1020
+                result:
+                  status:
+                    ref: rule_statuses.NOT_SATISFIED
+                  reason_code: PROFESSIONAL_EXPERIENCE_BELOW_THRESHOLD
+            unknown:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE
+            otherwise:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE

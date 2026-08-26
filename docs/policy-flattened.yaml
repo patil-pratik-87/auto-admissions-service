@@ -1,0 +1,458 @@
+# Combined single-file version of rules/bachelors-access.yaml.
+# All imported modules (rule-statuses.yaml, application-statuses.yaml,
+# common/requirements.yaml, common/conditions.yaml, school-access-rules.yaml,
+# professional-access-rules.yaml) are inlined below under `definitions`, and
+# the included rule groups are expanded inline under `evaluation.rule_groups`.
+# Every `ref: <namespace>.<name>` resolves within this file.
+#
+# Reference only: the rules engine compiler requires the multi-file layout in
+# rules/, so this file must stay outside that directory.
+
+dsl_version: "1.3"
+
+definitions:
+  # From rules/rule-statuses.yaml (RULE_STATUS_ENUM 3.0.0)
+  rule_statuses:
+    ELIGIBLE: ELIGIBLE
+    CONDITIONALLY_ELIGIBLE: CONDITIONALLY_ELIGIBLE
+    NOT_SATISFIED: NOT_SATISFIED
+    MISSING_INFORMATION: MISSING_INFORMATION
+    MANUAL_REVIEW: MANUAL_REVIEW
+    NOT_APPLICABLE: NOT_APPLICABLE
+
+  # From rules/application-statuses.yaml (APPLICATION_STATUS_ENUM 2.1.0)
+  application_statuses:
+    ELIGIBLE: ELIGIBLE
+    CONDITIONALLY_ELIGIBLE: CONDITIONALLY_ELIGIBLE
+    INELIGIBLE: INELIGIBLE
+    MISSING_INFORMATION: MISSING_INFORMATION
+    MANUAL_REVIEW: MANUAL_REVIEW
+
+  # From rules/common/requirements.yaml (ACCESS_REQUIREMENTS 2025.01-demo.8)
+  requirements:
+    german_qualification:
+      fact: qualification.country
+      eq: DE
+
+    completed_school_qualification:
+      fact: qualification.completed
+      eq: true
+
+    validity_restriction_accepted:
+      any_of:
+        - fact: qualification.validity_restriction_present
+          eq: false
+        - fact: qualification.validity_restriction_code
+          in:
+            - ALL_GERMAN_STATES
+            - THURINGIA
+            - ALL_STATES_EXCEPT_BAVARIA_AND_SAXONY
+
+    complete_general_fhr:
+      all_of:
+        - fact: qualification.completed
+          eq: true
+        - fact: qualification.access_scope
+          eq: GENERAL
+        - fact: qualification.school_part_proven
+          eq: true
+        - fact: qualification.vocational_part_proven
+          eq: true
+
+    completed_advanced_vocational_qualification:
+      fact: qualification.completed
+      eq: true
+
+    direct_advanced_vocational_level:
+      any_of:
+        - fact: qualification.dqr_or_eqr_level
+          gte: 6
+        - all_of:
+            - fact: qualification.teaching_hours
+              gte: 400
+            - fact: qualification.builds_on_completed_training
+              eq: true
+            - fact: qualification.builds_on_recognized_training
+              eq: true
+
+    recognized_vocational_training:
+      all_of:
+        - fact: candidate.training.completed
+          eq: true
+        - fact: candidate.training.recognized
+          eq: true
+        - fact: candidate.training.duration_months
+          gte: 24
+        - fact: candidate.training.dqr_or_eqr_level
+          gte: 4
+
+    vocational_training_requirements_failed:
+      any_of:
+        - fact: candidate.training.completed
+          eq: false
+        - fact: candidate.training.recognized
+          eq: false
+        - fact: candidate.training.duration_months
+          lt: 24
+        - fact: candidate.training.dqr_or_eqr_level
+          lt: 4
+
+    usable_employment_calculation:
+      all_of:
+        - fact: candidate.all_period_dates_known
+          eq: true
+        - fact: candidate.all_weekly_hours_known
+          eq: true
+        - fact: candidate.mini_job_classification_complete
+          eq: true
+
+  # From rules/common/conditions.yaml (BACHELOR_ACCESS_CONDITIONS 2025.01-demo.3)
+  conditions:
+    TRIAL_STUDY:
+      first_subject_semesters: 2
+      minimum_newly_earned_ects: 15
+      recognized_ects_reduce_minimum: false
+      part_time_duration: PROPORTIONAL_EXTENSION
+
+    PROFESSIONAL_ENTRANCE_EXAMINATION:
+      duration_months: 12
+      ects_range: [10, 15]
+      required_courses:
+        - ACADEMIC_WORK
+        - PROGRAM_SUBJECT_COURSE
+        - STUDY_APTITUDE_TEST
+
+policy:
+  id: IU_BACHELOR_ACCESS
+  version: "0.0.22"
+
+  applies_when:
+    fact: application.study_level
+    eq: BACHELOR
+
+  sources:
+    - file: case-study/IU-FS-LF-Leitfaden-Hochschulzugangsberechtigung-Stand-Januar2025.md
+      section: ACCESS TO THE BACHELOR STUDY PROGRAM
+      subsections:
+        - Studying with the (Fach-) Abitur (general or subject-restricted school-leaving qualification)
+        - Studying without the (Fach-)Abitur (general or subject-restricted school-leaving qualification) > Professionally qualified applicants with direct access
+        - Studying without the (Fach-)Abitur (general or subject-restricted school-leaving qualification) > Professionally qualified applicants without direct access
+
+  evaluation:
+    rule_groups:
+      # From rules/school-access-rules.yaml (BACHELOR_SCHOOL_ACCESS_RULES
+      # 2025.01-demo.18), export WITH_ABITUR_OR_EQUIVALENT_SCHOOL_HZB
+      - id: WITH_ABITUR_OR_EQUIVALENT_SCHOOL_HZB
+        rules:
+          - id: GERMAN_ABITUR
+            select:
+              from: school_qualifications
+              as: qualification
+              where:
+                fact: qualification.type
+                eq: ALLGEMEINE_HOCHSCHULREIFE
+            applicability:
+              require:
+                ref: requirements.german_qualification
+              result:
+                not_applicable:
+                  status:
+                    ref: rule_statuses.NOT_APPLICABLE
+                  reason_code: ABITUR_NOT_GERMAN
+                unknown:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: ABITUR_COUNTRY_UNKNOWN
+            require:
+              all_of:
+                - ref: requirements.completed_school_qualification
+                - ref: requirements.validity_restriction_accepted
+            result:
+              satisfied:
+                status:
+                  ref: rule_statuses.ELIGIBLE
+                reason_code: GERMAN_ABITUR_DIRECT_ACCESS
+              not_satisfied:
+                status:
+                  ref: rule_statuses.NOT_SATISFIED
+                reason_code: GERMAN_ABITUR_REQUIREMENTS_NOT_MET
+              unknown:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: GERMAN_ABITUR_EVIDENCE_INCOMPLETE
+
+          - id: FACHGEBUNDENE_HOCHSCHULREIFE
+            select:
+              from: school_qualifications
+              as: qualification
+              where:
+                fact: qualification.type
+                eq: FACHGEBUNDENE_HOCHSCHULREIFE
+            branches:
+              first_match:
+                - when:
+                    all_of:
+                      - fact: qualification.completed
+                        eq: true
+                      - ref: requirements.validity_restriction_accepted
+                      - fact: qualification.issuing_region
+                        eq: DACH
+                  result:
+                    status:
+                      ref: rule_statuses.ELIGIBLE
+                    reason_code: DACH_FACHGEBUNDENE_HZB_DIRECT_ACCESS
+
+                - when:
+                    all_of:
+                      - fact: qualification.completed
+                        eq: true
+                      - ref: requirements.validity_restriction_accepted
+                      - fact: qualification.issuing_region
+                        eq: OUTSIDE_DACH
+                  result:
+                    status:
+                      ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                    reason_code: FOREIGN_FACHGEBUNDENE_HZB_TRIAL_STUDY
+                    condition: conditions.TRIAL_STUDY
+
+                - when:
+                    fact: qualification.completed
+                    eq: false
+                  result:
+                    status:
+                      ref: rule_statuses.NOT_SATISFIED
+                    reason_code: FACHGEBUNDENE_HZB_NOT_COMPLETED
+
+                - when:
+                    all_of:
+                      - fact: qualification.validity_restriction_present
+                        eq: true
+                      - fact: qualification.validity_restriction_code
+                        eq: OTHER
+                  result:
+                    status:
+                      ref: rule_statuses.NOT_SATISFIED
+                    reason_code: FACHGEBUNDENE_HZB_VALIDITY_RESTRICTION_NOT_ACCEPTED
+              unknown:
+                result:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: FACHGEBUNDENE_HZB_EVIDENCE_INCOMPLETE
+              otherwise:
+                result:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: FACHGEBUNDENE_HZB_EVIDENCE_INCOMPLETE
+
+          - id: GERMAN_GENERAL_FACHHOCHSCHULREIFE
+            select:
+              from: school_qualifications
+              as: qualification
+              where:
+                fact: qualification.type
+                eq: FACHHOCHSCHULREIFE
+            applicability:
+              require:
+                all_of:
+                  - ref: requirements.german_qualification
+                  - fact: qualification.access_scope
+                    eq: GENERAL
+              result:
+                not_applicable:
+                  status:
+                    ref: rule_statuses.NOT_APPLICABLE
+                  reason_code: NOT_GERMAN_GENERAL_FHR
+                unknown:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: FHR_APPLICABILITY_UNKNOWN
+            require:
+              all_of:
+                - ref: requirements.complete_general_fhr
+                - ref: requirements.validity_restriction_accepted
+            result:
+              satisfied:
+                status:
+                  ref: rule_statuses.ELIGIBLE
+                reason_code: GERMAN_GENERAL_FHR_DIRECT_ACCESS
+              not_satisfied:
+                status:
+                  ref: rule_statuses.NOT_SATISFIED
+                reason_code: GERMAN_GENERAL_FHR_REQUIREMENTS_NOT_MET
+              unknown:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: GERMAN_GENERAL_FHR_EVIDENCE_INCOMPLETE
+
+      # From rules/professional-access-rules.yaml (BACHELOR_PROFESSIONAL_ACCESS_RULES
+      # 2025.01-demo.16), export WITHOUT_ABITUR_OR_FACHHOCHSCHULREIFE
+      - id: WITHOUT_ABITUR_OR_FACHHOCHSCHULREIFE
+        rules:
+          - id: GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL
+            select:
+              from: advanced_vocational_qualifications
+              as: qualification
+              where:
+                fact: qualification.type
+                in:
+                  - MEISTER
+                  - ADVANCED_VOCATIONAL
+            applicability:
+              require:
+                ref: requirements.german_qualification
+              result:
+                not_applicable:
+                  status:
+                    ref: rule_statuses.NOT_APPLICABLE
+                  reason_code: ADVANCED_VOCATIONAL_NOT_GERMAN
+                unknown:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: ADVANCED_VOCATIONAL_COUNTRY_UNKNOWN
+            require:
+              all_of:
+                - ref: requirements.completed_advanced_vocational_qualification
+                - ref: requirements.direct_advanced_vocational_level
+            result:
+              satisfied:
+                status:
+                  ref: rule_statuses.ELIGIBLE
+                reason_code: ADVANCED_VOCATIONAL_DIRECT_ACCESS
+              not_satisfied:
+                status:
+                  ref: rule_statuses.NOT_SATISFIED
+                reason_code: ADVANCED_VOCATIONAL_REQUIREMENTS_NOT_MET
+              unknown:
+                status:
+                  ref: rule_statuses.MANUAL_REVIEW
+                reason_code: ADVANCED_VOCATIONAL_LEVEL_UNCLEAR
+
+          - id: GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE
+            select:
+              from: professional_access_candidates
+              as: candidate
+              where:
+                fact: candidate.training.type
+                eq: VOCATIONAL_TRAINING
+            applicability:
+              require:
+                fact: candidate.training.country
+                eq: DE
+              result:
+                not_applicable:
+                  status:
+                    ref: rule_statuses.NOT_APPLICABLE
+                  reason_code: VOCATIONAL_TRAINING_NOT_GERMAN
+                unknown:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: VOCATIONAL_TRAINING_COUNTRY_UNKNOWN
+            branches:
+              first_match:
+                - when:
+                    ref: requirements.vocational_training_requirements_failed
+                  result:
+                    status:
+                      ref: rule_statuses.NOT_SATISFIED
+                    reason_code: VOCATIONAL_TRAINING_REQUIREMENTS_NOT_MET
+
+                - when:
+                    all_of:
+                      - ref: requirements.recognized_vocational_training
+                      - ref: requirements.usable_employment_calculation
+                      - fact: candidate.full_time_equivalent_days_after_training
+                        gte: 1095
+                      - fact: candidate.subject_relationship
+                        eq: MATCH
+                  result:
+                    status:
+                      ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                    reason_code: PROFESSIONAL_ACCESS_TRIAL_STUDY
+                    condition: conditions.TRIAL_STUDY
+
+                - when:
+                    all_of:
+                      - ref: requirements.recognized_vocational_training
+                      - ref: requirements.usable_employment_calculation
+                      - fact: candidate.full_time_equivalent_days_after_training
+                        gte: 1095
+                      - fact: candidate.subject_relationship
+                        eq: NO_MATCH
+                  result:
+                    status:
+                      ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                    reason_code: PROFESSIONAL_ACCESS_ENTRANCE_EXAMINATION
+                    condition: conditions.PROFESSIONAL_ENTRANCE_EXAMINATION
+
+                - when:
+                    all_of:
+                      - ref: requirements.recognized_vocational_training
+                      - ref: requirements.usable_employment_calculation
+                      - fact: candidate.full_time_equivalent_days_after_training
+                        gte: 1095
+                      - fact: candidate.subject_relationship
+                        eq: UNCERTAIN
+                  result:
+                    status:
+                      ref: rule_statuses.MANUAL_REVIEW
+                    reason_code: SUBJECT_MATCH_REVIEW
+
+                - when:
+                    all_of:
+                      - ref: requirements.recognized_vocational_training
+                      - ref: requirements.usable_employment_calculation
+                      - fact: candidate.full_time_equivalent_days_after_training
+                        gte: 1020
+                      - fact: candidate.full_time_equivalent_days_after_training
+                        lt: 1095
+                  result:
+                    status:
+                      ref: rule_statuses.MANUAL_REVIEW
+                    reason_code: CLOSE_TO_EXPERIENCE_THRESHOLD
+
+                - when:
+                    all_of:
+                      - ref: requirements.recognized_vocational_training
+                      - ref: requirements.usable_employment_calculation
+                      - fact: candidate.full_time_equivalent_days_after_training
+                        lt: 1020
+                  result:
+                    status:
+                      ref: rule_statuses.NOT_SATISFIED
+                    reason_code: PROFESSIONAL_EXPERIENCE_BELOW_THRESHOLD
+              unknown:
+                result:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE
+              otherwise:
+                result:
+                  status:
+                    ref: rule_statuses.MISSING_INFORMATION
+                  reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE
+
+  resolution:
+    first_match:
+      - when_any_rule:
+          ref: rule_statuses.ELIGIBLE
+        application_status:
+          ref: application_statuses.ELIGIBLE
+      - when_any_rule:
+          ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+        application_status:
+          ref: application_statuses.CONDITIONALLY_ELIGIBLE
+      - when_any_rule:
+          ref: rule_statuses.MANUAL_REVIEW
+        application_status:
+          ref: application_statuses.MANUAL_REVIEW
+      - when_any_rule:
+          ref: rule_statuses.MISSING_INFORMATION
+        application_status:
+          ref: application_statuses.MISSING_INFORMATION
+      - when_all_applicable_rules:
+          ref: rule_statuses.NOT_SATISFIED
+        application_status:
+          ref: application_statuses.INELIGIBLE
+      - when_no_recognized_rule: true
+        application_status:
+          ref: application_statuses.MANUAL_REVIEW

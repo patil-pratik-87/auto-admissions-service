@@ -1,0 +1,517 @@
+<title>Measured comparison: rules engine vs full policy workflow vs agentic RAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #F2F4F7;
+    --panel: #FFFFFF;
+    --panel-2: #E9EDF2;
+    --ink: #1B2430;
+    --muted: #5D6B7A;
+    --line: #D4DAE2;
+    --rules: #2149A8;
+    --proto: #B4610E;
+    --rag: #9C3B66;
+    --toc: #0B7285;
+    --ok: #1E7A46;
+    --ok-bg: #DDF0E4;
+    --bad: #B3362B;
+    --bad-bg: #F6DEDB;
+    --warn: #9A6A00;
+    --warn-bg: #F5EBCF;
+    --review: #6B4FA3;
+    --review-bg: #E9E2F5;
+    --cond: #0E6E74;
+    --cond-bg: #D8EDEE;
+    --flag: #FBF3E4;
+  }
+  :root:not([data-theme="light"]) { }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161C;
+      --panel: #1A212B;
+      --panel-2: #222B37;
+      --ink: #E4E9F0;
+      --muted: #92A0AF;
+      --line: #2C3642;
+      --rules: #7FA1E8;
+      --proto: #E5A15A;
+      --rag: #DE8FB4;
+      --toc: #66C5D6;
+      --ok: #6CC694;
+      --ok-bg: #1C3A2A;
+      --bad: #E58A80;
+      --bad-bg: #452420;
+      --warn: #D9B25B;
+      --warn-bg: #3E3317;
+      --review: #B49FE0;
+      --review-bg: #2E2745;
+      --cond: #6BC4CB;
+      --cond-bg: #16383B;
+      --flag: #2A2617;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --panel: #1A212B;
+    --panel-2: #222B37;
+    --ink: #E4E9F0;
+    --muted: #92A0AF;
+    --line: #2C3642;
+    --rules: #7FA1E8;
+    --proto: #E5A15A;
+    --rag: #DE8FB4;
+    --toc: #66C5D6;
+    --ok: #6CC694;
+    --ok-bg: #1C3A2A;
+    --bad: #E58A80;
+    --bad-bg: #452420;
+    --warn: #D9B25B;
+    --warn-bg: #3E3317;
+    --review: #B49FE0;
+    --review-bg: #2E2745;
+    --cond: #6BC4CB;
+    --cond-bg: #16383B;
+    --flag: #2A2617;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 0 20px 64px;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; }
+  h1, h2 { font-family: "Archivo", "Arial Narrow", sans-serif; text-wrap: balance; }
+  h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; margin: 0; }
+  h2 { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; margin: 0 0 14px; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+  header { padding: 46px 0 26px; border-bottom: 2px solid var(--ink); }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 26px; margin-top: 16px; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; color: var(--muted); }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  section { margin-top: 42px; }
+
+  /* ---- verdict scoreboard ---- */
+  .board { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .side { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--side-c); border-radius: 4px; padding: 20px 22px; }
+  .side.rules { --side-c: var(--rules); }
+  .side.proto { --side-c: var(--proto); }
+  .side.rag { --side-c: var(--rag); }
+  .side.toc { --side-c: var(--toc); }
+  .side .name { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 18px; color: var(--side-c); }
+  .side .sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .mrow { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-top: 1px dashed var(--line); gap: 12px; }
+  .mrow .lbl { font-size: 13.5px; color: var(--muted); }
+  .mrow .val { font-family: "IBM Plex Mono", monospace; font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .mrow .val small { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .win { color: var(--ok); }
+  .lose { color: var(--bad); }
+  .tie { color: var(--ink); }
+  .agree-band { margin-top: 18px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 12px 18px; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 30px; }
+  .agree-band b { color: var(--ink); font-family: "IBM Plex Mono", monospace; }
+
+  /* ---- status chips & flip strips ---- */
+  .chip { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .s-E  { background: var(--ok-bg); color: var(--ok); }
+  .s-I  { background: var(--bad-bg); color: var(--bad); }
+  .s-M  { background: var(--warn-bg); color: var(--warn); }
+  .s-R  { background: var(--review-bg); color: var(--review); }
+  .s-C  { background: var(--cond-bg); color: var(--cond); }
+  .strip { display: inline-flex; gap: 3px; vertical-align: middle; }
+  .cell { width: 22px; height: 15px; border-radius: 2px; display: inline-block; }
+  .c-E { background: var(--ok); } .c-I { background: var(--bad); }
+  .c-M { background: var(--warn); } .c-R { background: var(--review); } .c-C { background: var(--cond); }
+  .flip-tag { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; color: var(--bad); font-weight: 600; margin-left: 8px; }
+
+  /* ---- table ---- */
+  .tablewrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; min-width: 980px; font-size: 13.5px; }
+  th { font-family: "IBM Plex Mono", monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); text-align: left; font-weight: 500; padding: 10px 14px; border-bottom: 2px solid var(--ink); }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  td.persona { font-weight: 600; white-space: nowrap; }
+  td .basis { font-size: 11px; color: var(--muted); font-family: "IBM Plex Mono", monospace; margin-left: 4px; }
+  .mark { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+  .mark.y { color: var(--ok); } .mark.n { color: var(--bad); } .mark.na { color: var(--muted); font-weight: 400; }
+  tr.flagged td { background: var(--flag); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 12px 2px 0; font-size: 12px; color: var(--muted); align-items: center; }
+
+  /* ---- confusion matrices ---- */
+  .cmx { border-collapse: collapse; font-family: "IBM Plex Mono", monospace; font-size: 12.5px; margin-top: 12px; width: 100%; min-width: 0; }
+  .board.stack .side { overflow-x: auto; }
+  .cmx th, .cmx td { text-align: center; padding: 5px 6px; border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .cmx th { font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); border-bottom-width: 2px; }
+  .cmx th.rowh { text-align: right; border-right-width: 2px; }
+  .cmx td.rowh { text-align: right; font-weight: 600; font-size: 10.5px; color: var(--muted); border-right-width: 2px; padding-right: 8px; }
+  .cmx .h-E { color: var(--ok); } .cmx .h-C { color: var(--cond); } .cmx .h-I { color: var(--bad); }
+  .cmx .h-M { color: var(--warn); } .cmx .h-R { color: var(--review); }
+  .cmx td.d { background: var(--ok-bg); color: var(--ok); font-weight: 600; }
+  .cmx td.x { background: var(--bad-bg); color: var(--bad); font-weight: 600; }
+  .cmx td.z { color: var(--muted); }
+  .rate-danger { color: var(--bad); font-weight: 600; }
+  .rate-warn { color: var(--warn); font-weight: 600; }
+  .board.stack { grid-template-columns: 1fr; }
+
+  /* ---- per-option pipelines ---- */
+  .flows { display: grid; gap: 10px; }
+  .flow { --fc: var(--ink); display: grid; grid-template-columns: 190px 1fr; gap: 16px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 12px 16px; }
+  .flow.fA { --fc: var(--rules); } .flow.fB { --fc: var(--proto); } .flow.fC { --fc: var(--toc); } .flow.fD { --fc: var(--rag); }
+  .flow .who { border-left: 3px solid var(--fc); padding-left: 12px; }
+  .flow .who .ltr { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 17px; color: var(--fc); margin-right: 7px; }
+  .flow .who .nm { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink); }
+  .flow .who .gist { font-size: 11.5px; color: var(--muted); line-height: 1.4; margin-top: 3px; }
+  .lane { display: flex; align-items: center; gap: 7px; overflow-x: auto; padding: 11px 2px 4px; }
+  .phase { flex: none; display: flex; align-items: center; gap: 7px; border: 1px dashed var(--line); border-radius: 4px; padding: 7px 10px; position: relative; }
+  .phase.per { border-style: solid; }
+  .phase .ph { position: absolute; top: -7px; left: 8px; background: var(--panel); padding: 0 5px; font-family: "IBM Plex Mono", monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+  .pl { flex: none; font-size: 11.5px; line-height: 1.3; padding: 4px 9px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg); white-space: nowrap; }
+  .pl small { display: block; font-size: 9.5px; color: var(--muted); }
+  .pl.m { border: 1.5px solid var(--fc); }
+  .pl.a { border-style: dashed; }
+  .pl.o { border-color: var(--ink); font-weight: 600; }
+  .fa { flex: none; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.2; }
+  .fa i { display: block; font-style: normal; font-size: 9px; letter-spacing: 0.02em; }
+
+  /* ---- findings ---- */
+  .findings { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .finding { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--f-c); border-radius: 4px; padding: 16px 18px; }
+  .finding .ttl { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .finding p { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .finding p b { color: var(--ink); font-weight: 600; }
+  .f-bad { --f-c: var(--bad); } .f-warn { --f-c: var(--warn); } .f-rules { --f-c: var(--rules); } .f-proto { --f-c: var(--proto); } .f-rag { --f-c: var(--rag); }
+
+  /* ---- cost ---- */
+  .costgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .cost { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 14px 18px; }
+  .cost .n { font-family: "IBM Plex Mono", monospace; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cost .l { font-size: 12.5px; color: var(--muted); }
+
+  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 16px; font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--muted); line-height: 1.8; }
+
+  @media (max-width: 980px) {
+    .board { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .findings { grid-template-columns: 1fr; }
+    .flow { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Experiment report · IU Bachelor admissions screening · TDD §4.1 D1</div>
+  <h1>Option A rules engine <span style="color:var(--muted); font-weight:600;">vs</span> option B full policy workflow <span style="color:var(--muted); font-weight:600;">vs</span> options C &amp; D agentic RAG</h1>
+  <div class="meta">
+    <span>date <b>2026-08-25</b> · agentic RAG + fresh baselines <b>2026-08-26</b></span>
+    <span>models <b>gpt-5.6-terra</b> (options A &amp; B) · <b>gpt-5.4-mini</b> (options C &amp; D)</span>
+    <span>applicants <b>16 personas</b></span>
+    <span>runs <b>48 option B</b> + <b>45 option D</b> + <b>45 option C</b> (3 repeats each)</span>
+  </div>
+</header>
+
+<section>
+  <h2>Verdict</h2>
+  <div class="board">
+    <div class="side rules">
+      <div class="name">Option A · Rules engine</div>
+      <div class="sub">extraction into typed facts → compiled rules engine (<span class="mono">app/</span>) · fresh baselines on amended bundles</div>
+      <div class="mrow"><span class="lbl">Accuracy on 9 core-labeled personas</span><span class="val win">8/9 · 89%</span></div>
+      <div class="mrow"><span class="lbl">Accuracy on all 14 labeled personas</span><span class="val win">13/14 · 93%</span></div>
+      <div class="mrow"><span class="lbl">Verdict flips across identical reruns</span><span class="val win">0% <small>by construction</small></span></div>
+      <div class="mrow"><span class="lbl">Policy tokens per applicant</span><span class="val win">0 <small>rules are compiled</small></span></div>
+    </div>
+    <div class="side proto">
+      <div class="name">Option B · Full policy workflow</div>
+      <div class="sub">whole Leitfaden + PDFs through two model calls per application · measured 2026-08-25, pre-amendment bundles</div>
+      <div class="mrow"><span class="lbl">Accuracy on 9 core-labeled personas</span><span class="val lose">4/9 · 44%</span></div>
+      <div class="mrow"><span class="lbl">Accuracy on all 14 labeled personas</span><span class="val lose">8/14 · 57%</span></div>
+      <div class="mrow"><span class="lbl">Verdict flips across identical reruns</span><span class="val lose">7/16 personas · 44%</span></div>
+      <div class="mrow"><span class="lbl">Policy tokens per applicant</span><span class="val lose">~94k <small>re-read every run</small></span></div>
+    </div>
+    <div class="side rag">
+      <div class="name">Option D · Agentic RAG, vector retrieval</div>
+      <div class="sub">vector index over policy sections → compiled criteria cache → evaluator ⇄ critic loop (<span class="mono">experiment/admissions-agentic-rag/</span>)</div>
+      <div class="mrow"><span class="lbl">Accuracy on 9 core-labeled personas</span><span class="val lose">5/9 · 56%</span></div>
+      <div class="mrow"><span class="lbl">Accuracy on all 14 labeled personas</span><span class="val tie">9/14 · 64%</span></div>
+      <div class="mrow"><span class="lbl">Verdict flips across identical reruns</span><span class="val lose">9/15 personas · 60%</span></div>
+      <div class="mrow"><span class="lbl">Policy tokens per applicant</span><span class="val win">~2.8k <small>compile amortized</small></span></div>
+    </div>
+    <div class="side toc">
+      <div class="name">Option C · Agentic RAG, TOC navigation</div>
+      <div class="sub">same graph; the agent reads whole sections by heading instead of using a vector index</div>
+      <div class="mrow"><span class="lbl">Accuracy on 9 core-labeled personas</span><span class="val lose">5/9 · 56%</span></div>
+      <div class="mrow"><span class="lbl">Accuracy on all 14 labeled personas</span><span class="val lose">8/14 · 57%</span></div>
+      <div class="mrow"><span class="lbl">Verdict flips across identical reruns</span><span class="val lose">9/15 personas · 60%</span></div>
+      <div class="mrow"><span class="lbl">Policy tokens per applicant</span><span class="val win">~3.1k <small>compile amortized</small></span></div>
+    </div>
+  </div>
+  <div class="agree-band">
+    <span>status agreement (modal): A ↔ B <b>11/16 · 69%</b> · A ↔ D <b>8/15 · 53%</b> · A ↔ C <b>9/15 · 60%</b></span>
+    <span>labels: <b>samples/blank-documents/eval-tuples.md</b> — all options scored against them; none treated as ground truth</span>
+    <span>caveat: option B ran on the 2026-08-25 bundles; option A baselines and the agentic RAG arms use the amended 2026-08-26 bundles</span>
+  </div>
+</section>
+
+<section>
+  <h2>Per-applicant outcomes</h2>
+  <div class="tablewrap">
+  <table style="min-width: 1200px;">
+    <thead><tr>
+      <th>Persona</th><th>Expected</th><th>A · Rules</th><th></th>
+      <th>B · 3 repeats</th><th></th><th>Modal</th>
+      <th>D vector · 3 repeats</th><th></th><th>Modal</th>
+      <th>C TOC · 3 repeats</th><th></th><th>Modal</th>
+    </tr></thead>
+    <tbody>
+      <tr class="flagged"><td class="persona">anna-beispiel</td><td><span class="chip s-M">MISSING</span><span class="basis">drv</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-I"></span><span class="cell c-E"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-M"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td></tr>
+      <tr class="flagged"><td class="persona">claudia-siebert</td><td><span class="chip s-E">ELIGIBLE</span><span class="basis">core</span></td><td><span class="chip s-E">ELIGIBLE</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-R"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-R"></span><span class="cell c-R"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-R">REVIEW</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-R"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr><td class="persona">daniel-roth</td><td><span class="mark na">—</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark na">·</td><td><span class="strip"><span class="cell c-C"></span><span class="cell c-M"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark na">·</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-C"></span><span class="cell c-R"></span><span class="cell c-C"></span></span><span class="flip-tag">FLIP</span></td><td class="mark na">·</td><td><span class="chip s-C">CONDITIONAL</span></td><td><span class="strip"><span class="cell c-C"></span><span class="cell c-M"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark na">·</td><td><span class="chip s-M">MISSING</span></td></tr>
+      <tr class="flagged"><td class="persona">erika-musterfrau</td><td><span class="chip s-E">ELIGIBLE</span><span class="basis">core</span></td><td><span class="chip s-E">ELIGIBLE</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-R"></span><span class="cell c-E"></span><span class="cell c-R"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-R">REVIEW</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-R"></span><span class="cell c-E"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr class="flagged"><td class="persona">felix-brandt</td><td><span class="chip s-E">ELIGIBLE</span><span class="basis">core</span></td><td><span class="chip s-E">ELIGIBLE</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-M"></span><span class="cell c-E"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr><td class="persona">jonas-krause</td><td><span class="chip s-M">MISSING</span><span class="basis">core</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td></tr>
+      <tr><td class="persona">katharina-berger</td><td><span class="mark na">—</span></td><td><span class="chip s-M">MISSING</span><span class="basis">08-25</span></td><td class="mark na">·</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark na">·</td><td><span class="chip s-M">MISSING</span></td><td><span class="mark na">— no bundle</span></td><td class="mark na">·</td><td><span class="mark na">—</span></td><td><span class="mark na">— no bundle</span></td><td class="mark na">·</td><td><span class="mark na">—</span></td></tr>
+      <tr><td class="persona">katrin-vogel</td><td><span class="chip s-R">REVIEW</span><span class="basis">core</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark n">✗</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-R"></span><span class="cell c-R"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-R">REVIEW</span></td><td><span class="strip"><span class="cell c-C"></span><span class="cell c-I"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-C">CONDITIONAL</span></td></tr>
+      <tr class="flagged"><td class="persona">lena-schmidt-weber</td><td><span class="chip s-M">MISSING</span><span class="basis">drv</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-E"></span><span class="cell c-E"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr><td class="persona">max-mustermann</td><td><span class="chip s-M">MISSING</span><span class="basis">drv</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-I"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td></tr>
+      <tr><td class="persona">melina-sturm</td><td><span class="chip s-M">MISSING</span><span class="basis">drv</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-I"></span><span class="cell c-M"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-C"></span><span class="cell c-M"></span><span class="cell c-C"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-C">CONDITIONAL</span></td></tr>
+      <tr><td class="persona">oemer-yilmaz</td><td><span class="chip s-E">ELIGIBLE</span><span class="basis">drv</span></td><td><span class="chip s-E">ELIGIBLE</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-R"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr><td class="persona">sofia-lorenz</td><td><span class="chip s-E">ELIGIBLE</span><span class="basis">core</span></td><td><span class="chip s-E">ELIGIBLE</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-E"></span><span class="cell c-E"></span></span><span class="flip-tag">FLIP</span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark y">✓</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr class="flagged"><td class="persona">stefan-brenner</td><td><span class="chip s-R">REVIEW</span><span class="basis">core</span></td><td><span class="chip s-R">REVIEW</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-E"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-E"></span><span class="cell c-E"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-E">ELIGIBLE</span></td><td><span class="strip"><span class="cell c-E"></span><span class="cell c-E"></span><span class="cell c-E"></span></span></td><td class="mark n">✗</td><td><span class="chip s-E">ELIGIBLE</span></td></tr>
+      <tr class="flagged"><td class="persona">tobias-falk</td><td><span class="chip s-I">INELIGIBLE</span><span class="basis">core</span></td><td><span class="chip s-I">INELIGIBLE</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-I"></span><span class="cell c-M"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-I"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-M">MISSING</span></td></tr>
+      <tr><td class="persona">tobias-renner</td><td><span class="chip s-M">MISSING</span><span class="basis">core</span></td><td><span class="chip s-M">MISSING</span></td><td class="mark y">✓</td><td><span class="strip"><span class="cell c-M"></span><span class="cell c-M"></span><span class="cell c-M"></span></span></td><td class="mark y">✓</td><td><span class="chip s-M">MISSING</span></td><td><span class="strip"><span class="cell c-R"></span><span class="cell c-C"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-R">REVIEW</span></td><td><span class="strip"><span class="cell c-C"></span><span class="cell c-R"></span><span class="cell c-M"></span></span><span class="flip-tag">FLIP</span></td><td class="mark n">✗</td><td><span class="chip s-C">CONDITIONAL</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend">
+    <span><span class="chip s-E">ELIGIBLE</span></span>
+    <span><span class="chip s-C">CONDITIONAL</span></span>
+    <span><span class="chip s-I">INELIGIBLE</span></span>
+    <span><span class="chip s-M">MISSING</span> = missing information</span>
+    <span><span class="chip s-R">REVIEW</span> = manual review</span>
+    <span>✓ / ✗ = matches the documented expected label · <span class="mono">drv</span> = label derived from a core tuple</span>
+  </div>
+</section>
+
+<section>
+  <h2>Confusion matrices · expected label × verdict</h2>
+  <div class="board stack">
+    <div class="side rules">
+      <div class="name">Option A · Rules engine</div>
+      <div class="sub">14 labeled personas · deterministic, 1 verdict each</div>
+      <table class="cmx">
+        <thead><tr><th class="rowh">exp ↓ · pred →</th><th class="h-E">ELIG</th><th class="h-C">COND</th><th class="h-I">INEL</th><th class="h-M">MISS</th><th class="h-R">REVW</th></tr></thead>
+        <tbody>
+          <tr><td class="rowh h-E">ELIG</td><td class="d">5</td><td class="z">·</td><td class="z">·</td><td class="z">·</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-I">INEL</td><td class="z">·</td><td class="z">·</td><td class="d">1</td><td class="z">·</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-M">MISS</td><td class="z">·</td><td class="z">·</td><td class="z">·</td><td class="d">6</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-R">REVW</td><td class="z">·</td><td class="z">·</td><td class="z">·</td><td>1</td><td class="d">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="side proto">
+      <div class="name">Option B · Full policy workflow</div>
+      <div class="sub">42 runs · 14 labeled personas × 3 repeats (08-25 bundles)</div>
+      <table class="cmx">
+        <thead><tr><th class="rowh">exp ↓ · pred →</th><th class="h-E">ELIG</th><th class="h-C">COND</th><th class="h-I">INEL</th><th class="h-M">MISS</th><th class="h-R">REVW</th></tr></thead>
+        <tbody>
+          <tr><td class="rowh h-E">ELIG</td><td class="d">5</td><td class="z">·</td><td class="z">·</td><td>6</td><td>4</td></tr>
+          <tr><td class="rowh h-I">INEL</td><td class="z">·</td><td class="z">·</td><td class="d z">·</td><td>3</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-M">MISS</td><td class="z">·</td><td class="z">·</td><td class="z">·</td><td class="d">18</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-R">REVW</td><td class="x">1</td><td class="z">·</td><td class="z">·</td><td>5</td><td class="d z">·</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="side rag">
+      <div class="name">Option D · Agentic RAG, vector retrieval</div>
+      <div class="sub">42 runs · 14 labeled personas × 3 repeats (08-26 bundles)</div>
+      <table class="cmx">
+        <thead><tr><th class="rowh">exp ↓ · pred →</th><th class="h-E">ELIG</th><th class="h-C">COND</th><th class="h-I">INEL</th><th class="h-M">MISS</th><th class="h-R">REVW</th></tr></thead>
+        <tbody>
+          <tr><td class="rowh h-E">ELIG</td><td class="d">11</td><td class="z">·</td><td class="z">·</td><td>1</td><td>3</td></tr>
+          <tr><td class="rowh h-I">INEL</td><td class="z">·</td><td class="z">·</td><td class="d">1</td><td>2</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-M">MISS</td><td class="x">2</td><td>1</td><td>2</td><td class="d">12</td><td>1</td></tr>
+          <tr><td class="rowh h-R">REVW</td><td class="x">2</td><td class="z">·</td><td class="z">·</td><td>2</td><td class="d">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="side toc">
+      <div class="name">Option C · Agentic RAG, TOC navigation</div>
+      <div class="sub">42 runs · 14 labeled personas × 3 repeats (08-26 bundles)</div>
+      <table class="cmx">
+        <thead><tr><th class="rowh">exp ↓ · pred →</th><th class="h-E">ELIG</th><th class="h-C">COND</th><th class="h-I">INEL</th><th class="h-M">MISS</th><th class="h-R">REVW</th></tr></thead>
+        <tbody>
+          <tr><td class="rowh h-E">ELIG</td><td class="d">14</td><td class="z">·</td><td class="z">·</td><td class="z">·</td><td>1</td></tr>
+          <tr><td class="rowh h-I">INEL</td><td class="z">·</td><td class="z">·</td><td class="d">1</td><td>2</td><td class="z">·</td></tr>
+          <tr><td class="rowh h-M">MISS</td><td class="x">3</td><td>3</td><td>1</td><td class="d">10</td><td>1</td></tr>
+          <tr><td class="rowh h-R">REVW</td><td class="x">3</td><td>1</td><td>1</td><td>1</td><td class="d z">·</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tablewrap" style="margin-top: 18px;">
+  <table style="min-width: 680px;">
+    <thead><tr>
+      <th>Detection rate (one-vs-rest)</th><th style="color: var(--rules);">A · Rules engine</th><th style="color: var(--proto);">B · Full policy workflow</th><th style="color: var(--rag);">D · RAG vector</th><th style="color: var(--toc);">C · RAG TOC</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="persona">ELIGIBLE · TPR <span class="basis">expected admits verdicted ELIGIBLE</span></td><td class="mono">5/5 · 100%</td><td class="mono">5/15 · 33%</td><td class="mono">11/15 · 73%</td><td class="mono">14/15 · 93%</td></tr>
+      <tr><td class="persona">ELIGIBLE · FPR <span class="basis">false admits — the dangerous rate</span></td><td class="mono">0/9 · 0%</td><td class="mono">1/27 · 3.7%</td><td class="mono rate-danger">4/27 · 14.8%</td><td class="mono rate-danger">6/27 · 22.2%</td></tr>
+      <tr><td class="persona">INELIGIBLE · TPR <span class="basis">expected rejections verdicted INELIGIBLE</span></td><td class="mono">1/1 · 100%</td><td class="mono rate-danger">0/3 · 0%</td><td class="mono">1/3 · 33%</td><td class="mono">1/3 · 33%</td></tr>
+      <tr><td class="persona">INELIGIBLE · FPR <span class="basis">false rejections</span></td><td class="mono">0/13 · 0%</td><td class="mono">0/39 · 0%</td><td class="mono">2/39 · 5.1%</td><td class="mono">2/39 · 5.1%</td></tr>
+      <tr><td class="persona">MISSING · TPR <span class="basis">incomplete files caught</span></td><td class="mono">6/6 · 100%</td><td class="mono">18/18 · 100%</td><td class="mono">12/18 · 67%</td><td class="mono">10/18 · 56%</td></tr>
+      <tr><td class="persona">MISSING · FPR <span class="basis">over-triage into "ask for documents"</span></td><td class="mono">1/8 · 12.5%</td><td class="mono rate-warn">14/24 · 58.3%</td><td class="mono">5/24 · 20.8%</td><td class="mono">3/24 · 12.5%</td></tr>
+      <tr><td class="persona">MANUAL_REVIEW · TPR <span class="basis">escalations caught</span></td><td class="mono">1/2 · 50%</td><td class="mono rate-danger">0/6 · 0%</td><td class="mono">2/6 · 33%</td><td class="mono rate-danger">0/6 · 0%</td></tr>
+      <tr><td class="persona">MANUAL_REVIEW · FPR <span class="basis">needless escalations</span></td><td class="mono">0/12 · 0%</td><td class="mono">4/36 · 11.1%</td><td class="mono">4/36 · 11.1%</td><td class="mono">2/36 · 5.6%</td></tr>
+      <tr><td class="persona">CONDITIONALLY_ELIGIBLE · TPR <span class="basis">no labeled persona expects it</span></td><td class="mono">—</td><td class="mono">—</td><td class="mono">—</td><td class="mono">—</td></tr>
+      <tr><td class="persona">CONDITIONALLY_ELIGIBLE · FPR <span class="basis">unwarranted conditional admits</span></td><td class="mono">0/14 · 0%</td><td class="mono">0/42 · 0%</td><td class="mono">1/42 · 2.4%</td><td class="mono rate-warn">4/42 · 9.5%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend">
+    <span>TPR = of runs whose expected label is the class, the share verdicted as that class. FPR = of runs expected as any other class, the share wrongly verdicted as it.</span>
+  </div>
+</section>
+
+<section>
+  <h2>How each option works</h2>
+  <div class="flows">
+
+    <div class="flow fA">
+      <div class="who"><span class="ltr">A</span><span class="nm">Rules engine</span>
+        <div class="gist">the model extracts typed facts; code makes the decision</div></div>
+      <div class="lane">
+        <span class="phase"><span class="ph">once per policy release</span>
+          <span class="pl">Leitfaden</span>
+          <span class="fa">→</span>
+          <span class="pl">rule authoring + human review</span>
+          <span class="fa">→</span>
+          <span class="pl a">versioned YAML rules</span>
+        </span>
+        <span class="fa">→</span>
+        <span class="phase per"><span class="ph">per application</span>
+          <span class="pl">applicant PDFs</span>
+          <span class="fa">→</span>
+          <span class="pl m">extract facts<small>model call</small></span>
+          <span class="fa">→</span>
+          <span class="pl a">typed facts + page refs</span>
+          <span class="fa">→</span>
+          <span class="pl">rules evaluator<small>code</small></span>
+          <span class="fa">→</span>
+          <span class="pl o">ApplicationResult</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="flow fB">
+      <div class="who"><span class="ltr">B</span><span class="nm">Full policy workflow</span>
+        <div class="gist">nothing prepared in advance — the whole handbook rides along on every run</div></div>
+      <div class="lane">
+        <span class="phase per"><span class="ph">per application · nothing cached</span>
+          <span class="pl">Leitfaden</span>
+          <span class="fa">→<i>93.5k tok</i></span>
+          <span class="pl m">policy_analyst<small>derives criteria</small></span>
+          <span class="fa">→<i>criteria JSON</i></span>
+          <span class="pl m">decision_maker<small>+ applicant PDFs</small></span>
+          <span class="fa">→</span>
+          <span class="pl o">ApplicationResult</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="flow fC">
+      <div class="who"><span class="ltr">C</span><span class="nm">Agentic RAG · TOC navigation</span>
+        <div class="gist">compiles criteria once from whole sections, then loops evaluator ⇄ critic</div></div>
+      <div class="lane">
+        <span class="phase"><span class="ph">once, then cached</span>
+          <span class="pl">Leitfaden</span>
+          <span class="fa">→</span>
+          <span class="pl m">agent reads sections by heading</span>
+          <span class="fa">→</span>
+          <span class="pl a">compiled criteria cache</span>
+        </span>
+        <span class="fa">→<i>~3.1k tok</i></span>
+        <span class="phase per"><span class="ph">per application</span>
+          <span class="pl">applicant PDFs</span>
+          <span class="fa">→</span>
+          <span class="pl m">evaluate</span>
+          <span class="fa">⇄<i>≤1 retry</i></span>
+          <span class="pl m">critic<small>never sees the PDFs</small></span>
+          <span class="fa">→</span>
+          <span class="pl o">ApplicationResult</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="flow fD">
+      <div class="who"><span class="ltr">D</span><span class="nm">Agentic RAG · vector retrieval</span>
+        <div class="gist">same graph as C; finds policy text by meaning instead of layout</div></div>
+      <div class="lane">
+        <span class="phase"><span class="ph">once, then cached</span>
+          <span class="pl">Leitfaden</span>
+          <span class="fa">→</span>
+          <span class="pl a">vector index<small>text-embedding-3-large</small></span>
+          <span class="fa">→</span>
+          <span class="pl m">agent retrieves top passages</span>
+          <span class="fa">→</span>
+          <span class="pl a">compiled criteria cache</span>
+        </span>
+        <span class="fa">→<i>~2.8k tok</i></span>
+        <span class="phase per"><span class="ph">per application</span>
+          <span class="pl">applicant PDFs</span>
+          <span class="fa">→</span>
+          <span class="pl m">evaluate</span>
+          <span class="fa">⇄<i>≤1 retry</i></span>
+          <span class="pl m">critic<small>never sees the PDFs</small></span>
+          <span class="fa">→</span>
+          <span class="pl o">ApplicationResult</span>
+        </span>
+      </div>
+    </div>
+
+  </div>
+  <div class="legend">
+    <span>colored border = model call · dashed = cached artifact · plain = document or code · <span class="mono">⇄</span> = the critic can demand at most one retry</span>
+    <span>option B's optional critic (<span class="mono">ENABLE_CRITIC</span>) was off for this experiment · full C/D spec: <span class="mono">experiment/admissions-agentic-rag/SPEC.md</span></span>
+  </div>
+</section>
+
+<section>
+  <h2>Cost &amp; tokens, per applicant</h2>
+  <div class="tablewrap">
+  <table style="min-width: 980px;">
+    <thead><tr>
+      <th></th><th style="color: var(--rules);">A · Rules engine</th><th style="color: var(--proto);">B · Full policy workflow</th><th style="color: var(--rag);">D · RAG vector</th><th style="color: var(--toc);">C · RAG TOC</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="persona">Model calls per decision</td><td class="mono">1 <span class="basis">facts extraction</span></td><td class="mono">2 <span class="basis">policy read + decision</span></td><td class="mono">4.8 <span class="basis">evaluator + critic loop</span></td><td class="mono">4.7 <span class="basis">evaluator + critic loop</span></td></tr>
+      <tr><td class="persona">Input tokens</td><td class="mono">14.3k <span class="basis">PDFs only</span></td><td class="mono">108.7k <span class="basis">93.5k policy + 15.2k decision</span></td><td class="mono">74.5k <span class="basis">PDFs + criteria + reviews</span></td><td class="mono">76.5k <span class="basis">PDFs + criteria + reviews</span></td></tr>
+      <tr><td class="persona">Output tokens</td><td class="mono">1.5k</td><td class="mono">7.5k</td><td class="mono">3.3k</td><td class="mono">3.4k</td></tr>
+      <tr><td class="persona">Latency</td><td class="mono">16.3 s <span class="basis">+ ms-scale evaluation</span></td><td class="mono">90 s <span class="basis">69 s policy + 21 s decision</span></td><td class="mono">29 s <span class="basis">mean · p95 39 s</span></td><td class="mono">28 s <span class="basis">mean · p95 40 s</span></td></tr>
+      <tr><td class="persona">Est. cost per decision</td><td class="mono">~$0.033 <span class="basis">terra extraction</span></td><td class="mono">$0.212 <span class="basis">terra list price</span></td><td class="mono">$0.025 <span class="basis">mini list price · 8.4× under option B</span></td><td class="mono">$0.026 <span class="basis">mini list price</span></td></tr>
+      <tr><td class="persona">Policy tokens</td><td class="mono">0 <span class="basis">compiled once into YAML</span></td><td class="mono">93.5k <span class="basis">re-read every single run</span></td><td class="mono">~2.8k <span class="basis">compile cached, amortized over 15</span></td><td class="mono">~3.1k <span class="basis">compile cached, amortized over 15</span></td></tr>
+      <tr><td class="persona">Re-evaluate a saved case</td><td class="mono">0 tokens <span class="basis">deterministic, offline</span></td><td class="mono">~116k tokens <span class="basis">full re-run</span></td><td class="mono">0 tokens <span class="basis">results.jsonl cache</span></td><td class="mono">0 tokens <span class="basis">results.jsonl cache</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend">
+    <span>Measured, not estimated: option A figures from the fresh baseline extractions (<span class="mono">baseline/*/application-facts.json</span> attempt metadata); option B figures are means over 96 calls in its <span class="mono">runs/ledger.jsonl</span>; options C &amp; D figures are means over their 45-run batches in <span class="mono">admissions-agentic-rag/runs/ledger.jsonl</span>.</span>
+    <span>Models differ by design: options A &amp; B on <span class="mono">gpt-5.6-terra</span>, options C &amp; D on <span class="mono">gpt-5.4-mini</span> — dollar rows use each model's list price; token and latency rows are directly measured.</span>
+  </div>
+  <div class="agree-band" style="margin-top: 14px;">
+    <span>experiment totals: <b>5.58M tokens</b> / 48 option B runs · <b>3.50M tokens</b> / 45 option D runs · <b>3.59M tokens</b> / 45 option C runs · <b>253k tokens</b> / 16 option A screenings</span>
+    <span>at the case study's ~50k applicants/year, the ~94k-token policy re-read alone is <b>~4.7B tokens/year</b> options A, C, and D don't spend</span>
+  </div>
+</section>
+
+<footer>
+  alternatives/option-b-full-policy-workflow/ · full-policy-workflow.ipynb (pipeline + evals) · runs/eval-summary.json · runs/comparison.csv · runs/disagreements.md (adjudication sheet)<br>
+  experiment/admissions-agentic-rag/ · SPEC.md · runs/results.jsonl (45-run option D + 45-run option C batches of 2026-08-26) · runs/criteria/{rag,toc}.json (compiled criteria cache) · baseline/&lt;persona&gt;/ (fresh option A runs, 15 personas)<br>
+  labels: samples/blank-documents/eval-tuples.md — 9 core + 5 derived; daniel-roth &amp; katharina-berger unlabeled · design decisions: docs/technical-design-document.md §4.1 D1 · bundle note: tobias-falk amended 2026-08-26 (IHK Ausbildungsbestätigung added)
+</footer>
+</div>

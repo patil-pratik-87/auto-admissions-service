@@ -1,0 +1,54 @@
+# Synthetic applicant. Angle: variant of tuple 18 — unknown-beats-computed
+# precedence test. GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE /
+# REQUIRED_FACT_UNKNOWN / REQUIRED_FIELD_ILLEGIBLE.
+# Field 30 = 15.02.2020-10.01.2023 (1,061 days if the day were legible); the
+# scan carries an ink blot over the DAY digits of the "bis" date, month/year
+# stay legible — so the legible months put the total just under 1,095, but
+# the exact day is unrecoverable. Expected: all_period_dates_known is false,
+# so the days computation stays unknown — the engine must NOT compute a
+# near-threshold result from a partial date. MISSING_INFORMATION,
+# PROFESSIONAL_EVIDENCE_INCOMPLETE beats a computed CLOSE_TO_EXPERIENCE_THRESHOLD.
+slug: melina-sturm
+name: "Melina Sturm"
+
+ihk:
+  kauffrau: true
+  geburtsdatum_lang: "3. Juni 1999"
+  datum: "31. Januar 2020"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"
+
+ba:
+  smudge_end_date: true
+  fields:
+    txtf_2_Betriebsnummer: "39518427"
+    txtf_3_Arbeitgeber: "MediaPunkt Handels GmbH"
+    txtf_4_Strasse: "Warendorfer Straße"
+    txtf_5_Hausnummer: "44"
+    txtf_6_PLZ: "48145"
+    txtf_7_Ort: "Münster"
+    txtf_8_Ansprechpartner: "Herr J. Ostendorf"
+    txtf_9_Telefonnummer: "0251 609280"
+    txtf_14_Vorname: "Melina"
+    txtf_15_Nachname: "Sturm"
+    txtf_16_Strasse: "Bremer Straße"
+    txtf_17_Hausnummer: "21"
+    txtf_18_PLZ: "48155"
+    txtf_19_Wohnort: "Münster"
+    txtf_20_Rentenversicherungsnummer: "13 030699 S 527"
+    txtf_21_Jahr: "2023"
+    txtf_22_Steuerklasse: "1"
+    txtf_30_Beschaeftigung_vom: "15.02.2020"
+    txtf_30_Beschaeftigung_bis: "10.01.2023"
+    txtf_31_letzte_Beschaeftigung: "Kauffrau für Büromanagement"
+    txtf_32_letzter_Beschaeftigungsort: "Münster"
+    # field 33 deliberately left empty: a filled "Wann hat das Arbeits-
+    # verhaeltnis geendet?" would leak the exact end date the smudge hides
+    txtf_71_Arbeitszeit: "39,00"
+    txtf_112_Firmenname: "MediaPunkt Handels GmbH"
+    txtf_113_Strasse: "Warendorfer Straße"
+    txtf_114_Hausnummer: "44"
+    txtf_115_PLZ: "48145"
+    txtf_116_Ort: "Münster"
+    txtf_117_Ort: "Münster"
+    txtf_118_Datum: "13.01.2023"

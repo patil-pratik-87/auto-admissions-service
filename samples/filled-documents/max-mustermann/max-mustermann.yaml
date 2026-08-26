@@ -1,0 +1,44 @@
+# Synthetic applicant record for filling sample document templates.
+# All personal data is invented.
+slug: max-mustermann # (placeholder name)
+name: "Mustermann, Max"
+birth_date: "14.03.2005"
+birth_place: "Musterstadt" # "Sample Town"
+address: "Musterstraße 12, 12345 Musterstadt"
+# Gymnasium = academic-track secondary school leading to university entrance
+school: "Städtisches Gymnasium Musterstadt, Musterstadt"
+# "in the upper secondary level of the Gymnasium" (grades 11-13, before the Abitur)
+school_type_insert: "in der gymnasialen Oberstufe"
+halbjahr_1: "1." # Halbjahr = school half-year / semester
+halbjahr_2: "2."
+
+# Grades page (4a, Gymnasiale Oberstufe = Gymnasium upper level). Fachergebnis
+# ("subject result") = sum of the two Schulhalbjahresergebnisse ("school
+# half-year results") per subject (0-15 point scale each).
+subjects_einfach: # einfach = "single-weighted" subjects
+  # columns: [Fach = subject, Zahl der Schulhalbjahresergebnisse = number of
+  #           half-year results, Fachergebnis = subject result]
+  - [Geschichte, "2", "21"] # History
+  - [Physik, "2", "19"]
+  - [Kunst, "2", "24"] # Art
+  - [Politik und Wirtschaft, "2", "20"] # Politics and Economics
+  - [Sport, "2", "26"]
+subjects_zweifach: # zweifach = "double-weighted" subjects
+  # columns: [Fach = subject, Fachergebnis (single-weighted value)]
+  - [Deutsch, "22"] # German
+  - [Mathematik, "19"]
+  - [Englisch, "24"]
+  - [Biologie, "21"]
+punktsumme_einfach: "110" # Punktsumme = "point total" of table I Fachergebnisse
+punktsumme_zweifach: "172" # point total of table II Fachergebnisse x 2
+# P = 110 + 172 = 282; S = 10 + 8x2 = 26; E = P/S x 19 = 206
+gesamtergebnis: "206" # Gesamtergebnis = "overall result"
+# Note ("grade") = 17/3 - E/57 = 2.0526, truncated (never rounded) -> 2,0.
+# Matches erika-musterfrau (same E=206 -> 2,0) and the bw-fhsr.pdf band table
+# (209-204 -> 2,0). German decimal comma: "2,0" means 2.0 (1.0 best, 4.0 pass)
+durchschnittsnote_ziffer: "2,0" # Durchschnittsnote (Ziffer) = "average grade, as a number"
+durchschnittsnote_text: "zwei Komma null" # the grade written out: "two point zero"
+
+ort_datum: "Musterstadt, den 15.07.2024" # Ort/Datum = "place, date"
+tutor: "M. Weber"
+schulleiter: "Dr. K. Schneider" # Schulleiter = school principal

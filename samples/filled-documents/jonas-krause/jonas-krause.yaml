@@ -1,0 +1,38 @@
+# Synthetic applicant. Angle: tuple 7 — school part only, no vocational proof
+# in the bundle: GERMAN_GENERAL_FACHHOCHSCHULREIFE / REQUIRED_FACT_UNKNOWN /
+# REQUIRED_FIELD_ABSENT (vocational_part_proven cannot be established).
+# Expected: MISSING_INFORMATION, GERMAN_GENERAL_FHR_EVIDENCE_INCOMPLETE.
+# Secondary detail: the Durchschnittsnote is deliberately left blank —
+# extraction must record the field as absent, not guess a value.
+slug: jonas-krause
+name: "Krause, Jonas"
+birth_date: "27.06.2003"
+birth_place: "Neustadt an der Beispiel"
+address: "Am Hang 27, 67890 Neustadt an der Beispiel"
+school: "Gesamtschule Neustadt, Neustadt an der Beispiel"
+school_type_insert: "in der gymnasialen Oberstufe"
+halbjahr_1: "1."
+halbjahr_2: "2."
+
+subjects_einfach:
+  - [Geschichte, "2", "19"]
+  - [Biologie, "2", "18"]
+  - [Kunst, "2", "21"]
+  - [Politik und Wirtschaft, "2", "17"]
+  - [Sport, "2", "21"]
+subjects_zweifach:
+  - [Deutsch, "20"]
+  - [Mathematik, "17"]
+  - [Englisch, "21"]
+  - [Chemie, "17"]
+punktsumme_einfach: "96"
+punktsumme_zweifach: "150"
+# P = 96 + 150 = 246; S = 26; E = 246/26 x 19 = 180
+gesamtergebnis: "180"
+# Durchschnittsnote omitted on purpose (would be 2,5) -> ABSENT edge case
+durchschnittsnote_ziffer: ""
+durchschnittsnote_text: ""
+
+ort_datum: "Neustadt, den 03.07.2022"
+tutor: "B. Lange"
+schulleiter: "Dr. F. Winter"

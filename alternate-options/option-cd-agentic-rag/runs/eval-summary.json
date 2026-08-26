@@ -1,0 +1,231 @@
+{
+  "generated_at": "2026-08-26T18:03:47.348957+00:00",
+  "model": "gpt-5.4-mini",
+  "n_personas": 27,
+  "accuracy_core": {
+    "rules": 0.889,
+    "naive": 0.444,
+    "toc": 0.556,
+    "rag": 0.556
+  },
+  "accuracy_all_labeled": {
+    "rules": 0.929,
+    "naive": 0.571,
+    "toc": 0.5,
+    "rag": 0.643
+  },
+  "agreement_vs_rules": {
+    "naive": 0.667,
+    "toc": 0.467,
+    "rag": 0.533
+  },
+  "stability": {
+    "naive": {
+      "personas_with_flips": 7,
+      "flip_rate": 0.467
+    },
+    "toc": {
+      "personas_with_flips": 7,
+      "flip_rate": 0.467
+    },
+    "rag": {
+      "personas_with_flips": 9,
+      "flip_rate": 0.6
+    },
+    "rules": {
+      "personas_with_flips": 0,
+      "flip_rate": 0.0,
+      "note": "deterministic evaluator, 0 by construction"
+    }
+  },
+  "critic": {
+    "toc": {
+      "runs": 45,
+      "approved_first": 9,
+      "retried": 36,
+      "resolved": 3,
+      "unresolved": 33,
+      "status_changed_by_retry": 22
+    },
+    "rag": {
+      "runs": 45,
+      "approved_first": 5,
+      "retried": 40,
+      "resolved": 7,
+      "unresolved": 33,
+      "status_changed_by_retry": 32
+    }
+  },
+  "cost": {
+    "ours_by_arm_node": {
+      "toc/compile_nav_t1": {
+        "calls": 3,
+        "input_tokens": 11214,
+        "output_tokens": 792,
+        "duration_ms": 20502
+      },
+      "toc/compile_nav_t2": {
+        "calls": 3,
+        "input_tokens": 45921,
+        "output_tokens": 1237,
+        "duration_ms": 18857
+      },
+      "toc/compile_nav_t3": {
+        "calls": 3,
+        "input_tokens": 123950,
+        "output_tokens": 1031,
+        "duration_ms": 18943
+      },
+      "toc/compile_extract": {
+        "calls": 3,
+        "input_tokens": 114765,
+        "output_tokens": 20853,
+        "duration_ms": 179432
+      },
+      "-/embed": {
+        "calls": 12,
+        "input_tokens": 330096,
+        "output_tokens": 0,
+        "duration_ms": 12776
+      },
+      "rag/compile_nav_t1": {
+        "calls": 6,
+        "input_tokens": 39625,
+        "output_tokens": 1102,
+        "duration_ms": 30101
+      },
+      "-/embed_query": {
+        "calls": 100,
+        "input_tokens": 3832,
+        "output_tokens": 0,
+        "duration_ms": 39524
+      },
+      "rag/compile_nav_t2": {
+        "calls": 6,
+        "input_tokens": 61145,
+        "output_tokens": 1222,
+        "duration_ms": 26286
+      },
+      "rag/compile_nav_t3": {
+        "calls": 1,
+        "input_tokens": 6740,
+        "output_tokens": 257,
+        "duration_ms": 4477
+      },
+      "rag/compile_extract": {
+        "calls": 7,
+        "input_tokens": 99941,
+        "output_tokens": 40563,
+        "duration_ms": 373862
+      },
+      "toc/evaluator": {
+        "calls": 5,
+        "input_tokens": 74448,
+        "output_tokens": 8492,
+        "duration_ms": 137271
+      },
+      "toc/critic_lookup": {
+        "calls": 97,
+        "input_tokens": 1373967,
+        "output_tokens": 14163,
+        "duration_ms": 215236
+      },
+      "toc/critic_review_1": {
+        "calls": 5,
+        "input_tokens": 59607,
+        "output_tokens": 4092,
+        "duration_ms": 71874
+      },
+      "toc/evaluator_retry": {
+        "calls": 2,
+        "input_tokens": 39037,
+        "output_tokens": 4033,
+        "duration_ms": 56963
+      },
+      "rag/evaluator": {
+        "calls": 5,
+        "input_tokens": 61093,
+        "output_tokens": 7502,
+        "duration_ms": 92571
+      },
+      "rag/critic_lookup": {
+        "calls": 75,
+        "input_tokens": 666421,
+        "output_tokens": 10628,
+        "duration_ms": 179638
+      },
+      "rag/critic_review_1": {
+        "calls": 5,
+        "input_tokens": 53888,
+        "output_tokens": 2311,
+        "duration_ms": 38361
+      },
+      "toc/critic_review_2": {
+        "calls": 2,
+        "input_tokens": 22460,
+        "output_tokens": 1914,
+        "duration_ms": 31746
+      },
+      "toc/evaluator_t1": {
+        "calls": 92,
+        "input_tokens": 1288807,
+        "output_tokens": 123885,
+        "duration_ms": 993694
+      },
+      "toc/critic_review_t1": {
+        "calls": 92,
+        "input_tokens": 1454299,
+        "output_tokens": 33385,
+        "duration_ms": 349660
+      },
+      "rag/evaluator_t1": {
+        "calls": 70,
+        "input_tokens": 928254,
+        "output_tokens": 89245,
+        "duration_ms": 817229
+      },
+      "toc/evaluator_t2": {
+        "calls": 72,
+        "input_tokens": 1564394,
+        "output_tokens": 103675,
+        "duration_ms": 725825
+      },
+      "toc/critic_review_t2": {
+        "calls": 72,
+        "input_tokens": 1152905,
+        "output_tokens": 27163,
+        "duration_ms": 306013
+      },
+      "rag/critic_review_t1": {
+        "calls": 70,
+        "input_tokens": 1209748,
+        "output_tokens": 24678,
+        "duration_ms": 327157
+      },
+      "rag/evaluator_t2": {
+        "calls": 53,
+        "input_tokens": 1217100,
+        "output_tokens": 75377,
+        "duration_ms": 649022
+      },
+      "rag/critic_review_t2": {
+        "calls": 53,
+        "input_tokens": 901943,
+        "output_tokens": 18280,
+        "duration_ms": 227691
+      }
+    },
+    "naive_total": {
+      "calls": 96,
+      "input_tokens": 5219918,
+      "output_tokens": 361588,
+      "duration_ms": 4322345
+    },
+    "rules_baseline_total": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "duration_ms": 0
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "calls":{
+    "decision_maker":48,
+    "policy_analyst":48
+  },
+  "mean_input_tokens":{
+    "decision_maker":15206.3,
+    "policy_analyst":93542.0
+  },
+  "mean_output_tokens":{
+    "decision_maker":1545.0,
+    "policy_analyst":5988.1
+  },
+  "mean_duration_s":{
+    "decision_maker":20.9,
+    "policy_analyst":69.2
+  },
+  "total_input_tokens":{
+    "decision_maker":729902,
+    "policy_analyst":4490016
+  },
+  "total_output_tokens":{
+    "decision_maker":74161,
+    "policy_analyst":287427
+  }
+}

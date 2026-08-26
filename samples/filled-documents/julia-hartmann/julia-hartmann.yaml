@@ -1,0 +1,33 @@
+# Synthetic applicant. Angle: tuple 21 — FACHGEBUNDENE_HOCHSCHULREIFE /
+# SATISFIED / CLEAN. Bayern Anlage 17 BOS Zeugnis der fachgebundenen
+# Hochschulreife, completed, German issuing region, no validity restriction.
+# Expected: ELIGIBLE, DACH_FACHGEBUNDENE_HZB_DIRECT_ACCESS.
+slug: julia-hartmann
+name: "Julia Hartmann"
+birth_date: "14.02.2001"
+birth_place: "Landshut"
+school: "Staatliche Berufsoberschule Regensburg, Regensburg"
+ausbildungsrichtung: "Technik"
+klasse: "13"
+
+# Note <-> Punkte per the printed mapping (12-10 = Note 2, 9-7 = Note 3, ...).
+faecher_links:
+  - ["Deutsch", "2", "11"]
+  - ["Englisch", "2", "10"]
+  - ["Mathematik", "3", "9"]
+  - ["Physik", "2", "12"]
+faecher_rechts:
+  - ["Chemie", "3", "8"]
+  - ["Technologie", "2", "11"]
+  - ["Sozialkunde", "2", "10"]
+  - ["Ethik", "1", "13"]
+seminararbeit:
+  thema: "Automatisierungstechnik in der industriellen Fertigung"
+  note: "2"
+  punkte: "11"
+
+durchschnittsnote_ziffer: "2,1"
+durchschnittsnote_text: "zwei Komma eins"
+ort_datum: "Regensburg, den 16.07.2021"
+vorsitz: "StD M. Huber"
+schulleiter: "OStD A. Maier"

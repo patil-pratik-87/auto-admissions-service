@@ -1,0 +1,32 @@
+# Synthetic applicant. Angle: BW full FHR Zeugnis with non-ASCII name
+# (extraction robustness), weaker grades near the lower Note range,
+# Technisches Gymnasium profile.
+slug: oemer-yilmaz
+name: "Ömer Yılmaz"
+birth_date: "30.09.2005"
+birth_place: "Reutlingen"
+school: "Technisches Gymnasium der Steinbeis-Schule Reutlingen"
+halbjahr_1: "1"
+halbjahr_2: "2"
+
+subjects_i:
+  - ["Technik (P)", "5", "6"]
+  - ["Deutsch", "6", "7"]
+subjects_ii:
+  - ["Mathematik", "7", "6"]
+  - ["Englisch", "8", "7"]
+  - ["Physik", "5", "6"]
+  - ["Wirtschaftslehre", "7", "8"]
+  - ["Chemie", "7", "7"]
+  - ["Sport", "7", ""]
+# P = 24 + 75 = 99; S = 15; E = 99/15 x 19 = 125.4 -> 125
+punktsumme: "99"
+gesamtergebnis: "125"
+# Rueckseite table: 129-124 -> 3,4
+durchschnittsnote_ziffer: "3,4"
+durchschnittsnote_text: "drei Komma vier"
+
+fremdsprachen:
+  - "Englisch – Niveau B1 (GER)"
+datum: "22.07.2024"
+schulleiter: "OStD H. Maier"

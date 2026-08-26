@@ -1,0 +1,79 @@
+dsl_version: "1.3"
+
+policy:
+  id: IU_MASTER_ACCESS
+  version: "0.1.0-proposed"
+
+  applies_when:
+    fact: application.study_level
+    eq: MASTER
+
+  sources:
+    - file: handbook.md
+      section: "(M.Sc.) Computer Science (MACS-120)"
+      subsections:
+        - "Admission requirements"
+        - "Optional entry option for the consecutive 120 ECTS variant via the Master entrance examination"
+    - file: handbook.md
+      section: "ACCESS TO MASTER STUDIES"
+      subsections:
+        - "Evidence of completed undergraduate studies"
+        - "Assessment of standard study duration where ECTS are not shown"
+    - file: handbook.md
+      section: "Supplement on the minimum grade for admission to Master & MBA programs"
+      subsections:
+        - "Compensation through relevant DQR 7 achievements"
+    - file: handbook.md
+      section: "English-Language Degree Programs"
+      subsections:
+        - "English language proof for non-native speakers"
+    - file: handbook.md
+      section: "Anabin"
+      subsections:
+        - "Equivalence of foreign higher education institutions and qualifications"
+        - "H+/- and unlisted institution process"
+    - file: handbook.md
+      section: "Master Zugangsprüfung (Master entrance examination)"
+      subsections:
+        - "Access for applicants with a Bachelor degree in a different subject area"
+        - "30 ECTS focus-area admission without the examination"
+
+  imports:
+    - namespace: rule_statuses
+      file: rule-statuses.yaml
+    - namespace: application_statuses
+      file: application-statuses.yaml
+    - namespace: requirements
+      file: common/requirements.yaml
+    - namespace: master_access_rules
+      file: master-access-rules.yaml
+
+  evaluation:
+    rule_groups:
+      - include: master_access_rules.MASTER_COMPUTER_SCIENCE_ACCESS_RULES
+
+  resolution:
+    first_match:
+      - when_any_rule:
+          ref: rule_statuses.ELIGIBLE
+        application_status:
+          ref: application_statuses.ELIGIBLE
+      - when_any_rule:
+          ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+        application_status:
+          ref: application_statuses.CONDITIONALLY_ELIGIBLE
+      - when_any_rule:
+          ref: rule_statuses.MANUAL_REVIEW
+        application_status:
+          ref: application_statuses.MANUAL_REVIEW
+      - when_any_rule:
+          ref: rule_statuses.MISSING_INFORMATION
+        application_status:
+          ref: application_statuses.MISSING_INFORMATION
+      - when_all_applicable_rules:
+          ref: rule_statuses.NOT_SATISFIED
+        application_status:
+          ref: application_statuses.INELIGIBLE
+      - when_no_recognized_rule: true
+        application_status:
+          ref: application_statuses.MANUAL_REVIEW

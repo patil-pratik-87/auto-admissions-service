@@ -1,0 +1,39 @@
+# Synthetic applicant. Angle: tuple 24 — FACHGEBUNDENE_HOCHSCHULREIFE /
+# REQUIRED_FACT_UNKNOWN / REQUIRED_FIELD_ILLEGIBLE. Completed fachgebundene
+# Hochschulreife whose issuing place cannot be read: the SCAN blots the
+# school/Schulort line and the Ort/Datum line, and the static entitlement
+# page (which names Bayern) is omitted as a partial upload. Extraction must
+# record the issuing country as unknown — the German language alone does not
+# resolve DACH vs. non-DACH. The birth place stays readable on purpose: it is
+# not evidence of the issuing region. Expected: MISSING_INFORMATION,
+# FACHGEBUNDENE_HZB_EVIDENCE_INCOMPLETE. Only the -scan.pdf belongs in the
+# eval bundle; the vector PDF leaks the covered text.
+slug: elif-demir
+name: "Elif Demir"
+birth_date: "21.04.2000"
+birth_place: "Nürnberg"
+school: "Städtische Berufsoberschule Nürnberg, Nürnberg"
+ausbildungsrichtung: "Wirtschaft"
+klasse: "13"
+smudge_issuing: true
+
+faecher_links:
+  - ["Deutsch", "2", "10"]
+  - ["Englisch", "2", "11"]
+  - ["Mathematik", "3", "9"]
+  - ["Betriebswirtschaftslehre", "2", "11"]
+faecher_rechts:
+  - ["Rechnungswesen", "2", "10"]
+  - ["Volkswirtschaftslehre", "3", "9"]
+  - ["Sozialkunde", "2", "11"]
+  - ["Ethik", "2", "12"]
+seminararbeit:
+  thema: "Digitalisierung im Einzelhandel"
+  note: "2"
+  punkte: "11"
+
+durchschnittsnote_ziffer: "2,2"
+durchschnittsnote_text: "zwei Komma zwei"
+ort_datum: "Nürnberg, den 15.07.2020"
+vorsitz: "StD J. Brandmeier"
+schulleiter: "OStD'in S. Ehrlinger"

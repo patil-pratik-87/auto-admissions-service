@@ -1,0 +1,35 @@
+# Synthetic applicant. Angle: tuple 23 — FACHGEBUNDENE_HOCHSCHULREIFE /
+# PROVEN_FALSE / SUPPORTED_FACT_VARIANT. Bayern Anlage 17 BOS Zeugnis whose
+# attestation is explicitly negated: "hat die Abiturprüfung nicht bestanden"
+# / "die fachgebundene Hochschulreife nicht verliehen". The document type is
+# still recognizable (the rule must APPLY and evaluate, not be skipped), but
+# qualification.completed is provably false. Durchschnittsnote deliberately
+# blank. Expected: NOT_SATISFIED, FACHGEBUNDENE_HZB_NOT_COMPLETED;
+# application INELIGIBLE because no other rule applies.
+slug: marco-lang
+name: "Marco Lang"
+birth_date: "03.09.1999"
+birth_place: "Augsburg"
+school: "Staatliche Berufsoberschule Augsburg, Augsburg"
+ausbildungsrichtung: "Technik"
+klasse: "13"
+nicht_bestanden: true
+
+faecher_links:
+  - ["Deutsch", "3", "8"]
+  - ["Englisch", "4", "5"]
+  - ["Mathematik", "5", "2"]
+  - ["Physik", "5", "3"]
+faecher_rechts:
+  - ["Chemie", "4", "4"]
+  - ["Technologie", "3", "7"]
+  - ["Sozialkunde", "3", "8"]
+  - ["Ethik", "2", "10"]
+seminararbeit:
+  thema: "Regenerative Energiesysteme im Wohnungsbau"
+  note: "4"
+  punkte: "5"
+
+ort_datum: "Augsburg, den 22.07.2022"
+vorsitz: "StD'in C. Wieland"
+schulleiter: "OStD F. Reischl"

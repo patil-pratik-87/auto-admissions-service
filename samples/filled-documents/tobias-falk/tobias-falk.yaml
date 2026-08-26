@@ -1,0 +1,64 @@
+# Synthetic applicant. Angle: tuple 17 — proven failure, the ONLY sample where
+# INELIGIBLE without a human is correct (when no other rule applies).
+# GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE / PROVEN_FALSE / CLEAN.
+# Same doc pair as tuples 13-15 but field 30 = 01.09.2021-05.10.2022 = 400
+# full-time-equivalent days: far below 1,095, below the 1,020 review band.
+# Expected: NOT_SATISFIED, PROFESSIONAL_EXPERIENCE_BELOW_THRESHOLD;
+# application INELIGIBLE when this is the only applicable rule.
+# Bundle amended 2026-08-26: the IHK exam certificate never states the
+# training duration, so the duration gate stopped evaluation before the
+# experience threshold and the honest outcome was MISSING_INFORMATION. An
+# IHK Ausbildungsbestätigung (§ 34 BBiG register confirmation) was added to
+# state the 36-month training period explicitly, making the originally
+# intended outcome reachable again.
+slug: tobias-falk
+name: "Tobias Falk"
+
+ihk:
+  geburtsdatum_lang: "9. Juli 2001"
+  datum: "2. Juli 2021"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"
+
+ausbildungsbestaetigung:
+  anrede: "Herr"
+  beruf: "Kaufmann für Büromanagement"
+  betrieb: "Borghoff & Söhne KG, Münster"
+  beginn: "01.08.2018"
+  ende: "31.07.2021"
+  dauer: "36 Monate"
+  pruefung_bestanden_am: "02.07.2021"
+  datum: "15.07.2021"
+
+ba:
+  fields:
+    txtf_2_Betriebsnummer: "77064213"
+    txtf_3_Arbeitgeber: "Borghoff & Söhne KG"
+    txtf_4_Strasse: "Hammer Straße"
+    txtf_5_Hausnummer: "89"
+    txtf_6_PLZ: "48153"
+    txtf_7_Ort: "Münster"
+    txtf_8_Ansprechpartner: "Frau L. Borghoff"
+    txtf_9_Telefonnummer: "0251 774310"
+    txtf_14_Vorname: "Tobias"
+    txtf_15_Nachname: "Falk"
+    txtf_16_Strasse: "Friedrich-Ebert-Straße"
+    txtf_17_Hausnummer: "8"
+    txtf_18_PLZ: "48153"
+    txtf_19_Wohnort: "Münster"
+    txtf_20_Rentenversicherungsnummer: "18 090701 F 011"
+    txtf_21_Jahr: "2022"
+    txtf_22_Steuerklasse: "1"
+    txtf_30_Beschaeftigung_vom: "01.09.2021"
+    txtf_30_Beschaeftigung_bis: "05.10.2022"
+    txtf_31_letzte_Beschaeftigung: "Kaufmann für Büromanagement"
+    txtf_32_letzter_Beschaeftigungsort: "Münster"
+    txtf_33_Arbeitsverhaeltnis_beendet: "05.10.2022"
+    txtf_71_Arbeitszeit: "39,00"
+    txtf_112_Firmenname: "Borghoff & Söhne KG"
+    txtf_113_Strasse: "Hammer Straße"
+    txtf_114_Hausnummer: "89"
+    txtf_115_PLZ: "48153"
+    txtf_116_Ort: "Münster"
+    txtf_117_Ort: "Münster"
+    txtf_118_Datum: "10.10.2022"

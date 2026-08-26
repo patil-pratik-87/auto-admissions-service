@@ -1,0 +1,329 @@
+fixture_version: "1.0"
+policy: {id: IU_BACHELOR_ACCESS, version: "0.0.22"}
+
+scenarios:
+  - id: "01"
+    description: Clean German Abitur
+    school: {type: ALLGEMEINE_HOCHSCHULREIFE}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_ABITUR: {status: ELIGIBLE, reason_code: GERMAN_ABITUR_DIRECT_ACCESS, candidate: school}
+
+  - id: "02"
+    description: Abitur remains eligible when an irrelevant grade is absent
+    school: {type: ALLGEMEINE_HOCHSCHULREIFE}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_ABITUR: {status: ELIGIBLE, reason_code: GERMAN_ABITUR_DIRECT_ACCESS, candidate: school}
+
+  - id: "03"
+    description: Abitur with unsupported territorial restriction
+    school:
+      type: ALLGEMEINE_HOCHSCHULREIFE
+      validity_restriction_present: true
+      validity_restriction_code: OTHER
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        GERMAN_ABITUR: {status: NOT_SATISFIED, reason_code: GERMAN_ABITUR_REQUIREMENTS_NOT_MET, candidate: school}
+
+  - id: "04"
+    description: Abitur with conflicting territorial restriction values
+    school:
+      type: ALLGEMEINE_HOCHSCHULREIFE
+      validity_restriction_present: true
+      validity_restriction_code: {state: CONFLICTING, values: [THURINGIA, OTHER]}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_ABITUR: {status: MISSING_INFORMATION, reason_code: GERMAN_ABITUR_EVIDENCE_INCOMPLETE, candidate: school}
+
+  - id: "05"
+    description: Complete FHR with accepted Bavaria and Saxony exception
+    school:
+      type: FACHHOCHSCHULREIFE
+      validity_restriction_present: true
+      validity_restriction_code: ALL_STATES_EXCEPT_BAVARIA_AND_SAXONY
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_GENERAL_FACHHOCHSCHULREIFE: {status: ELIGIBLE, reason_code: GERMAN_GENERAL_FHR_DIRECT_ACCESS, candidate: school}
+
+  - id: "06"
+    description: Complete two-part FHR bundle
+    school: {type: FACHHOCHSCHULREIFE}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_GENERAL_FACHHOCHSCHULREIFE: {status: ELIGIBLE, reason_code: GERMAN_GENERAL_FHR_DIRECT_ACCESS, candidate: school}
+
+  - id: "07"
+    description: FHR school part without vocational part
+    school:
+      type: FACHHOCHSCHULREIFE
+      vocational_part_proven: {state: MISSING}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_GENERAL_FACHHOCHSCHULREIFE: {status: MISSING_INFORMATION, reason_code: GERMAN_GENERAL_FHR_EVIDENCE_INCOMPLETE, candidate: school}
+
+  - id: "08"
+    description: Complete FHR with unsupported territorial restriction
+    school:
+      type: FACHHOCHSCHULREIFE
+      validity_restriction_present: true
+      validity_restriction_code: OTHER
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        GERMAN_GENERAL_FACHHOCHSCHULREIFE: {status: NOT_SATISFIED, reason_code: GERMAN_GENERAL_FHR_REQUIREMENTS_NOT_MET, candidate: school}
+
+  - id: "09"
+    description: Completed DQR-6 advanced vocational qualification
+    advanced: {type: ADVANCED_VOCATIONAL, dqr_or_eqr_level: 6}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL: {status: ELIGIBLE, reason_code: ADVANCED_VOCATIONAL_DIRECT_ACCESS, candidate: advanced}
+
+  - id: "10"
+    description: Advanced qualification passes the 400-hour alternative
+    advanced: {type: ADVANCED_VOCATIONAL, dqr_or_eqr_level: 5, teaching_hours: 400}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL: {status: ELIGIBLE, reason_code: ADVANCED_VOCATIONAL_DIRECT_ACCESS, candidate: advanced}
+
+  - id: "11"
+    description: Advanced qualification fails both level alternatives
+    advanced: {type: ADVANCED_VOCATIONAL, dqr_or_eqr_level: 5, teaching_hours: 399}
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL: {status: NOT_SATISFIED, reason_code: ADVANCED_VOCATIONAL_REQUIREMENTS_NOT_MET, candidate: advanced}
+
+  - id: "12"
+    description: Meister level evidence is absent
+    advanced:
+      type: MEISTER
+      dqr_or_eqr_level: {state: MISSING}
+      teaching_hours: {state: MISSING}
+      builds_on_completed_training: {state: MISSING}
+      builds_on_recognized_training: {state: MISSING}
+    expected:
+      application_status: MANUAL_REVIEW
+      application_reason_code: ACADEMIC_ACCESS_MANUAL_REVIEW
+      rules:
+        GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL: {status: MANUAL_REVIEW, reason_code: ADVANCED_VOCATIONAL_LEVEL_UNCLEAR, candidate: advanced}
+
+  - id: "13"
+    description: Professional threshold reached with matching subject
+    professional: {full_time_equivalent_days_after_training: 1095, subject_relationship: MATCH}
+    expected:
+      application_status: CONDITIONALLY_ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_CONDITIONALLY_ELIGIBLE
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE:
+          status: CONDITIONALLY_ELIGIBLE
+          reason_code: PROFESSIONAL_ACCESS_TRIAL_STUDY
+          candidate: professional
+          condition:
+            id: TRIAL_STUDY
+            parameters: {first_subject_semesters: 2, minimum_newly_earned_ects: 15, recognized_ects_reduce_minimum: false, part_time_duration: PROPORTIONAL_EXTENSION}
+
+  - id: "14"
+    description: Professional threshold reached with nonmatching subject
+    professional: {full_time_equivalent_days_after_training: 1095, subject_relationship: NO_MATCH}
+    expected:
+      application_status: CONDITIONALLY_ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_CONDITIONALLY_ELIGIBLE
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE:
+          status: CONDITIONALLY_ELIGIBLE
+          reason_code: PROFESSIONAL_ACCESS_ENTRANCE_EXAMINATION
+          candidate: professional
+          condition:
+            id: PROFESSIONAL_ENTRANCE_EXAMINATION
+            parameters: {duration_months: 12, ects_range: [10, 15], required_courses: [ACADEMIC_WORK, PROGRAM_SUBJECT_COURSE, STUDY_APTITUDE_TEST]}
+
+  - id: "15"
+    description: Professional threshold reached with uncertain subject
+    professional: {full_time_equivalent_days_after_training: 1095, subject_relationship: UNCERTAIN}
+    expected:
+      application_status: MANUAL_REVIEW
+      application_reason_code: ACADEMIC_ACCESS_MANUAL_REVIEW
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: MANUAL_REVIEW, reason_code: SUBJECT_MATCH_REVIEW, candidate: professional}
+
+  - id: "16"
+    description: Professional experience is inside the review band
+    professional: {full_time_equivalent_days_after_training: 1060}
+    expected:
+      application_status: MANUAL_REVIEW
+      application_reason_code: ACADEMIC_ACCESS_MANUAL_REVIEW
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: MANUAL_REVIEW, reason_code: CLOSE_TO_EXPERIENCE_THRESHOLD, candidate: professional}
+
+  - id: "17"
+    description: Professional experience is below the lower threshold
+    professional: {full_time_equivalent_days_after_training: 1019}
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: NOT_SATISFIED, reason_code: PROFESSIONAL_EXPERIENCE_BELOW_THRESHOLD, candidate: professional}
+
+  - id: "18"
+    description: Weekly hours and experience total are missing
+    professional:
+      all_weekly_hours_known: {state: MISSING}
+      full_time_equivalent_days_after_training: {state: MISSING}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: MISSING_INFORMATION, reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE, candidate: professional}
+
+  - id: "19"
+    description: Eligible Abitur overrides an incomplete professional rule
+    school: {type: ALLGEMEINE_HOCHSCHULREIFE}
+    professional:
+      all_weekly_hours_known: {state: MISSING}
+      full_time_equivalent_days_after_training: {state: MISSING}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        GERMAN_ABITUR: {status: ELIGIBLE, reason_code: GERMAN_ABITUR_DIRECT_ACCESS, candidate: school}
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: MISSING_INFORMATION, reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE, candidate: professional}
+
+  - id: "20"
+    description: No submitted qualification matches a supported rule
+    school: {type: OTHER}
+    expected:
+      application_status: MANUAL_REVIEW
+      application_reason_code: NO_RECOGNIZED_ADMISSIONS_RULE
+      rules: {}
+
+  - id: "21"
+    description: DACH subject-restricted qualification gives direct access
+    school: {type: FACHGEBUNDENE_HOCHSCHULREIFE, issuing_region: DACH}
+    expected:
+      application_status: ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_ELIGIBLE
+      rules:
+        FACHGEBUNDENE_HOCHSCHULREIFE: {status: ELIGIBLE, reason_code: DACH_FACHGEBUNDENE_HZB_DIRECT_ACCESS, candidate: school}
+
+  - id: "22"
+    description: Outside-DACH subject-restricted qualification requires trial study
+    school: {type: FACHGEBUNDENE_HOCHSCHULREIFE, issuing_region: OUTSIDE_DACH}
+    expected:
+      application_status: CONDITIONALLY_ELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_CONDITIONALLY_ELIGIBLE
+      rules:
+        FACHGEBUNDENE_HOCHSCHULREIFE:
+          status: CONDITIONALLY_ELIGIBLE
+          reason_code: FOREIGN_FACHGEBUNDENE_HZB_TRIAL_STUDY
+          candidate: school
+          condition:
+            id: TRIAL_STUDY
+            parameters: {first_subject_semesters: 2, minimum_newly_earned_ects: 15, recognized_ects_reduce_minimum: false, part_time_duration: PROPORTIONAL_EXTENSION}
+
+  - id: "23"
+    description: Subject-restricted qualification is explicitly incomplete
+    school: {type: FACHGEBUNDENE_HOCHSCHULREIFE, completed: false}
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        FACHGEBUNDENE_HOCHSCHULREIFE: {status: NOT_SATISFIED, reason_code: FACHGEBUNDENE_HZB_NOT_COMPLETED, candidate: school}
+
+  - id: "24"
+    description: Subject-restricted issuing region is unreadable
+    school:
+      type: FACHGEBUNDENE_HOCHSCHULREIFE
+      issuing_region: {state: UNREADABLE}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        FACHGEBUNDENE_HOCHSCHULREIFE: {status: MISSING_INFORMATION, reason_code: FACHGEBUNDENE_HZB_EVIDENCE_INCOMPLETE, candidate: school}
+
+  - id: "25"
+    description: Subject-restricted territorial restriction is unsupported
+    school:
+      type: FACHGEBUNDENE_HOCHSCHULREIFE
+      validity_restriction_present: true
+      validity_restriction_code: OTHER
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        FACHGEBUNDENE_HOCHSCHULREIFE: {status: NOT_SATISFIED, reason_code: FACHGEBUNDENE_HZB_VALIDITY_RESTRICTION_NOT_ACCEPTED, candidate: school}
+
+  - id: "26"
+    description: Abitur country is unreadable
+    school: {type: ALLGEMEINE_HOCHSCHULREIFE, country: {state: UNREADABLE}}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_ABITUR: {status: MISSING_INFORMATION, reason_code: ABITUR_COUNTRY_UNKNOWN, candidate: school}
+
+  - id: "27"
+    description: Known foreign Abitur is not applicable to the German rule
+    school: {type: ALLGEMEINE_HOCHSCHULREIFE, country: FR}
+    expected:
+      application_status: MANUAL_REVIEW
+      application_reason_code: NO_RECOGNIZED_ADMISSIONS_RULE
+      rules:
+        GERMAN_ABITUR: {status: NOT_APPLICABLE, reason_code: ABITUR_NOT_GERMAN, candidate: school}
+
+  - id: "28"
+    description: FHR access scope is unreadable
+    school: {type: FACHHOCHSCHULREIFE, access_scope: {state: UNREADABLE}}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_GENERAL_FACHHOCHSCHULREIFE: {status: MISSING_INFORMATION, reason_code: FHR_APPLICABILITY_UNKNOWN, candidate: school}
+
+  - id: "29"
+    description: Vocational training is explicitly incomplete
+    professional: {completed: false}
+    expected:
+      application_status: INELIGIBLE
+      application_reason_code: ACADEMIC_ACCESS_INELIGIBLE
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: NOT_SATISFIED, reason_code: VOCATIONAL_TRAINING_REQUIREMENTS_NOT_MET, candidate: professional}
+
+  - id: "30"
+    description: Vocational training completion is unreadable
+    professional: {completed: {state: UNREADABLE}}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: MISSING_INFORMATION, reason_code: PROFESSIONAL_EVIDENCE_INCOMPLETE, candidate: professional}
+
+  - id: "31"
+    description: Vocational training country is unreadable
+    professional: {country: {state: UNREADABLE}}
+    expected:
+      application_status: MISSING_INFORMATION
+      application_reason_code: ACADEMIC_ACCESS_MISSING_INFORMATION
+      rules:
+        GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE: {status: MISSING_INFORMATION, reason_code: VOCATIONAL_TRAINING_COUNTRY_UNKNOWN, candidate: professional}

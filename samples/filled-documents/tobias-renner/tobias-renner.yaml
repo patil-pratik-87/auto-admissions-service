@@ -1,0 +1,57 @@
+# Synthetic applicant. Angle: tuple 18 — experience evidence present but
+# insufficient. GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE /
+# REQUIRED_FACT_UNKNOWN / REQUIRED_FIELD_ABSENT. Bundle: IHK Prüfungszeugnis
+# (valid DQR-4 training proof, so the training facts are complete) + prose
+# Arbeitszeugnis as the only experience proof. The letter states the
+# employment period (01.08.2019–31.10.2023, would clearly exceed 1,095 days
+# IF full-time) and duties, but never weekly hours or full-time/part-time
+# status — all_weekly_hours_known is false, so full-time-equivalent days
+# cannot be established. Expected: MISSING_INFORMATION,
+# PROFESSIONAL_EVIDENCE_INCOMPLETE, and nothing else. The coded evaluation
+# prose is irrelevant to eligibility and must not be read as evidence.
+slug: tobias-renner
+name: "Tobias Renner"
+nachname: "Renner"
+anrede: "Herr"
+dank_pronomen: "ihm"
+birth_date: "08.03.1998"
+birth_place: "Kassel"
+
+# IHK Prüfungszeugnis (training proof; trained near Münster, moved to Kassel
+# for work). Same Sommerprüfung 2019 as daniel-roth — chamber-wide exam dates.
+ihk:
+  geburtsdatum_lang: "8. März 1998"
+  datum: "21. Juni 2019"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"
+
+firma: "Nordhessen Logistik GmbH"
+firma_adresse: "Industriestraße 27, 34123 Kassel"
+firma_beschreibung: >-
+  Die Nordhessen Logistik GmbH ist ein mittelständischer Logistikdienstleister
+  mit rund 180 Mitarbeiterinnen und Mitarbeitern. Wir betreiben ein
+  Zentrallager in Kassel sowie regionale Distributionsverkehre für Kunden aus
+  Handel und Industrie.
+position: "Fachkraft für Lagerlogistik"
+vom: "01.08.2019"
+bis: "31.10.2023"
+aufgaben:
+  - "Annahme der Waren und Prüfung der Lieferungen anhand der Begleitpapiere"
+  - "Einlagerung und Kommissionierung unter Einsatz des Lagerverwaltungssystems"
+  - "Erstellung von Versand- und Frachtdokumenten"
+  - "Mitwirkung bei der jährlichen Inventur und bei Bestandskontrollen"
+beurteilung:
+  - >-
+    Herr Renner hat sich innerhalb kürzester Zeit mit großem Engagement in den
+    ihm übertragenen Aufgabenbereich eingearbeitet. Er arbeitete stets
+    effizient, zielstrebig und sorgfältig und bewies dabei ein hohes Maß an
+    Organisationsgeschick.
+  - >-
+    Herr Renner erledigte seine Aufgaben stets zu unserer vollsten
+    Zufriedenheit. Auch in Situationen mit hohem Arbeitsanfall erwies er sich
+    als sehr belastbar und ging jederzeit überlegt und zielorientiert vor. Von
+    Vorgesetzten und Kollegen wurde er gleichermaßen geschätzt; sein Verhalten
+    war stets vorbildlich.
+ort_datum: "Kassel, den 31.10.2023"
+unterzeichner: "Petra Vogel"
+unterzeichner_titel: "Leiterin Personal"

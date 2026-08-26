@@ -1,0 +1,49 @@
+# Synthetic applicant. Angle: tuple 6 — GERMAN_GENERAL_FACHHOCHSCHULREIFE /
+# SATISFIED / MIXED_BUNDLE. KMK school-part certificate plus a separate
+# vocational-part proof (IHK Prüfungszeugnis, Kauffrau für Büromanagement,
+# Ausbildung 08/2023-06/2026 after the school part). The fact builder must
+# combine both documents: school_part_proven from the KMK Zeugnis,
+# vocational_part_proven from the IHK Zeugnis, no validity restriction.
+# Expected: ELIGIBLE, GERMAN_GENERAL_FHR_DIRECT_ACCESS.
+slug: anna-beispiel
+name: "Beispiel, Anna"
+birth_date: "02.11.2004"
+birth_place: "Beispielhausen"
+address: "Gartenweg 3, 54321 Beispielhausen"
+school: "Albert-Einstein-Gymnasium Beispielhausen, Beispielhausen"
+school_type_insert: "in der gymnasialen Oberstufe"
+halbjahr_1: "1."
+halbjahr_2: "2."
+
+subjects_einfach: # [Fach, Zahl SHJ-Ergebnisse, Fachergebnis]
+  - [Geschichte, "2", "23"]
+  - [Chemie, "2", "22"]
+  - [Musik, "2", "25"]
+  - [Erdkunde, "2", "21"]
+  - [Sport, "2", "24"]
+subjects_zweifach:
+  - [Deutsch, "24"]
+  - [Mathematik, "22"]
+  - [Französisch, "25"]
+  - [Physik, "22"]
+punktsumme_einfach: "115"
+punktsumme_zweifach: "186"
+# P = 115 + 186 = 301; S = 26; E = 301/26 x 19 = 220
+gesamtergebnis: "220"
+# Note = 17/3 - 220/57 = 1.81 -> 1,8
+durchschnittsnote_ziffer: "1,8"
+durchschnittsnote_text: "eins Komma acht"
+
+ort_datum: "Beispielhausen, den 12.07.2023"
+tutor: "S. Hoffmann"
+schulleiter: "R. Bergmann"
+
+# Vocational-part proof (tuple 6 completion): IHK Prüfungszeugnis, Kauffrau
+# für Büromanagement, Ausbildung 08/2023-06/2026 after the school part.
+ihk:
+  name: "Anna Beispiel"
+  kauffrau: true
+  geburtsdatum_lang: "02.11.2004"
+  datum: "19. Juni 2026"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"

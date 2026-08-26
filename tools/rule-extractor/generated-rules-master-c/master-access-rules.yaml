@@ -1,0 +1,168 @@
+dsl_version: "1.3"
+
+module:
+  id: IU_MASTER_ACCESS_RULES
+  version: "0.1.0-proposed"
+
+  imports:
+    - namespace: rule_statuses
+      file: rule-statuses.yaml
+    - namespace: conditions
+      file: common/conditions.yaml
+
+  requires_namespaces:
+    - requirements
+
+  exports:
+    MASTER_COMPUTER_SCIENCE_ACCESS_RULES:
+      id: MASTER_COMPUTER_SCIENCE_ACCESS_RULES
+      rules:
+        - id: MASTER_CS_RELEVANT_UNDERGRADUATE_DIRECT_ACCESS
+          select:
+            from: master_admission_candidates
+            as: candidate
+            where:
+              fact: candidate.program.code
+              eq: MACS_120
+          require:
+            all_of:
+              - ref: requirements.general_master_admission_requirements
+              - ref: requirements.computer_science_related_undergraduate_field
+          result:
+            satisfied:
+              status:
+                ref: rule_statuses.ELIGIBLE
+              reason_code: MASTER_CS_RELEVANT_UNDERGRADUATE_DIRECT_ACCESS
+            not_satisfied:
+              status:
+                ref: rule_statuses.NOT_SATISFIED
+              reason_code: MASTER_CS_RELEVANT_UNDERGRADUATE_REQUIREMENTS_NOT_MET
+            unknown:
+              status:
+                ref: rule_statuses.MISSING_INFORMATION
+              reason_code: MASTER_CS_UNDERGRADUATE_EVIDENCE_INCOMPLETE
+
+        - id: MASTER_CS_DIFFERENT_SUBJECT_FOCUS_AREA_ACCESS
+          select:
+            from: master_admission_candidates
+            as: candidate
+            where:
+              fact: candidate.program.code
+              eq: MACS_120
+          require:
+            all_of:
+              - ref: requirements.general_master_admission_requirements
+              - ref: requirements.different_undergraduate_field
+              - ref: requirements.focus_area_credits_sufficient
+          result:
+            satisfied:
+              status:
+                ref: rule_statuses.ELIGIBLE
+              reason_code: MASTER_CS_FOCUS_AREA_30_ECTS_DIRECT_ACCESS
+            not_satisfied:
+              status:
+                ref: rule_statuses.NOT_SATISFIED
+              reason_code: MASTER_CS_FOCUS_AREA_REQUIREMENTS_NOT_MET
+            unknown:
+              status:
+                ref: rule_statuses.MISSING_INFORMATION
+              reason_code: MASTER_CS_FOCUS_AREA_EVIDENCE_INCOMPLETE
+
+        - id: MASTER_CS_DIFFERENT_SUBJECT_ENTRANCE_EXAMINATION
+          select:
+            from: master_admission_candidates
+            as: candidate
+            where:
+              fact: candidate.program.code
+              eq: MACS_120
+          branches:
+            first_match:
+              - when:
+                  all_of:
+                    - ref: requirements.general_master_admission_requirements
+                    - ref: requirements.different_undergraduate_field
+                    - ref: requirements.master_entrance_examination_passed
+                result:
+                  status:
+                    ref: rule_statuses.ELIGIBLE
+                  reason_code: MASTER_CS_ENTRANCE_EXAMINATION_PASSED
+              - when:
+                  all_of:
+                    - ref: requirements.general_master_admission_requirements
+                    - ref: requirements.different_undergraduate_field
+                    - ref: requirements.master_entrance_examination_pending
+                result:
+                  status:
+                    ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                  reason_code: MASTER_CS_ENTRANCE_EXAMINATION_REQUIRED
+                  condition: conditions.MASTER_ENTRANCE_EXAMINATION
+            unknown:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: MASTER_CS_ENTRANCE_EXAMINATION_EVIDENCE_INCOMPLETE
+            otherwise:
+              result:
+                status:
+                  ref: rule_statuses.NOT_SATISFIED
+                reason_code: MASTER_CS_ENTRANCE_EXAMINATION_REQUIREMENTS_NOT_MET
+
+        - id: MASTER_CS_FOREIGN_UNDERGRADUATE_TRIAL_STUDY
+          select:
+            from: master_admission_candidates
+            as: candidate
+            where:
+              fact: candidate.program.code
+              eq: MACS_120
+          branches:
+            first_match:
+              - when:
+                  all_of:
+                    - ref: requirements.completed_undergraduate_degree
+                    - ref: requirements.undergraduate_ects_sufficient
+                    - ref: requirements.undergraduate_evidence_complete
+                    - ref: requirements.minimum_grade_or_dqr7_compensation
+                    - ref: requirements.english_language_requirement_met
+                    - ref: requirements.foreign_undergraduate_trial_study_decided
+                result:
+                  status:
+                    ref: rule_statuses.CONDITIONALLY_ELIGIBLE
+                  reason_code: MASTER_CS_FOREIGN_EQUIVALENCE_TRIAL_STUDY
+                  condition: conditions.FOREIGN_EQUIVALENCE_TRIAL_STUDY
+            unknown:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: MASTER_CS_FOREIGN_EQUIVALENCE_EVIDENCE_INCOMPLETE
+            otherwise:
+              result:
+                status:
+                  ref: rule_statuses.NOT_APPLICABLE
+                reason_code: MASTER_CS_FOREIGN_EQUIVALENCE_NOT_APPLICABLE
+
+        - id: MASTER_CS_SUBJECT_RELATIONSHIP_REVIEW
+          select:
+            from: master_admission_candidates
+            as: candidate
+            where:
+              fact: candidate.program.code
+              eq: MACS_120
+          branches:
+            first_match:
+              - when:
+                  fact: candidate.undergraduate.relationship_to_computer_science
+                  eq: UNCERTAIN
+                result:
+                  status:
+                    ref: rule_statuses.MANUAL_REVIEW
+                  reason_code: MASTER_CS_SUBJECT_RELATIONSHIP_REVIEW
+            unknown:
+              result:
+                status:
+                  ref: rule_statuses.MISSING_INFORMATION
+                reason_code: MASTER_CS_SUBJECT_RELATIONSHIP_UNKNOWN
+            otherwise:
+              result:
+                status:
+                  ref: rule_statuses.NOT_APPLICABLE
+                reason_code: MASTER_CS_SUBJECT_RELATIONSHIP_NOT_APPLICABLE

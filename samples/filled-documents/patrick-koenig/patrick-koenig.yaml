@@ -1,0 +1,39 @@
+# Synthetic applicant. Angle: tuple 25 — FACHGEBUNDENE_HOCHSCHULREIFE /
+# PROVEN_FALSE / SUPPORTED_FACT_VARIANT. Completed Bayern Anlage 17 BOS
+# Zeugnis with an additional printed validity restriction limiting the
+# entitlement to Hochschulen des Freistaates Bayern — stated, readable, and
+# normalized to validity_restriction_code OTHER, which is not accepted.
+# Expected: NOT_SATISFIED, FACHGEBUNDENE_HZB_VALIDITY_RESTRICTION_NOT_ACCEPTED;
+# application INELIGIBLE because no other rule applies.
+slug: patrick-koenig
+name: "Patrick König"
+birth_date: "30.10.1998"
+birth_place: "Schweinfurt"
+school: "Staatliche Berufsoberschule Würzburg, Würzburg"
+ausbildungsrichtung: "Technik"
+klasse: "13"
+
+faecher_links:
+  - ["Deutsch", "3", "9"]
+  - ["Englisch", "3", "8"]
+  - ["Mathematik", "2", "11"]
+  - ["Physik", "2", "10"]
+faecher_rechts:
+  - ["Chemie", "3", "9"]
+  - ["Technologie", "2", "11"]
+  - ["Sozialkunde", "2", "10"]
+  - ["Ethik", "2", "12"]
+seminararbeit:
+  thema: "Werkstoffprüfung im Maschinenbau"
+  note: "3"
+  punkte: "9"
+
+durchschnittsnote_ziffer: "2,4"
+durchschnittsnote_text: "zwei Komma vier"
+
+restriction_lines:
+  - "Dieses Zeugnis berechtigt nur zum Studium an den Hochschulen des Freistaates Bayern."
+
+ort_datum: "Würzburg, den 18.07.2019"
+vorsitz: "StD B. Öchsner"
+schulleiter: "OStD K. Hemmelmann"

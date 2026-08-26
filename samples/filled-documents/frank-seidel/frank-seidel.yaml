@@ -1,0 +1,29 @@
+# Synthetic applicant. Angle: tuple 11 — GERMAN_MEISTER_OR_ADVANCED_VOCATIONAL
+# / PROVEN_FALSE / CLEAN. Completed Fortbildung certificate that explicitly
+# states DQR Niveau 5 AND a course volume of 220 teaching hours — both
+# direct-access alternatives (DQR >= 6; >= 400 teaching hours) are provably
+# false, nothing is unknown. Expected: NOT_SATISFIED,
+# ADVANCED_VOCATIONAL_REQUIREMENTS_NOT_MET; application INELIGIBLE because no
+# other rule applies.
+slug: frank-seidel
+name: "Frank Seidel"
+birth_date: "02.12.1992"
+birth_place: "Esslingen am Neckar"
+
+chamber: "Industrie- und Handelskammer Region Stuttgart"
+qualification: "Geprüfter Kfz-Servicetechniker"
+gesamt_note: "befriedigend"
+gesamt_punkte: "79"
+pruefungsteile:
+  - ["Fachpraktische Prüfung", "gut", "84"]
+  - ["Fachtheoretische Prüfung", "befriedigend", "74"]
+
+dqr_niveau: "5"
+zusatz_lines:
+  - "Der vorbereitende Lehrgang umfasste 220 Unterrichtsstunden."
+supplement: false
+out_basename: "fortbildung-zeugnis"
+
+ort_datum: "Stuttgart, den 15. März 2023"
+praesident: "C. Erbe"
+hauptgeschaeftsfuehrerin: "S. Asché"

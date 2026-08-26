@@ -1,0 +1,88 @@
+# Synthetic applicant. Angle: tuple 19 — APPLICATION_RESOLUTION /
+# MULTIPLE_RULES / MIXED_BUNDLE. Same Abitur data as felix-brandt, shifted
+# six years earlier (birth 1999, Abitur 2018) so a completed IHK Ausbildung
+# (Kaufmann für Büromanagement, 2018-2021) and a subsequent employment fit
+# the timeline. Bundle: clean Abitur + IHK Prüfungszeugnis + prose
+# Arbeitszeugnis that states the period (01.08.2021-31.07.2024) but never
+# weekly hours. Expected: GERMAN_ABITUR ELIGIBLE;
+# GERMAN_TRAINING_PLUS_PROFESSIONAL_EXPERIENCE MISSING_INFORMATION
+# (usable_employment_calculation fails on unknown hours); the ordered
+# resolution must keep the proven successful rule -> application ELIGIBLE.
+slug: felix-brandt-kombi
+name: "Felix Brandt"
+nachname: "Brandt"
+anrede: "Herr"
+dank_pronomen: "ihm"
+birth_date: "03.11.1999"
+birth_place: "Düsseldorf"
+address: "Grafenberger Allee 148, 40237 Düsseldorf"
+school: "Lessing-Gymnasium, Düsseldorf"
+
+# Abitur Block I — identical grade profile to felix-brandt (tuple 1).
+block_i:
+  deutsch: ["12", "13", "12", "13"] # 50
+  englisch: ["13", "13", "14", "13"] # 53
+  musik: ["13", "14", "13", "14"] # 54
+  geschichte: ["12", "12", "13", "13"] # 50
+  sozialkunde_politik: ["11", "12", "12", "12"] # 47
+  mathematik: ["11", "12", "12", "13"] # 48
+  physik: ["10", "11", "11", "12"] # 44
+  biologie: ["12", "12", "12", "13"] # 49
+  religion_ethik: ["12", "13", "13", "13"] # 51
+  sport: ["08", "09", "08", "09"] # 34
+ea_subjects: [deutsch, englisch, mathematik]
+
+pruefungsfaecher:
+  - ["Deutsch (eA)", "12", "", "60"]
+  - ["Englisch (eA)", "13", "", "65"]
+  - ["Mathematik (eA)", "09", "", "45"]
+  - ["Geschichte", "", "08", "40"]
+
+block_i_punktsumme: "480"
+block_ii_punktsumme: "210"
+gesamtpunktzahl: "690"
+durchschnittsnote: "1,8"
+
+fremdsprachen:
+  - ["Englisch", "5 – 13", "C1"]
+  - ["Französisch", "6 – 11", "B1"]
+
+anrede_name: "Herr Felix Brandt"
+ort_datum: "Düsseldorf, den 29.06.2018"
+vorsitz: "OStD Dr. K. Neumann"
+schulleiter: "OStD'in B. Sartorius"
+
+# IHK Prüfungszeugnis (Kaufmann für Büromanagement, Sommerprüfung 2021).
+ihk:
+  geburtsdatum_lang: "03.11.1999"
+  datum: "18. Juni 2021"
+  praesident: "Dr. W. Terhorst"
+  hauptgeschaeftsfuehrer: "Dr. C. Möllers"
+
+# Prose Arbeitszeugnis: period stated, weekly hours deliberately absent.
+firma: "Aurea Office Solutions GmbH"
+firma_adresse: "Hansaring 12, 48155 Münster"
+firma_beschreibung: >-
+  Die Aurea Office Solutions GmbH ist ein Fachhandels- und
+  Dienstleistungsunternehmen für Büroausstattung und Dokumentenmanagement mit
+  rund 60 Mitarbeiterinnen und Mitarbeitern am Standort Münster.
+position: "Kaufmann für Büromanagement"
+vom: "01.08.2021"
+bis: "31.07.2024"
+aufgaben:
+  - "Auftragsbearbeitung von der Angebotserstellung bis zur Rechnungsstellung"
+  - "Koordination von Lieferterminen mit Kunden und Speditionen"
+  - "Pflege der Kunden- und Artikelstammdaten im Warenwirtschaftssystem"
+  - "Vorbereitende Buchhaltung und Unterstützung des Monatsabschlusses"
+beurteilung:
+  - >-
+    Herr Brandt verfügt über ein sehr gutes und jederzeit abrufbares
+    Fachwissen, das er stets sicher und zielgerichtet in der Praxis einsetzte.
+    Er arbeitete äußerst sorgfältig, strukturiert und zuverlässig.
+  - >-
+    Herr Brandt erledigte seine Aufgaben stets zu unserer vollsten
+    Zufriedenheit. Sein Verhalten gegenüber Vorgesetzten, Kolleginnen und
+    Kollegen sowie Kunden war jederzeit vorbildlich.
+ort_datum: "Münster, den 31.07.2024"
+unterzeichner: "Claudia Berghoff"
+unterzeichner_titel: "Geschäftsführerin"

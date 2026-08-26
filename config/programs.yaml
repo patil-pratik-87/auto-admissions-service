@@ -1,0 +1,9 @@
+catalog_version: "0.1"
+programs:
+  - id: BACHELOR
+    display_name: "Bachelor's Study Program"
+    study_level: BACHELOR
+    program_subject: COMPUTER_SCIENCE
+    policy:
+      id: IU_BACHELOR_ACCESS
+      version: "0.0.22"

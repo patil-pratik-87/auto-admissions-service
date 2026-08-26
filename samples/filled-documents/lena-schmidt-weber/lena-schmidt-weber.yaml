@@ -1,0 +1,34 @@
+# Synthetic applicant. Angle: hyphenated surname (bundle join / fuzzy name
+# matching), later Qualifikationsphase semesters (3./4.), mid-range grades.
+slug: lena-schmidt-weber
+name: "Schmidt-Weber, Lena"
+birth_date: "09.01.2005"
+birth_place: "Altdorf am Muster"
+address: "Lindenallee 8, 98765 Altdorf am Muster"
+school: "Kurfürst-Balduin-Gymnasium Altdorf, Altdorf am Muster"
+school_type_insert: "in der gymnasialen Oberstufe"
+halbjahr_1: "3."
+halbjahr_2: "4."
+
+subjects_einfach:
+  - [Geschichte, "2", "15"]
+  - [Physik, "2", "14"]
+  - [Musik, "2", "16"]
+  - [Erdkunde, "2", "15"]
+  - [Sport, "2", "16"]
+subjects_zweifach:
+  - [Deutsch, "17"]
+  - [Mathematik, "15"]
+  - [Spanisch, "18"]
+  - [Biologie, "16"]
+punktsumme_einfach: "76"
+punktsumme_zweifach: "132"
+# P = 76 + 132 = 208; S = 26; E = 208/26 x 19 = 152
+gesamtergebnis: "152"
+# Note = 17/3 - 152/57 = 3.0 -> 3,0
+durchschnittsnote_ziffer: "3,0"
+durchschnittsnote_text: "drei Komma null"
+
+ort_datum: "Altdorf, den 20.12.2024"
+tutor: "C. Vogt"
+schulleiter: "A. Sommer"
