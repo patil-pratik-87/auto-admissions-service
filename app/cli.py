@@ -33,9 +33,17 @@ app = typer.Typer(
 )
 
 
-def _build(*, trace: bool, require_openai: bool) -> ScreeningWorkflow:
+def _build(*, trace: bool, require_openai: bool, rules_root: Path | None = None) -> ScreeningWorkflow:
+    overrides: dict[str, Path] = {}
+    if rules_root is not None:
+        overrides["rules_root"] = rules_root
+        # A generated package ships the catalog pinning its own policy version, so take
+        # that one: the default catalog pins a different version and fails activation.
+        packaged_catalog = rules_root / "programs.yaml"
+        if packaged_catalog.is_file():
+            overrides["catalog_path"] = packaged_catalog
     try:
-        settings = AdmissionsSettings(trace_enabled=trace)
+        settings = AdmissionsSettings(trace_enabled=trace, **overrides)
     except ValidationError:
         typer.echo("Configuration is invalid.", err=True)
         raise typer.Exit(2) from None
@@ -190,20 +198,34 @@ def screen(
     overwrite: Annotated[bool, typer.Option("--overwrite", help="Replace exact command-owned outputs.")] = True,
     quiet: Annotated[bool, typer.Option("--quiet", help="Suppress safe progress messages.")] = False,
     stages: Annotated[bool, typer.Option("--stages", help="Write each pipeline stage's output to a stages/ folder.")] = False,
+    rules_root: Annotated[
+        Path | None,
+        typer.Option(
+            "--rules-root",
+            help="Rules package to activate instead of rules/. Use to screen against a candidate package.",
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+        ),
+    ] = None,
 ) -> None:
     """Run extraction and deterministic evaluation through the saved artifact."""
-    screening = _build(trace=trace, require_openai=True)
+    screening = _build(trace=trace, require_openai=True, rules_root=rules_root)
+    # One folder per applicant, taken from the bundle directory the PDFs came from, so
+    # screening several people into one --output-dir does not overwrite the last result.
+    # Derived here rather than in the request: the screening service stays applicant-free.
+    applicant_dir = output_dir / (pdfs[0].parent.name or pdfs[0].stem)
     outcome = screening.screen(
         ScreenRequest(
             program_id=program,
             pdf_paths=tuple(pdfs),
-            output_dir=output_dir,
+            output_dir=applicant_dir,
             model=model,
             paraphrase=paraphrase,
             overwrite=overwrite,
         ),
         progress=_progress_sink(quiet),
-        stage_sink=_stage_sink(output_dir / "stages" if stages else None),
+        stage_sink=_stage_sink(applicant_dir / "stages" if stages else None),
     )
     if isinstance(outcome, RunFailed):
         _fail(outcome)

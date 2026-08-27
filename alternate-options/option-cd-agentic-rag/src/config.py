@@ -25,7 +25,17 @@ SAMPLES_DIR = REPO_ROOT / "samples" / "filled-documents"
 # Read-only inputs from the earlier experiments (never written to).
 NAIVE_RESULTS_PATH = REPO_ROOT / "alternate-options" / "option-b-full-policy-workflow" / "runs" / "prototype-results.jsonl"
 NAIVE_LEDGER_PATH = REPO_ROOT / "alternate-options" / "option-b-full-policy-workflow" / "runs" / "ledger.jsonl"
-NAV_TRACE_GROUND_TRUTH = REPO_ROOT / "tools" / "rule-extractor" / "artifacts" / "navigation-trace.json"
+def _latest_nav_trace() -> Path:
+    """Newest rule-extractor navigation trace, used as the retrieval reference set.
+
+    That notebook writes one timestamped folder per run under runs/, so the path is not
+    fixed. A missing trace is not fatal: evaluate.py skips the retrieval-quality section.
+    """
+    traces = sorted((REPO_ROOT / "runs").glob("generate-rules-*/artifacts/navigation-trace.json"))
+    return traces[-1] if traces else REPO_ROOT / "runs" / "no-rule-extractor-run" / "navigation-trace.json"
+
+
+NAV_TRACE_GROUND_TRUTH = _latest_nav_trace()
 
 RUNS_DIR = EXPERIMENT_DIR / "runs"
 RAW_DIR = RUNS_DIR / "raw"

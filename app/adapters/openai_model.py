@@ -251,7 +251,7 @@ class OpenAIAdmissionsModelAdapter:
     @staticmethod
     def _extraction_content(request: ExtractApplicationFactsRequest) -> list[ResponseInputContentParam]:
         bundle_map = "\n".join(
-            f"- document_id={document.document_id!r} filename={document.filename!r}"
+            f"- document_id={document.document_id!r} filename={document.filename!r} pages={document.page_count}"
             for document in request.documents
         )
         content: list[ResponseInputContentParam] = [

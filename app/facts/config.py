@@ -11,7 +11,7 @@ class FactsSettings:
     max_total_bytes: int = 50 * 1024 * 1024
     max_file_bytes: int = 50 * 1024 * 1024
     max_total_pages: int = 100
-    default_model: str = "gpt-5.4-mini"
+    default_model: str = "gpt-5.6-terra"
     extraction_prompt_version: str = "application-facts/2.0"
     initial_max_output_tokens: int = 8_000
     retry_max_output_tokens: int = 16_000

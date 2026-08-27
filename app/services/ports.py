@@ -21,6 +21,7 @@ class PdfModelInput(PortModel):
 
     document_id: str
     filename: str
+    page_count: int = Field(ge=1)
     content: bytes
 
 

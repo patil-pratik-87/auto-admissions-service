@@ -137,6 +137,7 @@ class FactsExtractor:
                     PdfModelInput(
                         document_id=document.manifest_entry.document_id,
                         filename=document.manifest_entry.original_filename,
+                        page_count=document.manifest_entry.page_count,
                         content=document.content,
                     )
                     for document in documents
